@@ -76,9 +76,10 @@ https://sonar.fh-potsdam.de/demos/userstudy/index_edges.html
 ## Final project prototype
 The finalized prototype is a first attempt to combine the SoNAR (IDH) project results inside one functional prototype.
 ### Data analysis
-...
+work in progress: here the repo for the data analysis used in the overview/entrance of the prototype will be linked and described
+
 ### The web-based interactive visualization interface
-...
+work in progress: here the repo for the final interactive visualization will be linked and described
 
 
 

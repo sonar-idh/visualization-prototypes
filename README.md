@@ -1,4 +1,7 @@
 # SoNAR (IDH) Visualization Prototypes
+## About
+This repository is a collection of experimental prototypes and the final project results developed in the DFG-funded project [SoNAR(IDH)](http://sonar.fh-potsdam.de/).
+
 <p float="left">
 <img src="/img/01.jpg" width="150" heigth="150">
 <img src="/img/02.jpg" width="150" heigth="150">
@@ -21,8 +24,6 @@
 </p>
 
 
-## About
-This repository is a collection of experimental prototypes and the final project results developed in the DFG-funded project [SoNAR(IDH)](http://sonar.fh-potsdam.de/).
 
 ## Experimental prototypes
 The visualization concepts in SoNAR(IDH) were developed iteratively and included many small and experimental prototypes that were not created with the approach the data, open up new pathways, to find problems or challenges with the data, or to communicate with our project partners and domain experts for historical network analysis. The following list displays and links to code of selected results:

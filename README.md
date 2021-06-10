@@ -8,6 +8,8 @@
 <img src="/img/06.jpg" width="150" heigth="150">
 <img src="/img/07.jpg" width="150" heigth="150">
 <img src="/img/08.jpg" width="150" heigth="150">
+<img src="/img/09.jpg" width="150" heigth="150">
+<img src="/img/10.jpg" width="150" heigth="150">
 </p>
 
 

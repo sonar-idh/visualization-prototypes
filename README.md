@@ -1,7 +1,7 @@
 # SoNAR (IDH) Visualization Prototypes
-![Prototype](/img/01.jpg)
-![Prototype](/img/02.jpg)
-![Prototype](/img/03.jpg)
+![Prototype](/img/01.jpg =250x250)
+![Prototype](/img/02.jpg =250x250)
+![Prototype](/img/03.jpg =250x250)
 
 ## About
 This repository is a collection of experimental prototypes and the final project results developed in the DFG-funded project [SoNAR(IDH)](http://sonar.fh-potsdam.de/).

@@ -78,7 +78,6 @@ The visualization concepts in SoNAR(IDH) were developed iteratively and included
 
 ### 05: Temporal network cascade by communities
 <img src="/img/11.jpg" width="150" heigth="150">
-https://sonar.fh-potsdam.de/demos/
 [Demo][Code]
 
 ### 06: Topic term by year using a voronoi diagram

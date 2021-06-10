@@ -1,13 +1,13 @@
 # SoNAR (IDH) Visualization Prototypes
 <p float="left">
-<img src="/img/01.jpg" width="250" heigth="250">
-<img src="/img/02.jpg" width="250" heigth="250">
-<img src="/img/03.jpg" width="250" heigth="250">
-<img src="/img/04.jpg" width="250" heigth="250">
-<img src="/img/05.jpg" width="250" heigth="250">
-<img src="/img/06.jpg" width="250" heigth="250">
-<img src="/img/07.jpg" width="250" heigth="250">
-<img src="/img/08.jpg" width="250" heigth="250">
+<img src="/img/01.jpg" width="150" heigth="150">
+<img src="/img/02.jpg" width="150" heigth="150">
+<img src="/img/03.jpg" width="150" heigth="150">
+<img src="/img/04.jpg" width="150" heigth="150">
+<img src="/img/05.jpg" width="150" heigth="150">
+<img src="/img/06.jpg" width="150" heigth="150">
+<img src="/img/07.jpg" width="150" heigth="150">
+<img src="/img/08.jpg" width="150" heigth="150">
 </p>
 
 

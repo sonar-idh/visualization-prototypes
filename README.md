@@ -108,8 +108,9 @@ $.ajax({
 ```
 
 ## External resources
-d3.v5.min.js → [D3.js](https://d3js.org/)  
-jquery.min.js → [jQuery](https://jquery.com/)  
+d3.v5.min.js → [D3.js](https://d3js.org/): data-driven visualization library based on JavaScript
+jquery.min.js → [jQuery](https://jquery.com/): JavaScript library
+netClustering.js --> [netClustering](https://github.com/john-guerra/netClusteringJs): detects clusters in networks using the Clauset, Newman and Moore community detection algorithm
 
 
 ## Related publications

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+	<meta charset="UTF-8">
+	<style>
+		body {
+			background-color: black;
+			font-family: sans-serif;
+		}
+
+		h1 {
+			position: absolute;
+			top: 50;
+			color: white;
+			text-decoration: underline;
+		}
+	</style>
+
+	<script src="https://d3js.org/d3.v5.min.js"></script>
+
+</head>
+
+<body>
+	<h1>Link uncertainty</h1>
+	<svg width="1600" height="900" viewBox="-480 -250 960 500"></svg>
+
+	<script>
+		const svg = d3.select("svg")
+
+		let width = +svg.attr("width"),
+			height = +svg.attr("height");
+
+
+		let nodesizescale = d3.scaleSqrt()
+			.domain([1, 5])
+			.range([3, 20]);
+
+		let fontsizescale = d3.scaleLinear()
+			.domain([0, 300])
+			.range([3, 50]);
+
+		let nodesizescalereverse = d3.scaleSqrt()
+			.domain([0, 50])
+			.range([300, 20]);
+
+		let filter = svg.append("defs")
+			.append("filter").attr("x", "-50%").attr("y", "-50%").attr("width", "200%").attr("height", "200%")
+			.attr("id", "blur")
+			.append("feGaussianBlur")
+			.attr("stdDeviation", 0.5);
+
+
+
+		let simulation = d3.forceSimulation()
+			.force("link", d3.forceLink().id(function(d) {
+				return d.id;
+			}).strength(0))
+			.force("charge", d3.forceManyBody().strength(-18))
+			.force('collision', d3.forceCollide().radius(function(D) {
+				return 1 + nodesizescale(D.count)
+			}).strength(5))
+
+
+		let nodes = [{
+				"id": "1",
+				"name": "node1"
+			},
+			{
+				"id": "2",
+				"name": "node2"
+			},
+			{
+				"id": "3",
+				"name": "node3"
+			},
+			{
+				"id": "4",
+				"name": "node4"
+			},
+			{
+				"id": "5",
+				"name": "node5"
+			},
+			{
+				"id": "6",
+				"name": "node6"
+			},
+			{
+				"id": "7",
+				"name": "node7"
+			},
+			{
+				"id": "8",
+				"name": "node8"
+			},
+			{
+				"id": "9",
+				"name": "node9"
+			},
+			{
+				"id": "10",
+				"name": "node10"
+			}
+		]
+
+		let links = [{
+				"source": "1",
+				"target": "2",
+				"certainty": "1"
+			},
+			{
+				"source": "1",
+				"target": "3",
+				"certainty": "1"
+			},
+			{
+				"source": "1",
+				"target": "4",
+				"certainty": "1"
+			},
+			{
+				"source": "1",
+				"target": "10",
+				"certainty": "1"
+			},
+			{
+				"source": "1",
+				"target": "9",
+				"certainty": "1"
+			},
+			{
+				"source": "1",
+				"target": "7",
+				"certainty": "1"
+			},
+			{
+				"source": "2",
+				"target": "4",
+				"certainty": "0.5"
+			},
+			{
+				"source": "2",
+				"target": "5",
+				"certainty": "0.25"
+			},
+			{
+				"source": "4",
+				"target": "6",
+				"certainty": "1"
+			},
+			{
+				"source": "2",
+				"target": "7",
+				"certainty": "1"
+			},
+			{
+				"source": "10",
+				"target": "6",
+				"certainty": "1"
+			},
+			{
+				"source": "10",
+				"target": "3",
+				"certainty": "1"
+			},
+			{
+				"source": "9",
+				"target": "8",
+				"certainty": "1"
+			},
+			{
+				"source": "9",
+				"target": "6",
+				"certainty": "1"
+			},
+			{
+				"source": "8",
+				"target": "7",
+				"certainty": "1"
+			}
+		]
+
+
+		//any links with duplicate source and target get an incremented 'linknum'
+		for (var i = 0; i < links.length; i++) {
+			if (i != 0 &&
+				links[i].source == links[i - 1].source &&
+				links[i].target == links[i - 1].target) {
+				links[i].linknum = links[i - 1].linknum + 1;
+			} else {
+				links[i].linknum = 1;
+			};
+		};
+
+
+		let linkFolding = true
+
+
+		var link = svg.selectAll(".link")
+			.data(links)
+			.join("path")
+			.style("stroke", function(d) {
+				return "rgb(177, 177, 177)"
+			})
+			.attr("stroke-width", 1)
+			.attr("class", "link")
+			.attr("fill", "none")
+			.style("cursor", "pointer")
+			.on("click", function(d) {
+				if (linkFolding == true) {
+					linkFolding = false
+
+					d3.selectAll(".link").filter(function(D) {
+							return D.source.id == d.source.id && D.target.id == d.target.id
+						})
+						.transition()
+						.duration(1000)
+						.style("stroke", "red")
+						.attr("d", function(d) {
+							var dr = 50000 / d.linknum;
+							return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+						})
+
+				} else {
+					linkFolding = true
+
+					d3.selectAll(".link").filter(function(D) {
+							return D.source.id == d.source.id && D.target.id == d.target.id
+						})
+						.transition()
+						.duration(1000)
+						.style("stroke", "white")
+						.attr("d", function(d) {
+							var dr = 1000 / d.linknum;
+							return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+						})
+				}
+			})
+
+		d3.selectAll(".link").filter(function(D) {
+			return D.linknum > 1
+		}).style("stroke", "red")
+
+		var node = svg //.append("g")
+			.selectAll("circle")
+			.data(nodes)
+			.enter().append("circle")
+			.attr("class", "nodes")
+			.style("fill", function(d, i) {
+				return "white"
+
+			})
+			.attr("r", function(D) {
+				D.count = links.filter(function(l) {
+					return l.source == D.id || l.target == D.id
+				}).length
+
+				return nodesizescale(D.count);
+			})
+			.on("mouseover", function(D, I) {
+				d3.selectAll(".nodes,.label").style("opacity", 0.1)
+
+				let connections = links.filter(function(E, G) {
+					return E.source.id == D.id || E.target.id == D.id
+				})
+
+				connections.forEach(function(E, G) {
+					d3.selectAll(".nodes,.label").filter(function(X, Y) {
+							return X.id == E.source.id || X.id == E.target.id
+						}).style("opacity", 1)
+						.filter("text").style("font-size", "12").style("font-weight", "bold").style("fill", "white")
+
+				})
+				d3.selectAll(".link").style("opacity", 0)
+				d3.selectAll(".link").filter(function(E, G) {
+					return E.source.id == D.id || E.target.id == D.id
+				}).style("opacity", 1)
+
+			})
+			.on("mouseout", function(D, I) {
+				d3.selectAll(".nodes,.label").style("opacity", 1).filter("text").style("font-size", "0").style("font-weight", "regular").style("fill", "white")
+				d3.selectAll(".link").style("opacity", 1)
+			})
+
+		d3.selectAll(".nodes")
+			.filter(function(D) {
+				return D.name == undefined
+			}) //.selectAll("circle")
+			.attr("filter", "url(#blur)")
+
+
+
+
+		var labels = svg.append("g")
+			.selectAll("text")
+			.data(nodes)
+			.enter().append("text")
+			.attr("class", "label")
+			.style("fill", "grey")
+			.text(function(D) {
+				return D.name
+			})
+			.style("font-size", "0px")
+			.style("pointer-events", "none")
+			.attr("dx", 6)
+
+
+		simulation
+			.nodes(nodes)
+			.on("tick", ticked);
+
+		simulation.force("link")
+			.links(links);
+
+
+		// Create wavy path between 0,0 and 0,dist
+		function wave_line(d) {
+			var p1 = d.source,
+				p2 = d.target
+			var step = 0.7,
+				amp = 3,
+				cpi = step * Math.PI
+			var dist = Math.hypot(p2.y - p1.y, p2.x - p1.x)
+			var arr = []
+			for (x = 0; x <= dist; x += step) {
+				var y = amp * Math.sin(x / cpi)
+				arr.push({
+					x: x,
+					y: y
+				})
+			}
+			var line = d3.line().curve(d3.curveBasis)
+				.x(function(d) {
+					return d.x;
+				})
+				.y(function(d) {
+					return d.y;
+				})
+			return line(arr)
+		}
+
+		// Transform by translating path to p1 and rotating by angle
+		function wave_transform(d) {
+			var p1 = d.source,
+				p2 = d.target
+			var angle = Math.atan2(p2.y - p1.y, p2.x - p1.x)
+			return 'translate(' + p1.x + ' ' + p1.y + ') rotate(' + 180 * angle / Math.PI + ')'
+		}
+
+
+
+		// Create wavy path between 0,0 and 0,dist
+		function wave_line2(d) {
+			var p1 = d.source,
+				p2 = d.target
+			var step = 2,
+				amp = 3,
+				cpi = step * Math.PI
+			var dist = Math.hypot(p2.y - p1.y, p2.x - p1.x)
+			var arr = []
+			for (x = 0; x <= dist; x += step) {
+				var y = amp * Math.sin(x / cpi)
+				arr.push({
+					x: x,
+					y: y
+				})
+			}
+			var line = d3.line().curve(d3.curveBasis)
+				.x(function(d) {
+					return d.x;
+				})
+				.y(function(d) {
+					return d.y;
+				})
+			return line(arr)
+		}
+
+		// Transform by translating path to p1 and rotating by angle
+		function wave_transform2(d) {
+			var p1 = d.source,
+				p2 = d.target
+			var angle = Math.atan2(p2.y - p1.y, p2.x - p1.x)
+			return 'translate(' + p1.x + ' ' + p1.y + ') rotate(' + 180 * angle / Math.PI + ')'
+		}
+
+
+
+		function ticked() {
+
+			link.filter(function(D) {
+					return D.certainty == 1
+				})
+				.attr("d", function(d) {
+					var dr = 50000 / d.linknum;
+					return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+				})
+
+
+			link.filter(function(D) {
+					return D.certainty == 0.5
+				})
+				.attr("d", wave_line)
+				.attr("transform", wave_transform);
+
+
+			link.filter(function(D) {
+					return D.certainty == 0.25
+				})
+				.attr("d", wave_line2)
+				.attr("transform", wave_transform2);
+
+			node
+				.attr("cx", function(d) {
+					return d.x;
+				})
+				.attr("cy", function(d) {
+					return d.y;
+				});
+
+
+			labels
+				.attr("x", function(d) {
+					return d.x;
+				})
+				.attr("y", function(d) {
+					return d.y;
+				});
+			//	}
+		}
+	</script>
+
+
+</body>
+
+</html>

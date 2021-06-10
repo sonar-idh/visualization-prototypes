@@ -121,11 +121,12 @@ work in progress: here the repo for the final interactive visualization will be 
 [Menzel, S., Bludau, M.-J., Leitner, E., Dörk, M., Moreno-Schneider, J., Petras, V. and Rehm, G. (accepted). Graph Technologies for the Analysis of Historical Social Networks Using Heterogeneous Data Sources. In Proceedings of Graph Technologies in the Humanities 2019 and 2020. Graph Technologies in the Humanities 2020. Vienna, AU: CEUR Workshop Proceedings.](https://markjanbludau.de/publications/GraphProceedings2019.pdf)
 
 ## Credits
-UCLAB, FH Potsdam – University of Applied Sciences
-Mark-Jan Bludau: concept development & coding
-Marian Dörk: project lead
+Part of the project SoNAR (IDH), a collobaration between Deutsches Forschungszentrum für Künstliche Intelligenz, FH Potsdam, Humboldt-Universität zu Berlin, Staatsbibliothek zu Berlin and Heinrich-Heine-Universität Düsseldorf.
 
-Part of the project SoNAR (IDH)
+Project partner responsible for the interface design and data visualization:
+UCLAB, FH Potsdam – University of Applied Sciences
+- Mark-Jan Bludau: concept development & coding
+- Marian Dörk: project lead at FH Potsdam
 
 
 ## License

@@ -29,15 +29,15 @@ The visualization concepts in SoNAR(IDH) were developed iteratively and included
 
 ### 01: Unfolding Edges
 <img src="/img/03.jpg" width="150" heigth="150">
-https://sonar.fh-potsdam.de/demos
+https://sonar.fh-potsdam.de/demos/03_unfoldingLinks.html
 
 ### 02: Uncertainty in links as oscillated lines
 <img src="/img/04.jpg" width="150" heigth="150">
-https://sonar.fh-potsdam.de/demos/
+https://sonar.fh-potsdam.de/demos/04_uncertainty.html
 
 ### 03: Simple use of a community cluster algorithm
 <img src="/img/05.jpg" width="150" heigth="150">
-https://sonar.fh-potsdam.de/demos/
+https://sonar.fh-potsdam.de/demos/05_clusterAlgorithm.html
 
 ### 04: Scrolling through time
 <img src="/img/09.jpg" width="150" heigth="150">
@@ -53,23 +53,23 @@ https://sonar.fh-potsdam.de/demos/
 
 ### 07: Topic term by year using a voronoi diagram
 <img src="/img/13.jpg" width="150" heigth="150">
-https://sonar.fh-potsdam.de/demos/
+https://sonar.fh-potsdam.de/demos/jul2020/jobs_by-year_voronoi.html
 
 ### 08: Data exploration tool v.1
 <img src="/img/14.jpg" width="150" heigth="150">
-https://sonar.fh-potsdam.de/demos/
+https://sonar.fh-potsdam.de/demos/jul2020/explorationstool_demo.html
 
 ### 09: Morph between a graph and a timeline
 <img src="/img/15.jpg" width="150" heigth="150">
-https://sonar.fh-potsdam.de/demos/
+https://sonar.fh-potsdam.de/demos/userstudy/timeline-morph.html
 
 ### 10: Radial graph layout to visualize shared resources
 <img src="/img/16.jpg" width="150" heigth="150">
-https://sonar.fh-potsdam.de/demos/
+https://sonar.fh-potsdam.de/demos/userstudy/ressource_focus.html
 
 ### 11: Data exploration tool v.2
 <img src="/img/17.jpg" width="150" heigth="150">
-https://sonar.fh-potsdam.de/demos/
+https://sonar.fh-potsdam.de/demos/userstudy/index_edges.html
 
 
 
@@ -111,7 +111,7 @@ jquery.min.js → [jQuery](https://jquery.com/)
 
 
 ## Related publications
-[Bludau, M.-J., Dörk, M., & Tominski, C. (2021). Unfolding Edges for Exploring Multivariate Edge Attributes in Graphs. https://doi.org/10.2312/evp20211070](https://diglib.eg.org/bitstream/handle/10.2312/evp20211070/017-019.pdf)
+[Bludau, M.-J., Dörk, M. & Tominski, C. (2021). Unfolding Edges for Exploring Multivariate Edge Attributes in Graphs. Poster at Eurographics Conference on Visualization (EuroVis), Zurich, Switzerland.  https://doi.org/10.2312/evp20211070](https://diglib.eg.org/bitstream/handle/10.2312/evp20211070/017-019.pdf)
 
 [Bludau, M.-J., Dörk, M., Fangerau, H., Halling, T., Leitner, E., Menzel, S., Müller, G., Petras, V., Rehm, G., Neudecker, C., Zellhöfer, D., & Moreno Schneider, J. (2020). SoNAR (IDH): Datenschnittstellen für historische Netzwerkanalyse. In C. Schöch (Hrsg.), DHd 2020 Spielräume: Digital Humanities zwischen Modellierung und Interpretation. Konferenzabstracts. Tagung des Verbands Digital Humanities, Paderborn, Germany (S. 360–362). Verband Digital Humanities im deutschsprachigen Raum e.V.](https://uclab.fh-potsdam.de/wp/wp-content/uploads/bludau2020sonaridh.pdf)
 

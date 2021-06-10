@@ -107,8 +107,9 @@ The finalized prototype is a first attempt to combine the SoNAR (IDH) project re
 work in progress: here the repo for the data analysis used in the overview/entrance of the prototype will be linked and described
 
 ### The web-based interactive visualization interface
-      work in progress: here the repo for the final interactive visualization will be linked and described.
-      [Demo][Code]
+work in progress: here the repo for the final interactive visualization will be linked and described.
+
+[Demo][Code]
 
 
 

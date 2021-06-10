@@ -1,7 +1,8 @@
 # SoNAR (IDH) Visualization Prototypes
-![Prototype](/img/01.jpg =250x250)
-![Prototype](/img/02.jpg =250x250)
-![Prototype](/img/03.jpg =250x250)
+<img src="/img/01.jpg" width="150" heigth="150">
+<img src="/img/02.jpg" width="150" heigth="150">
+<img src="/img/03.jpg" width="150" heigth="150">
+
 
 ## About
 This repository is a collection of experimental prototypes and the final project results developed in the DFG-funded project [SoNAR(IDH)](http://sonar.fh-potsdam.de/).
@@ -11,7 +12,7 @@ The visualization concepts in SoNAR(IDH) were developed iteratively and included
 
 ### 01: Unfolding Edges
 https://sonar.fh-potsdam.de/demos/03_unfoldingLinks.html
-![Unfolding Edges](/img/03.jpg)
+<img src="/img/03.jpg" width="150" heigth="150">
 
 ### Prototype 2
 ...

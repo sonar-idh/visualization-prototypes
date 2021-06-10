@@ -10,6 +10,9 @@
 <img src="/img/08.jpg" width="150" heigth="150">
 <img src="/img/09.jpg" width="150" heigth="150">
 <img src="/img/10.jpg" width="150" heigth="150">
+<img src="/img/11.jpg" width="150" heigth="150">
+<img src="/img/12.jpg" width="150" heigth="150">
+<img src="/img/13.jpg" width="150" heigth="150">
 </p>
 
 
@@ -17,17 +20,22 @@
 This repository is a collection of experimental prototypes and the final project results developed in the DFG-funded project [SoNAR(IDH)](http://sonar.fh-potsdam.de/).
 
 ## Experimental prototypes
-The visualization concepts in SoNAR(IDH) were developed iteratively and included many small and experimental prototypes that were not created with the approach the data, open up new pathways, to find problems or challenges with the data, or to communicate with our project partners and domain experts for historical network analysis. The following list displays some of these results:
+The visualization concepts in SoNAR(IDH) were developed iteratively and included many small and experimental prototypes that were not created with the approach the data, open up new pathways, to find problems or challenges with the data, or to communicate with our project partners and domain experts for historical network analysis. The following list displays and links to code of selected results:
 
 ### 01: Unfolding Edges
-https://sonar.fh-potsdam.de/demos/03_unfoldingLinks.html
 <img src="/img/03.jpg" width="150" heigth="150">
+https://sonar.fh-potsdam.de/demos/03_unfoldingLinks.html
+
 
 ### Prototype 2
 ...
 
 ## Final project prototype
 The finalized prototype is a first attempt to combine the SoNAR (IDH) project results inside one functional prototype.
+### Data analysis
+...
+### The web-based interactive visualization interface
+...
 
 
 
@@ -55,8 +63,8 @@ $.ajax({
 ```
 
 ## External resources
-/js/d3.v5.min.js → [D3.js](https://d3js.org/)  
-/js/jquery.min.js → [jQuery](https://jquery.com/)  
+d3.v5.min.js → [D3.js](https://d3js.org/)  
+jquery.min.js → [jQuery](https://jquery.com/)  
 
 
 ## Related publications

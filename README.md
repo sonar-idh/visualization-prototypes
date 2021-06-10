@@ -30,6 +30,7 @@ The visualization concepts in SoNAR(IDH) were developed iteratively and included
 
 ### 01: Unfolding Edges
 <img src="/img/03.jpg" width="150" heigth="150">
+[SoNAR(IDH)](http://sonar.fh-potsdam.de/)
 [Demo](https://sonar.fh-potsdam.de/demos/03_unfoldingLinks.html) || [Code](https://github.com/sonar-idh/visualization-prototypes/tree/main/demo01)
 
 

@@ -81,36 +81,25 @@ The visualization concepts in SoNAR(IDH) were developed iteratively and included
 https://sonar.fh-potsdam.de/demos/
 [Demo][Code]
 
-### 06: Bar chart race by topic term
-<img src="/img/12.jpg" width="150" heigth="150">
-https://sonar.fh-potsdam.de/demos/
-[Demo][Code]
-
-### 07: Topic term by year using a voronoi diagram
+### 06: Topic term by year using a voronoi diagram
 <img src="/img/13.jpg" width="150" heigth="150">
-https://sonar.fh-potsdam.de/demos/jul2020/jobs_by-year_voronoi.html
-[Demo][Code]
+<a href="https://sonar.fh-potsdam.de/demos/jul2020/jobs_by-year_voronoi.html">[Demo]</a>[Code]
 
-### 08: Data exploration tool v.1
+### 07: Data exploration tool v.1
 <img src="/img/14.jpg" width="150" heigth="150">
-https://sonar.fh-potsdam.de/demos/jul2020/explorationstool_demo.html
-[Demo][Code]
+<a href="https://sonar.fh-potsdam.de/demos/jul2020/explorationstool_demo.html">[Demo]</a>[Code]
 
-### 09: Morph between a graph and a timeline
+### 08: Morph between a graph and a timeline
 <img src="/img/15.jpg" width="150" heigth="150">
-https://sonar.fh-potsdam.de/demos/userstudy/timeline-morph.html
-[Demo][Code]
+<a href="https://sonar.fh-potsdam.de/demos/userstudy/timeline-morph.html">[Demo]</a>[Code]
 
-### 10: Radial graph layout to visualize shared resources
+### 09: Radial graph layout to visualize shared resources
 <img src="/img/16.jpg" width="150" heigth="150">
-https://sonar.fh-potsdam.de/demos/userstudy/ressource_focus.html
-[Demo][Code]
+<a href="https://sonar.fh-potsdam.de/demos/userstudy/ressource_focus.html">[Demo]</a>[Code]
 
-### 11: Data exploration tool v.2
+### 10: Data exploration tool v.2
 <img src="/img/17.jpg" width="150" heigth="150">
-https://sonar.fh-potsdam.de/demos/userstudy/index_edges.html
-[Demo][Code]
-
+<a href="https://sonar.fh-potsdam.de/demos/userstudy/index_edges.html">[Demo]</a>[Code]
 
 
 ## Final project prototype

@@ -29,11 +29,49 @@ The visualization concepts in SoNAR(IDH) were developed iteratively and included
 
 ### 01: Unfolding Edges
 <img src="/img/03.jpg" width="150" heigth="150">
-https://sonar.fh-potsdam.de/demos/03_unfoldingLinks.html
+https://sonar.fh-potsdam.de/demos
+
+### 02: Uncertainty in links as oscillated lines
+<img src="/img/03.jpg" width="150" heigth="150">
+https://sonar.fh-potsdam.de/demos/
+
+### 03: Simple use of a community cluster algorithm
+<img src="/img/05.jpg" width="150" heigth="150">
+https://sonar.fh-potsdam.de/demos/
+
+### 04: Scrolling through time
+<img src="/img/09.jpg" width="150" heigth="150">
+https://sonar.fh-potsdam.de/demos/
+
+### 05: Temporal network cascade by communities
+<img src="/img/11.jpg" width="150" heigth="150">
+https://sonar.fh-potsdam.de/demos/
+
+### 06: Bar chart race by topic term
+<img src="/img/12.jpg" width="150" heigth="150">
+https://sonar.fh-potsdam.de/demos/
+
+### 07: Topic term by year using a voronoi diagram
+<img src="/img/13.jpg" width="150" heigth="150">
+https://sonar.fh-potsdam.de/demos/
+
+### 08: Data exploration tool v.1
+<img src="/img/14.jpg" width="150" heigth="150">
+https://sonar.fh-potsdam.de/demos/
+
+### 09: Morph between a graph and a timeline
+<img src="/img/15.jpg" width="150" heigth="150">
+https://sonar.fh-potsdam.de/demos/
+
+### 10: Radial graph layout to visualize shared resources
+<img src="/img/16.jpg" width="150" heigth="150">
+https://sonar.fh-potsdam.de/demos/
+
+### 11: Data exploration tool v.2
+<img src="/img/17.jpg" width="150" heigth="150">
+https://sonar.fh-potsdam.de/demos/
 
 
-### Prototype 2
-...
 
 ## Final project prototype
 The finalized prototype is a first attempt to combine the SoNAR (IDH) project results inside one functional prototype.

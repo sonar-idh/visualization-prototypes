@@ -1,5 +1,9 @@
 # SoNAR (IDH) Visualization Prototypes
-<img src="/img/01.jpg" width="150" heigth="150"> <img src="/img/02.jpg" width="150" heigth="150"> <img src="/img/03.jpg" width="150" heigth="150">
+<p float="left">
+<img src="/img/01.jpg" width="150" heigth="150">
+<img src="/img/02.jpg" width="150" heigth="150">
+<img src="/img/03.jpg" width="150" heigth="150">
+</p>
 
 
 ## About

@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+	<meta charset="UTF-8">
+	<style>
+		body {
+			background-color: black;
+			font-family: sans-serif;
+			overflow: hidden;
+		}
+
+		h1 {
+			position: absolute;
+			top: 50;
+			color: white;
+			font-weight: lighter;
+			font-size: 20px;
+			text-transform: uppercase;
+		}
+
+		.headline {
+			text-decoration: underline;
+		}
+
+		.legend {
+			font-size: 14px;
+			text-transform: uppercase;
+			text-decoration: none;
+		}
+
+		.male {
+			color: yellow;
+		}
+
+		.female {
+			color: cyan;
+		}
+
+
+
+		.yearSelection {
+			margin-top: 50px;
+			font-size: 50px;
+			color: yellow;
+		}
+
+
+		#keywordListDiv {
+			position: absolute;
+			top: 20px;
+			right: 250px;
+			color: white;
+			text-align: right;
+			height: 100%;
+			overflow-y: scroll;
+		}
+
+		#keywordListDivOverlay {
+			position: absolute;
+			top: 20px;
+			right: 250px;
+			height: 100%;
+			width: 400px;
+			pointer-events: none;
+			background: linear-gradient(180deg, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 1) 93%);
+		}
+
+		#keywordListDiv p {
+			margin: 0px;
+			color: white;
+			cursor: pointer;
+			pointer-events: auto;
+			width: auto;
+		}
+
+		#timelineDiv {
+			position: absolute;
+			top: 20px;
+			right: 10px;
+			text-align: right;
+		}
+
+		div.tooltip {
+			position: absolute;
+			text-align: left;
+			width: auto;
+			height: auto;
+			margin: 2;
+			padding: 2px;
+			font: 10px sans-serif;
+			background: white;
+			color: black;
+			border: 0px;
+			border-radius: 8px;
+			pointer-events: none;
+		}
+
+		div.tooltip p {
+			margin: 5px;
+			padding: 0;
+		}
+
+		.axisTime line {
+			stroke: white;
+		}
+
+		.axisTime path {
+			stroke: white;
+		}
+
+		.axisTime text {
+			fill: white;
+		}
+
+		.nodes {
+			display: none;
+		}
+
+		.nodes.thisYear.thisYearB.thisYearC {
+			display: inline;
+			opacity: 1;
+			transform-origin: 450px 450px;
+			transform: scale(1);
+			transition: fill 2s, opacity 2s, transform 2s;
+			fill: yellow !important;
+		}
+
+		.nodes.thisYearB.thisYearC {
+			display: inline;
+			opacity: 0.8;
+			transform-origin: 450px 450px;
+			transform: scale(0.6);
+			transition: fill 2s, opacity 2s, transform 2s;
+			fill: #ffa459 !important;
+		}
+
+		.nodes.thisYearC {
+			display: inline;
+			opacity: 0.8;
+			transform-origin: 450px 450px;
+			transform: scale(0.3);
+			transition: fill 2s, opacity 2s, transform 2s;
+			fill: #ff00e3 !important;
+			/* fill: green!important; */
+			/* filter: url(#blur); */
+		}
+
+		.nodes.thisYearZ.thisYearY {
+			display: inline;
+			opacity: 0.3;
+			transform-origin: 450px 450px;
+			transform: scale(2);
+			transition: fill 2s, opacity 2s, transform 2s;
+			fill: #83d387 !important;
+			/* filter: url(#blur); */
+		}
+
+		.nodes.thisYearY {
+			display: inline;
+			opacity: 0.2;
+			transform-origin: 450px 450px;
+			transform: scale(8);
+			transition: fill 2s, opacity 2s, transform 2s;
+			fill: #00b3ea !important;
+		}
+
+		/*
+ * === LOADING ICON===
+ */
+#loadbg {
+	z-index: 700;
+	position: absolute;
+	background-color: black;
+	width: 100%;
+	height: 100%;
+	opacity: 0.6;
+	top: 0;
+}
+
+#load {
+	position: absolute;
+	z-index: 700;
+	left: calc(50% - 30px);
+	top: calc(50% - 50px);
+}
+
+.loader {
+	border: 20px solid yellow;
+	border-top: 20px solid magenta;
+	border-radius: 50%;
+	width: 60px;
+	height: 60px;
+	animation: spin 2s linear 15;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+	</style>
+
+
+
+
+	<script src="http://d3js.org/d3.v5.min.js"></script>
+	<script src="https://unpkg.com/netclustering@0.0.3/dist/netClustering.js"></script>
+
+
+</head>
+
+<body>
+	<h1><span class="headline">Zeitlichess Scrollen<br> durch Ähnlichkeit <br>basierend<br> auf Schlagworten</span><br>
+		<span class="yearSelection">1832</span>
+	</h1>
+
+	<svg width="100%" height="900"></svg>
+	<div id="keywordListDiv"> </div>
+	<div id="keywordListDivOverlay"> </div>
+	<div id="timelineDiv"><svg id="timelineSVG" width="200" height="900">
+
+
+
+		</svg></div>
+
+		<div id="loadbg"></div>
+<div id="load" class="loader"></div>
+
+
+
+	<script>
+		const svg = d3.select("svg")
+		let selectedYear = 1883
+
+		// Define the div for the tooltip
+		let div = d3.select("body").append("div")
+			.attr("class", "tooltip")
+			.style("opacity", 0);
+
+
+		let filter = svg.append("defs")
+			.append("filter").attr("x", "-50%").attr("y", "-50%").attr("width", "200%").attr("height", "200%")
+			.attr("id", "blur")
+			.append("feGaussianBlur")
+			.attr("stdDeviation", 0.5);
+
+		///Load data
+
+		Promise.all([
+				d3.json("GND_KVZ_Personen.json"), //data
+				d3.csv("gnd-berufe-umap.csv"), //umap
+			])
+			.then(([data, umapdata]) => {
+
+
+				let fontsizescale = d3.scaleSqrt()
+					.domain([0, 1200])
+					.range([4, 30]);
+
+				let nodesizescale = d3.scaleSqrt()
+					.domain([1, 6])
+					.range([1, 9]);
+
+				let nodesizescaleB = d3.scaleSqrt()
+					.domain([1, 6])
+					.range([1, 6]);
+
+				let nodesizescaleC = d3.scaleSqrt()
+					.domain([1, 6])
+					.range([1, 3]);
+
+
+				let dataClean = []
+				let links = []
+				let keywords = []
+				let timeline = []
+
+				data.forEach(function(d, i) {
+
+					let date = (d['100'][0]['d'] !== undefined) ? d['100'][0]['d'][0] : null
+					let gender = (d['375'] !== undefined) ? d['375'][0]['a'][0] : null
+					let dateArr = (date !== null) ? date.split("-") : null
+					let dateStart = (date !== null) ? dateArr[0] : null
+					let dateEnd = (date !== null) ? dateArr[1] : null
+					let professionArr = (d['550'] !== undefined) ? d['550'] : null
+					let relationsPeople = (d['500'] !== undefined) ? d['500'] : null
+					let relationsPeopleLength = (d['500'] !== undefined) ? d['500'].length : 0
+					let relationsKeyword = (d['550'] !== undefined) ? d['550'] : null
+					let relationsKeywordLength = (d['550'] !== undefined) ? d['550'].length : 0
+					let relationsGeo = (d['551'] !== undefined) ? d['551'] : null
+					let relationsGeoLength = (d['551'] !== undefined) ? d['551'].length : 0
+
+					if (dateStart != null && dateEnd != null) {
+						for (x = Number(new Date(dateStart).getFullYear()); x <= Number(new Date(dateEnd).getFullYear()); x++) {
+							if (timeline[x]) {
+								timeline[x]["count"]++
+							} else {
+								timeline[x] = {},
+									timeline[x]["count"] = 1,
+									timeline[x]["date"] = x
+
+							}
+
+						}
+
+					}
+
+
+					dataClean.push({
+						id: d['035'][1]['a'][0],
+						type: "p",
+						name: d['100'][0]['a'][0],
+						gender: gender,
+						date: date,
+						dateStart: new Date(dateStart).getFullYear(),
+						dateEnd: new Date(dateEnd).getFullYear(),
+						profession: professionArr,
+						count: 1
+					})
+
+					if (relationsPeopleLength > 0) {
+						relationsPeople.forEach(function(D, I) {
+							if (d['500'][I]['0'] !== undefined) {
+								links.push({
+									source: d['035'][1]['a'][0],
+									target: d['500'][I]['0'][1]
+								})
+							}
+
+
+						})
+					}
+					if (relationsKeywordLength > 0) {
+						relationsKeyword.forEach(function(D, I) {
+							if (d['550'][I]['0'] !== undefined) {
+
+
+								if (dataClean.filter(function(E, G) {
+										return E.id == d['550'][I]['0'][1]
+									}).length == 0) {
+									dataClean.push({
+										id: d['550'][I]['0'][1],
+										name: d['550'][I]['a'][0],
+										type: "keyword",
+										count: 1
+									})
+								} else {
+									dataClean.filter(function(E, G) {
+										return E.id == d['550'][I]['0'][1]
+									})[0]['count'] = dataClean.filter(function(E, G) {
+										return E.id == d['550'][I]['0'][1]
+									})[0]['count'] + 1
+
+								}
+								links.push({
+									source: d['035'][1]['a'][0],
+									sourceName: d['100'][0]['a'][0],
+									target: d['550'][I]['0'][1],
+									targetName: d['550'][I]['a'][0]
+								})
+							}
+
+
+						})
+					}
+
+
+
+				})
+
+				links.forEach(function(D, I) {
+					if (dataClean.filter(function(E, G) {
+							return E.id == D.target
+						}).length == 0) {
+						dataClean.push({
+							id: D.target
+						})
+					}
+
+				})
+
+				links.forEach(function(D, I) {
+					if (dataClean.filter(function(E, G) {
+							return E.type === "p" && E.id == D.source
+						}).length > 0 && dataClean.filter(function(E, G) {
+							return E.type === "p" && E.id === D.target
+						}).length > 0) {
+						dataClean.filter(function(E, G) {
+							return E.type === "p" && E.id == D.source
+						})[0]['count']++
+					}
+					if (dataClean.filter(function(E, G) {
+							return E.type === "p" && E.id == D.target
+						}).length > 0) {
+						dataClean.filter(function(E, G) {
+							return E.type === "p" && E.id == D.target
+						})[0]['count']++
+					}
+				})
+
+
+				let dataActors = []
+
+
+				dataClean.filter(function(d) {
+					return d.type == "p"
+				}).forEach(function(D, I) {
+					dataActors.push({
+						id: D.id,
+						name: D.name,
+					})
+
+
+					umapdata.filter(function(n, m) {
+							return n.id == D.id
+						})[0]["dateStart"] = D.dateStart,
+						umapdata.filter(function(n, m) {
+							return n.id == D.id
+						})[0]["dateEnd"] = D.dateEnd,
+						umapdata.filter(function(n, m) {
+							return n.id == D.id
+						})[0]["count"] = D.count
+
+				})
+
+
+				dataActors.forEach(function(D, I) {
+
+					if (links.filter(function(d) {
+							return (d.source == D.id) && d.targetName
+						}).length == 0) {
+						dataClean.filter(function(d) {
+							return d.type == "keyword"
+						}).forEach(function(E, F) {
+							D[E.name] = 0
+						})
+					} else {
+
+						links.filter(function(d) {
+							return (d.source == D.id) && d.targetName
+						}).forEach(function(Z, Y) {
+
+							dataClean.filter(function(d) {
+								return d.type == "keyword"
+							}).forEach(function(E, F) {
+								if (Z.targetName != E.name) {
+									if (D[E.name]) { ///fallls D[E.name] schon existiert, nicht mit 0 überschreiben
+										D[E.name]
+									} else {
+										D[E.name] = 0
+									}
+
+								} else {
+									if (D[E.name]) {
+										D[E.name] = 1
+									} else {
+										D[E.name] = 1
+									}
+								}
+
+							})
+
+						})
+					}
+
+				})
+
+
+				let svg = d3.select("svg")
+
+				let scale = d3.scaleLinear()
+					.domain([0, 1600])
+					.range([0, 30]);
+
+
+
+
+				d3.select("body").on("wheel", function(d) {
+					let direction = d3.event.wheelDelta < 0 ? 'down' : 'up';
+					if (direction == "down") {
+						selectedYear++
+					} else {
+						selectedYear--
+					}
+					d3.select(".yearSelection").text(selectedYear)
+					d3.select(".yearIndication").attr("y", timelineScale(selectedYear + 50) - 2)
+					d3.select(".yearIndicationc").attr("y", timelineScale(selectedYear))
+					d3.select(".yearIndicationb").attr("y", timelineScale(selectedYear + 30))
+					d3.select(".yearIndicationz").attr("y", timelineScale(selectedYear + 50))
+					d3.select(".yearIndicationy").attr("y", timelineScale(selectedYear + 70))
+
+					d3.selectAll(".nodes")
+						.classed("thisYear", function(d, i) {
+							if (d.dateStart <= selectedYear && d.dateEnd >= selectedYear) {
+								return true
+							} else {
+								return false
+							}
+						})
+						.classed("thisYearZ", function(d, i) {
+							if (d.dateStart - 20 <= selectedYear && d.dateEnd >= selectedYear) {
+								return true
+							} else {
+								return false
+							}
+						})
+						.classed("thisYearY", function(d, i) {
+							if (d.dateStart - 50 <= selectedYear && d.dateEnd >= selectedYear) {
+								return true
+							} else {
+								return false
+							}
+						})
+						.classed("thisYearB", function(d, i) {
+							if (d.dateStart <= selectedYear && d.dateEnd + 20 >= selectedYear) {
+								return true
+							} else {
+								return false
+							}
+						})
+						.classed("thisYearC", function(d, i) {
+							if (d.dateStart <= selectedYear && d.dateEnd + 50 >= selectedYear) {
+								return true
+							} else {
+								return false
+							}
+						})
+
+
+					d3.selectAll(".thisYearC").transition()
+						.attr("r", function(d, i) {
+							return nodesizescaleC(d.count)
+						})
+
+
+					d3.selectAll(".thisYearB").transition()
+						.attr("r", function(d, i) {
+							return nodesizescaleB(d.count)
+						})
+
+
+					d3.selectAll(".thisYear").transition()
+						.attr("r", function(d, i) {
+							return nodesizescale(d.count)
+						})
+
+
+
+
+
+
+				});
+
+				let networkG = svg.append("g").attr("class", "networkG")
+
+				d3.select("#load").style("display", "none");
+        d3.select("#loadbg").style("display", "none");
+
+				networkG.selectAll("circle")
+					.data(umapdata)
+					.enter()
+					.append("circle")
+					.attr("class", "nodes")
+					.attr("r", function(d, i) {
+						return nodesizescale(dataClean.filter(function(D, I) {
+							return D.id == d.id
+						})[0].count)
+					})
+					.attr("cx", function(d) {
+						return 50 + d.x * 30
+					})
+					.attr("cy", function(d) {
+						return 230 + d.y * 30
+					})
+					.style("stroke", "black")
+					.style("stroke-width", "0.2")
+					.classed("thisYear", function(d, i) {
+						if (d.dateStart <= selectedYear && d.dateEnd >= selectedYear) {
+							return true
+						} else {
+							return false
+						}
+					})
+					.classed("thisYearZ", function(d, i) {
+						if (d.dateStart - 20 <= selectedYear && d.dateEnd >= selectedYear) {
+							return true
+						} else {
+							return false
+						}
+					})
+					.classed("thisYearY", function(d, i) {
+						if (d.dateStart - 50 <= selectedYear && d.dateEnd >= selectedYear) {
+							return true
+						} else {
+							return false
+						}
+					})
+					.classed("thisYearB", function(d, i) {
+						if (d.dateStart <= selectedYear && d.dateEnd + 20 >= selectedYear) {
+							return true
+						} else {
+							return false
+						}
+					})
+					.classed("thisYearC", function(d, i) {
+						if (d.dateStart <= selectedYear && d.dateEnd + 50 >= selectedYear) {
+							return true
+						} else {
+							return false
+						}
+					})
+					.classed("thisYear", function(d, i) {
+						if (d.dateStart <= selectedYear && d.dateEnd >= selectedYear) {
+							return true
+						} else {
+							return false
+						}
+					})
+					.style("fill", function(d, i) {
+						if (dataClean.filter(function(D, I) {
+								return D.id == d.id
+							})[0].gender == "1") {
+							return "yellow"
+						} else if (dataClean.filter(function(D, I) {
+								return D.id == d.id
+							})[0].gender == "2") {
+							return "cyan"
+						} else {
+							return "white"
+						}
+					})
+					.on("mouseover", function(d, i) {
+						let allProfessions = (dataClean.filter(function(D, I) {
+							return D.id == d.id
+						})[0].profession)
+						let allProfessionsArray = []
+
+						allProfessions.forEach(function(X, Y) {
+							allProfessionsArray.push(X["a"][0])
+						})
+
+						div.append("p")
+							.text(function() {
+								return (dataClean.filter(function(D, I) {
+									return D.id == d.id
+								})[0].name)
+							})
+							.style("font-weight", "bold")
+
+						div.style("opacity", .9);
+
+
+						div.append("p").text(function() {
+							return dataClean.filter(function(D, I) {
+								return D.id == d.id
+							})[0].dateStart + "–" + dataClean.filter(function(D, I) {
+								return D.id == d.id
+							})[0].dateEnd
+						})
+
+						div.append("p").text(allProfessionsArray)
+
+						div.style("left", (d3.event.pageX + 5) + "px")
+							.style("top", (d3.event.pageY - 5) + "px");
+
+
+						let connections = links.filter(function(E, G) {
+							return E.source == d.id || E.target == d.id
+						})
+
+
+						connections.forEach(function(E, G) {
+							d3.selectAll(".nodes").filter(function(X, Y) {
+									return X.id == E.source || X.id == E.target
+								}).style("opacity", 1)
+								.filter("text").style("font-size", "20").style("font-weight", "bold").style("fill", "black")
+
+						})
+
+						d3.selectAll(".link").style("opacity", 0)
+						d3.selectAll(".link").filter(function(E, G) {
+							return E.source == d.id || E.target == d.id
+						}).style("opacity", 1)
+
+
+					})
+					.on("mouseout", function(d) {
+						//	d3.selectAll(".nodes").style("opacity", 0.8)
+						d3.selectAll(".link").style("opacity", 0.2)
+
+						div.selectAll("p").remove()
+						div.style("opacity", 0);
+					});
+
+
+				dataClean.sort(function(a, b) {
+					return b.count - a.count;
+				});
+
+				let schlagwortFilter = 0
+
+				d3.select("#keywordListDiv").selectAll(".keywordList")
+					.data(dataClean.filter(function(D, I) {
+						return D.type == "keyword"
+					}))
+					.join("p").append("span")
+					.text(function(d) {
+						return d.name + " (" + d.count + ")"
+					})
+					.style("font-size", function(d) {
+						return fontsizescale(d.count) + "px"
+					})
+					.style("font-weight", "100")
+
+
+				let timelineScale = d3.scaleLinear()
+					.domain([0, 2019])
+					.range([0, 800]);
+
+				let timelineXScale = d3.scaleLinear()
+					.domain([0, 1500])
+					.range([0, 180])
+
+
+				let timelineVis = d3.select("#timelineSVG")
+
+				timelineVis.append("g").attr("class", "axisTime").call(d3.axisLeft(timelineScale)).attr("transform", "translate(" + 40 + "," + 20 + ")")
+
+
+				timelineVis.append("g").attr("transform", "translate(" + 40 + "," + 20 + ")")
+					.selectAll("rect")
+					.data(timeline.filter(function(d) {
+						return d != undefined
+					}))
+					.enter()
+					.append("rect")
+					.attr("x", function(d, i) {
+						return 0
+					})
+					.attr("y", function(d, i) {
+						if (d != undefined) {
+							return timelineScale(d.date)
+						}
+					})
+					.attr("height", 1)
+					.attr("width", function(d, i) {
+						if (d != undefined) {
+							return timelineXScale(d.count)
+						} else {
+							return 0
+						}
+					})
+					.style("fill", "white")
+
+				timelineVis.append("rect").attr("class", "yearIndicationc").style("fill", "#ff00e3").style("opacity", 0.3).attr("width", "200px").attr("height", timelineScale(selectedYear - 20) - timelineScale(selectedYear - 50)).attr("x", 0).attr("y",
+					timelineScale(selectedYear))
+				timelineVis.append("rect").attr("class", "yearIndicationb").style("fill", "#ffa459").style("opacity", 0.6).attr("width", "200px").attr("height", timelineScale(selectedYear) - timelineScale(selectedYear - 20)).attr("x", 0).attr("y",
+					timelineScale(selectedYear + 30))
+				timelineVis.append("rect").attr("class", "yearIndicationy").style("fill", "#00b3ea").style("opacity", 0.3).attr("width", "200px").attr("height", timelineScale(selectedYear + 50) - timelineScale(selectedYear + 20)).attr("x", 0).attr("y",
+					timelineScale(selectedYear + 70))
+				timelineVis.append("rect").attr("class", "yearIndicationz").style("fill", "#83d387").style("opacity", 0.6).attr("width", "200px").attr("height", timelineScale(selectedYear + 20) - timelineScale(selectedYear)).attr("x", 0).attr("y",
+					timelineScale(selectedYear + 50))
+				timelineVis.append("rect").attr("class", "yearIndication").style("fill", "yellow").attr("width", "200px").attr("height", "4px").attr("x", 0).attr("y", timelineScale(selectedYear + 50) - 2)
+
+
+
+
+
+			})
+	</script>
+
+
+</body>
+
+</html>

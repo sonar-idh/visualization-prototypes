@@ -32,7 +32,7 @@ The visualization concepts in SoNAR(IDH) were developed iteratively and included
 https://sonar.fh-potsdam.de/demos
 
 ### 02: Uncertainty in links as oscillated lines
-<img src="/img/03.jpg" width="150" heigth="150">
+<img src="/img/04.jpg" width="150" heigth="150">
 https://sonar.fh-potsdam.de/demos/
 
 ### 03: Simple use of a community cluster algorithm

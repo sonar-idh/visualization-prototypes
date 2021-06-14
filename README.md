@@ -92,7 +92,8 @@ The visualization concepts in SoNAR(IDH) were developed iteratively and included
 
 ### 08: Morph between a graph and a timeline
 <img src="/img/15.jpg" width="150" heigth="150">
-<a href="https://sonar.fh-potsdam.de/demos/userstudy/timeline-morph.html">[Demo]</a>[Code]
+<a href="https://sonar.fh-potsdam.de/demos/userstudy/timeline-morph.html">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/demo08">[Code]</a>
+
 
 ### 09: Radial graph layout to visualize shared resources
 <img src="/img/16.jpg" width="150" heigth="150">

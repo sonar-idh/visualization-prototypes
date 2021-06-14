@@ -1,0 +1,3034 @@
+<html>
+
+<head>
+  <title>SoNAR</title>
+  <meta charset="utf-8">
+  <script src="https://code.jquery.com/jquery-2.1.3.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+
+  <style>
+    :root {
+      --main-bg-color: rgb(29, 25, 24);
+    }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background-color: var(--main-bg-color);
+      color: white;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    ::-webkit-scrollbar {
+      width: 0px;
+      /* Remove scrollbar space */
+      background: transparent;
+      /* Optional: just make scrollbar invisible */
+    }
+
+    /* unvisited link */
+    a:link {
+      color: white;
+      text-decoration: underline;
+    }
+
+    /* visited link */
+    a:visited {
+      color: white;
+      text-decoration: underline;
+    }
+
+    /* mouse over link */
+    a:hover {
+      color: white;
+      text-decoration: none;
+    }
+
+    /* selected link */
+    a:active {
+      color: white;
+      text-decoration: underline;
+    }
+
+    h1 {
+      font-weight: 100;
+      font-size: 40px;
+      letter-spacing: 5px;
+      margin-top: 20px;
+      margin-bottom: 5px;
+    }
+
+    h2 {
+      font-weight: 100;
+      font-size: 20px;
+      letter-spacing: 5px;
+      margin-top: 0px;
+      margin-bottom: 5px;
+    }
+
+
+
+    #searchfield {
+      position: fixed;
+      z-index: 500;
+      width: 100%;
+      margin-top: 1em;
+      text-align: center;
+      pointer-events: none;
+    }
+
+
+    .cypher-in {
+      width: 200px;
+      pointer-events: all;
+    }
+
+    #search_category_select {
+      pointer-events: all;
+    }
+
+    #search_type_select {
+      pointer-events: all;
+    }
+
+    #cypher-in2 {
+      width: 500px;
+      pointer-events: all;
+      font-size: 11px;
+    }
+
+    form {
+      margin: 0 auto;
+    }
+
+    #searchbutton {
+      pointer-events: all;
+    }
+
+    #timelineDiv {
+      position: absolute;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      right: 10px;
+      top: 0px;
+      height: 100%;
+      text-align: right;
+    }
+
+    #timeHeadline {
+      position: absolute;
+      margin-top: 25px;
+      right: 10px;
+      top: 0px;
+      width: 200px;
+      text-align: center;
+    }
+
+    #timeHeadline h2 {
+      margin-bottom: 0;
+
+    }
+
+    #timeHeadline p {
+      margin: 0;
+      font-weight: 100;
+      font-size: 0.75em;
+      display: block;
+      margin-bottom: 0;
+    }
+
+    #timeHeadline span {
+      margin: 0;
+      font-weight: 100;
+      font-size: 0.75em;
+      margin-bottom: 0;
+    }
+
+    #timeHeadline form {
+      margin-bottom: 0.5em;
+    }
+
+    .timelineYears {
+      width: 40px;
+      font-size: 1em;
+      text-align: center;
+      background-color: var(--main-bg-color);
+      border-right: 0;
+      border-left: 0;
+      border-top: 0;
+      border-style: dotted;
+      color: white;
+      border-color: white;
+      font-family: monospace;
+    }
+
+    #keywordListDiv {
+      position: absolute;
+      top: 33%;
+      right: 230px;
+      width: 200px;
+      padding-right: 15px;
+      color: white;
+      text-align: right;
+      height: calc(33% - 20px);
+      overflow-y: scroll;
+    }
+
+    #geoListDiv {
+      position: absolute;
+      top: 66%;
+      margin-bottom: 100px;
+      padding-right: 15px;
+      right: 230px;
+      color: white;
+      text-align: right;
+      height: calc(33% - 20px);
+      overflow-y: scroll;
+    }
+
+    #perNameListDiv {
+      position: absolute;
+      top: 20px;
+      padding-right: 15px;
+      margin-top: 10px;
+      right: 230px;
+      color: white;
+      text-align: right;
+      height: calc(100% - 30px);
+      width: 210px;
+      overflow-y: scroll;
+    }
+
+    .filterListItem {
+      color: white;
+      margin: 0px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    #statsDiv {
+      position: absolute;
+      bottom: 20px;
+      padding-right: 15px;
+      left: 10px;
+      color: white;
+      text-align: left;
+      font-size: 12px;
+    }
+
+    #statsDiv p {
+      margin: 0;
+    }
+
+
+
+    .topicGeoNotDisplayed {
+      display: none;
+    }
+
+    #details {
+      background-color: rgba(50, 50, 50, 1);
+      margin: 0px;
+      font-size: 0.8em;
+      position: fixed;
+      overflow-y: auto;
+      top: 0;
+      left: 0;
+      width: 400px;
+      height: 100%;
+      display: none;
+      text-align: left;
+      padding: 20px;
+    }
+
+    #graph {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      cursor: move;
+    }
+
+    #overlay {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+    }
+
+    #closedetails {
+      position: fixed;
+      left: 390;
+      top: 0;
+      font-size: 30;
+      color: white;
+      cursor: pointer;
+      display: none;
+    }
+
+    .nodes {
+      cursor: pointer;
+    }
+
+    .detail_key {
+      font-weight: normal;
+      color: grey;
+      margin-bottom: 0;
+    }
+
+    .detail_value {
+      margin-top: 0;
+      font-weight: bold;
+      color: white;
+    }
+
+    .relations_value {
+      margin-top: 0;
+      margin-bottom: 5;
+      font-weight: bold;
+      font-size: 1em;
+      color: white;
+    }
+
+    .domain {
+      visibility: visible;
+    }
+
+    .filteredOut {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .filteredIn {
+      opacity: 1;
+    }
+
+    .timefilteredOut {
+      display: none;
+      pointer-events: none;
+    }
+
+    div.tooltip {
+      position: absolute;
+      text-align: left;
+      width: auto;
+      height: auto;
+      margin: 2;
+      padding: 2px;
+      font: 10px sans-serif;
+      background: white;
+      color: black;
+      border: 0px;
+      border-radius: 8px;
+      pointer-events: none;
+    }
+
+    div.tooltip p {
+      margin: 5px;
+      padding: 0;
+    }
+
+
+    #timelineReset {
+      cursor: pointer;
+    }
+
+    /* .timelineRes{
+      cursor:not-allowed;
+    }
+
+    #timebrushRStart{
+      cursor:not-allowed;
+    }
+
+    #timebrushREnd{
+      cursor:not-allowed;
+    } */
+
+    .filtrcross {
+      font-weight: bold;
+    }
+
+    /*
+     * === LOADING ICON===
+     */
+    #loadbg {
+      z-index: 700;
+      position: absolute;
+      background-color: var(--main-bg-color);
+      width: 100%;
+      height: 100%;
+      opacity: 0.6;
+      top: 0;
+      display: none;
+    }
+
+    #load {
+      position: absolute;
+      z-index: 700;
+      left: calc(50% - 30px);
+      top: calc(50% - 50px);
+      display: none;
+    }
+
+    .loader {
+      border: 20px solid rgb(91, 89, 89);
+      border-top: 20px solid white;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 2s linear 15;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .selcetion {
+      pointer-events: none !important;
+    }
+
+    .handle {
+      pointer-events: none !important;
+    }
+
+    .overlay {
+      pointer-events: none !important;
+    }
+  </style>
+
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+
+</head>
+
+<body>
+  <div id="searchfield">
+    <div id="messageArea"></div>
+    <!-- <form class="cypher-in">
+  <textarea name="cypher" rows="4" id="cypher-in2">MATCH (p:PerName) - [rel:RelationToPerName | RelationToResource | RelationToChroTerm | RelationToUniTitle] - (friends) - [rel2:RelationToPerName | RelationToResource | RelationToGeoName | RelationToTopicTerm | RelationToCorpName | RelationToUniTitle] - (friendsfriends), (p:PerName) - [rel3:RelationToTopicTerm | RelationToGeoName | RelationToCorpName | RelationToMeetName | RelationToUniTitle] - (other) WHERE (p.Id = "(DE-588)115568808") OR (p.Id = "(DE-588)116917423") OR (p.Id = "(DE-588)117185930") OR (p.Id = "(DE-588)118896202") OR (p.Id = "(DE-588)116764694") OR (p.Id = "(DE-588)118800000") OR (p.Id = "(DE-588)119133628")  RETURN DISTINCT*</textarea>
+    <br>
+  </form> -->
+    <select name="search_category" id="search_category_select">
+      <option value="GND-ID">GND-ID (Person)</option>
+      <option value="Schlagwort">Schlagwort</option>
+    </select>
+    <input type="text" id="suche" class="cypher-in" name="suche" value="(DE-588)118896202">
+    <select name="search_type" id="search_type_select">
+      <option value="simple">Einfach</option>
+      <option value="complex">Komplex</option>
+    </select>
+    <button name="post cypher" id="searchbutton" onclick="post_cypherquery('execute');">Ausführen</button>
+    <button name="post cypher" id="searchbutton" onclick="post_cypherquery('addByQuery');">Hinzufügen</button>
+  </div>
+
+
+  <svg id="overlay"></svg>
+  <svg id="graph"></svg>
+  <div id="statsDiv">
+  </div>
+
+
+  <div id="timelineDiv"><svg id="timelineSVG" width="200"> </svg></div>
+  <div id="timeHeadline">
+    <h2>Zeit-Filter</h2>
+    <form>
+      <p>Personen (links)</p><input class="timelineYears" id="timebrushPStart"><span>–</span><input class="timelineYears" id="timebrushPEnd">
+    </form>
+    <form>
+      <p>Beziehungen (rechts)</p><input class="timelineYears" id="timebrushRStart"><span>–</span><input class="timelineYears" id="timebrushREnd">
+    </form>
+    <p id="timelineReset">[RESET]</p>
+
+  </div>
+
+  <div id="perNameListDiv">
+    <form>
+      <select name="listDropdown" id="listDropdown" onchange="listDropdownChange()">
+        <option value="PerName">Personen</option>
+        <option value="CorpName">Körperschaften</option>
+        <option value="TopicTerm">Sachbegriffe</option>
+        <option value="MeetName">Konferenzen</option>
+        <option value="Resource">Ressourcen</option>
+        <option value="UniTitle">Werke</option>
+        <option value="GeoName">Geografika</option>
+        <option value="SourceType">Beziehungstypen</option>
+        <option value="TypeAddInfo">Beziehungs-Zusatzangaben</option>
+        <!-- <option value="TempValidity">Beziehungs-Zeitangaben</option> -->
+      </select>
+    </form>
+  </div>
+
+  <div id="details"></div>
+  <p id="closedetails">✕</p>
+
+
+  <div id="loadbg"></div>
+  <div id="load" class="loader"></div>
+
+
+
+  <script type="text/javascript">
+    const margin = 20;
+    let windowWidth = window.innerWidth - 2 * margin
+    let windowHeight = window.innerHeight - 2 * margin
+
+
+    let maxValueinLinks = 1
+    let maxValueinNodes = 1
+
+
+
+    //Container for the gradients
+    const defs = d3.select("#graph").append("defs");
+
+    //Filter for the outside glow
+    let filter = defs.append("filter")
+      .attr("id", "glow")
+      .attr("x", "-300%")
+      .attr("y", "-300%")
+      .attr("width", "600%")
+      .attr("height", "600%");
+    filter.append("feGaussianBlur")
+      .attr("stdDeviation", "4")
+      .attr("result", "coloredBlur");
+    let feMerge = filter.append("feMerge");
+    feMerge.append("feMergeNode")
+      .attr("in", "coloredBlur");
+    feMerge.append("feMergeNode")
+      .attr("in", "SourceGraphic");
+
+    let filter2 = defs.append("filter")
+      .attr("id", "glow2")
+      .attr("x", "-50%")
+      .attr("y", "-50%")
+      .attr("width", "300%")
+      .attr("height", "300%");
+    filter2.append("feGaussianBlur")
+      .attr("stdDeviation", "0.2")
+      .attr("result", "coloredBlur");
+    let feMerge2 = filter.append("feMerge");
+    feMerge2.append("feMergeNode")
+      .attr("in", "coloredBlur");
+    feMerge2.append("feMergeNode")
+      .attr("in", "SourceGraphic");
+
+    const neo4jLogin = 'sonar';
+    const neo4jPassword = 'sonar2021';
+
+    function setupNeo4jLoginForAjax(login, passwd) {
+      $.ajaxSetup({
+        contentType: 'application/json',
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('Authorization', 'Basic ' + btoa(login + ':' + passwd));
+        }
+      });
+    }
+
+    $(function() {
+      setupNeo4jLoginForAjax(neo4jLogin, neo4jPassword);
+
+    });
+
+    let nodes = [],
+      links = [];
+    let graph = {
+      nodes: nodes,
+      links: links
+    };
+
+    let linksClean = []
+
+    let timeline = []
+    let newNode = false
+    let queryCollection = []
+
+    if (window.location.hash) {
+      console.log(window.location.hash.split("#"))
+      let hashId = window.location.hash.split("#")[1]
+      d3.select(".cypher-in").attr("value", hashId)
+      post_cypherquery('execute')
+    }
+
+    function post_cypherquery(type, id) {
+
+      let cypherStatement
+      let cypherStatement2
+      let cypherStatement3
+      let cypherStatement4
+
+      let searchquery = $('#suche').val()
+
+
+
+      if (type == "execute" || type == "addByQuery") {
+        d3.select("#load").style("display", "block");
+        d3.select("#loadbg").style("display", "block");
+
+        queryCollection.push(searchquery)
+
+
+        if ($('#search_category_select').val() == "GND-ID") {
+
+          if (type == "execute") {
+            window.location.hash = "#" + searchquery
+          }
+          // cypherStatement = `MATCH (p:PerName {Id:'${searchquery}'}) WITH p
+          //                   MATCH (p)--(friends:PerName)-[r2]-(n:PerName)--(p)
+          //                   WHERE (ID(friends) > ID(n))
+          //                   RETURN DISTINCT*`
+          // `MATCH (p:PerName {Id:'${searchquery}'}) WITH p
+          //                   MATCH (p)-[rel:RelationToPerName|SocialRelation]-(friends:PerName)-[rel2:RelationToPerName|SocialRelation]-(n:PerName)-[rel3:RelationToPerName|SocialRelation]-(p)
+          //                   WHERE (ID(friends) > ID(n))
+          //                   RETURN DISTINCT* LIMIT 150000`
+          //
+
+          cypherStatement =
+            `MATCH (p:PerName) - [rel:RelationToPerName | RelationToCorpName | SocialRelation] - (friends) - [rel2:RelationToTopicTerm | RelationToGeoName | RelationToMeetName | RelationToUniTitle | RelationToCorpName ] - (friendsfriends)
+                            WHERE (p.Id = "${searchquery}" AND friends:PerName)
+                            RETURN DISTINCT*`
+
+          cypherStatement2 =
+            `MATCH (p:PerName) - [rel:RelationToTopicTerm | RelationToGeoName | RelationToCorpName | RelationToMeetName | RelationToUniTitle | SocialRelation | RelationToResource | RelationToPerName] - (friends)
+                                              WHERE (p.Id = "${searchquery}")
+                                              RETURN DISTINCT*`
+
+          cypherStatement3 =
+            `MATCH (p:PerName) - [rel:RelationToResource | RelationToPerName] - (friends)
+          - [rel2:RelationToPerName | RelationToResource] - (friendsfriends)
+                                                                WHERE (p.Id = "${searchquery}" )
+                                                                RETURN DISTINCT*`
+
+          if ($('#search_type_select').val() == "complex") {
+            cypherStatement4 =
+              `MATCH (p:PerName {Id:'${searchquery}'}) WITH p
+                             MATCH (p)--(friends:PerName)-[r2]-(n:PerName)--(p)
+                             WHERE (ID(friends) > ID(n))
+                             RETURN DISTINCT r2`
+          } else {
+            cypherStatement4 = ``
+          }
+        } else if ($('#search_category_select').val() == "Schlagwort") {
+
+
+
+          cypherStatement = `MATCH (t:TopicTerm) - [rel:RelationToPerName|RelationToResource|RelationToGeoName|RelationToTopicTerm|SocialRelation] - (friends) -  [rel2:RelationToTopicTerm | RelationToGeoName | RelationToCorpName | RelationToMeetName | RelationToUniTitle] - (friendsfriends)
+  WHERE (t.Name CONTAINS "${searchquery}" AND friends:PerName )
+  RETURN * `
+          //
+          // cypherStatement2 = `MATCH (t:TopicTerm) -- (r:Resource ) - [rel:RelationToPerName] - (p:PerName) - [rel2:RelationToPerName] - (p2:PerName) -- (t:TopicTerm)
+          //   WHERE (t.Name CONTAINS "${searchquery}")
+          //   RETURN * `
+          //
+
+          cypherStatement2 = `MATCH (t:TopicTerm)-[rel1]-(p:PerName)-[rel2]-(p2:PerName)--(t:TopicTerm)
+      WHERE (t.Name CONTAINS '${searchquery}') AND ID(p) > ID(p2)
+      RETURN *`
+
+          cypherStatement3 = `MATCH (t:TopicTerm)-[rel1]-(r:Resource)-[rel3:RelationToPerName]-(p:PerName)-[rel2]-(p2:PerName)--(r:Resource)
+        WHERE (t.Name CONTAINS '${searchquery}') AND ID(p) > ID(p2)
+        RETURN *`
+
+
+        }
+
+      } else {
+        queryCollection.push(id)
+
+        cypherStatement =
+          `MATCH (p:PerName) - [rel:RelationToPerName | RelationToCorpName | SocialRelation] - (friends) - [rel2:RelationToTopicTerm | RelationToGeoName | RelationToMeetName | RelationToUniTitle | RelationToCorpName] - (friendsfriends)
+                          WHERE (p.Id = "${id}" AND friends:PerName)
+                          RETURN DISTINCT* LIMIT 10000`
+
+        cypherStatement2 =
+          `MATCH (p:PerName) - [rel:RelationToTopicTerm | RelationToGeoName | RelationToCorpName | RelationToMeetName | RelationToUniTitle | SocialRelation | RelationToResource | RelationToPerName] - (friends)
+                                            WHERE (p.Id = "${id}")
+                                            RETURN DISTINCT* LIMIT 10000`
+
+        cypherStatement3 =
+          `MATCH (p:PerName) - [rel:RelationToResource | RelationToPerName] - (friends) - [rel2:RelationToPerName | RelationToResource] - (friendsfriends)
+                                                              WHERE (p.Id = "${id}" )
+                                                              RETURN DISTINCT* LIMIT 10000`
+
+        if ($('#search_type_select').val() == "complex") {
+          cypherStatement4 =
+            `MATCH (p:PerName {Id:'${searchquery}'}) WITH p
+                           MATCH (p)--(friends:PerName)-[r2]-(n:PerName)--(p)
+                           WHERE (ID(friends) > ID(n))
+                           RETURN DISTINCT r2`
+        } else {
+          cypherStatement4 = ``
+        }
+
+      }
+
+
+
+
+
+      $.ajax({
+          url: "https://h2918680.stratoserver.net:7473/db/data/transaction/commit",
+          type: 'POST',
+          data: JSON.stringify({
+            "statements": [{
+                "statement": cypherStatement,
+                "resultDataContents": ["graph"]
+              }, {
+                "statement": cypherStatement2,
+                "resultDataContents": ["graph"]
+              },
+              {
+                "statement": cypherStatement3,
+                "resultDataContents": ["graph"]
+              },
+              {
+                "statement": cypherStatement4,
+                "resultDataContents": ["graph"]
+              }
+            ],
+          }),
+          contentType: 'application/json',
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(neo4jLogin + ':' + neo4jPassword));
+          },
+          accept: 'application/json; charset=UTF-8'
+        }).done(function(data) {
+
+          console.log(data)
+
+
+          if (type == "execute") {
+            nodes = []
+            links = []
+            linksClean = []
+            graph = {
+              nodes: nodes,
+              links: links
+            };
+            timeline = []
+            newNode = false
+
+
+          } else {
+            newNode = true
+          }
+
+
+
+
+          data.results.forEach(function(statement) {
+            statement.data.forEach(function(row) {
+              row.graph.nodes.forEach(function(n) {
+                if (idIndex(nodes, n.id) == null) {
+
+                  if (n.labels[0] == "ChronTerm") {
+                    nodes.push({
+                      id: n.id,
+                      Id: n.properties.Id,
+                      Label: n.labels[0],
+                      Name: n.properties.Name,
+                      //EntityGenType:n.properties.EntityGenType,
+                      //EntitySpecType:n.properties.EntitySpecType,
+                      VariantName: n.properties.VariantName,
+                      connectivity: 0,
+                      connectivityPerCorp: 0,
+                      newState: newNode
+
+                    })
+                  } else if (n.labels[0] == "PerName" || n.labels[0] == "TopicTerm" || n.labels[0] == "CorpName" || n.labels[0] == "GeoName" || n.labels[0] == "MeetName" || n.labels[0] == "UniTitle") {
+
+                    nodes.push({
+                      Name: n.properties.Name,
+                      Title: n.properties.Title,
+                      VariantName: n.properties.VariantName,
+                      id: n.id,
+                      Id: n.properties.Id,
+                      n4jID: n.properties.id,
+                      Label: n.labels[0],
+                      GenType: n.properties.GenType,
+                      GenSubdiv: n.properties.GenSubdiv,
+                      SpecType: n.properties.SpecType,
+                      Genre: n.properties.Genre,
+                      SourcePath: n.properties.SourcePath,
+                      Medium: n.properties.Medium,
+                      SubUnit: n.properties.SubUnit,
+                      Gender: n.properties.Gender,
+                      Place: n.properties.Place,
+                      GeoArea: n.properties.GeoArea,
+                      Coordinates: n.properties.Coordinates,
+                      IdGeonames: n.properties.IdGeonames,
+                      Info: n.properties.Info,
+                      DateOriginal: n.properties.DateOriginal,
+                      DateApproxOriginal: n.properties.DateApproxOriginal,
+                      DateApproxBegin: n.properties.DateApproxBegin,
+                      DateApproxEnd: n.properties.DateApproxEnd,
+                      DateStrictBegin: n.properties.DateStrictBegin,
+                      DateStrictEnd: n.properties.DateStrictEnd,
+                      Uri: n.properties.Uri,
+                      connectivity: 0,
+                      connectivityPerCorp: 0,
+                      connectivityClean: 0,
+                      newState: newNode
+
+                    })
+
+                    let dateStart = n.properties.DateApproxBegin
+                    let dateEnd = n.properties.DateApproxEnd
+
+                    if (dateStart != null && dateEnd != null && n.labels[0] == "PerName") {
+                      for (x = Number(new Date(dateStart).getFullYear()); x <= Number(new Date(dateEnd).getFullYear()); x++) {
+                        if (timeline[x]) {
+                          timeline[x]["countPerson"]++
+                        } else {
+                          timeline[x] = {},
+                            timeline[x]["date"] = x,
+                            timeline[x]["countPerson"] = 1,
+                            timeline[x]["countResource"] = 0,
+                            timeline[x]["countEdge"] = 0
+
+                        }
+                      }
+                    }
+
+
+
+                  } else if (n.labels[0] == "Resource") {
+
+                    let dateStart = n.properties.DateApproxBegin
+                    let dateEnd = n.properties.DateApproxEnd
+                    let dateStartYear
+                    let dateEndYear
+
+                    //console.log(n.properties.Uri)
+
+                    if (dateStart !== undefined) {
+                      if (dateStart.length == 4) {
+                        dateStartYear = dateStart
+                      } else if (dateStart.indexOf("-") != -1) {
+                        dateStartYear = dateStart.split("-")[0]
+                      } else if (dateStart.length == 8) {
+                        dateStartYear = dateStart.slice(0, 4)
+                      } else if (dateStart.indexOf("[") != -1) {
+                        dateStartYear = dateStart.slice(1, 5)
+                      } else {
+                        dateStartYear = undefined
+                      }
+                    }
+
+                    if (dateEnd && dateEnd !== null) {
+                      if (dateEnd.length == 4) {
+                        dateEndYear = dateEnd
+                      } else if (dateEnd.indexOf("-") != -1) {
+                        dateEndYear = dateEnd.split("-")[0]
+                      } else if (dateEnd.length == 8) {
+                        dateEndYear = dateEnd.slice(0, 4)
+                      } else if (dateEnd.indexOf("[") != -1) {
+                        dateEndYear = dateEnd.slice(1, 5)
+                      } else {
+                        dateEndYear = undefined
+                      }
+                    }
+
+                    nodes.push({
+                      id: n.id,
+                      Id: n.properties.Id,
+                      n4jID: n.properties.id,
+                      Label: n.labels[0],
+                      Name: (n.properties.Title != null) ? n.properties.Title : n.properties.Name,
+                      VariantName: n.properties.VariantName,
+                      Genre: n.properties.Genre,
+                      Creator: n.properties.Creator,
+                      Lang: n.properties.Lang,
+                      GenType: n.properties.GenType,
+                      GenSubdiv: n.properties.GenSubdiv,
+                      SpecType: n.properties.SpecType,
+                      Genre: n.properties.Genre,
+                      SourcePath: n.properties.SourcePath,
+                      Medium: n.properties.Medium,
+                      SubUnit: n.properties.SubUnit,
+                      Gender: n.properties.Gender,
+                      Place: n.properties.Place,
+                      GeoArea: n.properties.GeoArea,
+                      Coordinates: n.properties.Coordinates,
+                      IdGeonames: n.properties.IdGeonames,
+                      Info: n.properties.Info,
+                      DateOriginal: n.properties.DateOriginal,
+                      DateApproxOriginal: n.properties.DateApproxOriginal,
+                      DateApproxBegin: n.properties.DateApproxBegin,
+                      DateApproxEnd: n.properties.DateApproxEnd,
+                      DateStrictBegin: n.properties.DateStrictBegin,
+                      DateStrictEnd: n.properties.DateStrictEnd,
+                      DateApproxBegin2: dateStartYear,
+                      DateApproxEnd2: dateEndYear,
+                      ResourcePublPlace: n.properties.ResourcePublPlace,
+                      Uri: n.properties.Uri,
+                      connectivity: 0,
+                      connectivityPerCorp: 0,
+                      newState: newNode
+                    })
+
+                    ////////////////////////
+
+
+
+
+
+
+                    if (dateStartYear != null && dateStartYear != undefined && dateEndYear != null && dateEndYear != undefined) {
+                      for (x = Number(new Date(dateStartYear).getFullYear()); x <= Number(new Date(dateEndYear).getFullYear()); x++) {
+                        if (timeline[x]) {
+                          timeline[x]["countResource"]++
+                        } else {
+                          timeline[x] = {},
+                            timeline[x]["date"] = x,
+                            timeline[x]["countPerson"] = 0,
+                            timeline[x]["countResource"] = 1,
+                            timeline[x]["countEdge"] = 0
+                        }
+                      }
+                    }
+                    //  console.log(timeline)
+
+                    ////////////////////////
+
+                  }
+
+
+                }
+
+
+              });
+              (row.graph.relationships.map(function(r) {
+                //wenn der Link noch nicht vorkommt, füge ihn hinzu
+                if ((links.filter(links => links.id === r.id)).length == 0) {
+                  //console.log(r.startNode)
+                  //console.log(r.properties.TempValidity)
+                  // console.log(idIndex(nodes, r.startNode))
+                  links.push({
+                    id: r.id,
+                    source: idIndex(nodes, r.startNode),
+                    target: idIndex(nodes, r.endNode),
+                    source_copy: idIndex(nodes, r.startNode),
+                    target_copy: idIndex(nodes, r.endNode),
+                    _source: nodes[idIndex(nodes, r.startNode)],
+                    _target: nodes[idIndex(nodes, r.endNode)],
+                    type: r.type,
+                    Source: r.properties.Source,
+                    SourceType: r.properties.SourceType,
+                    TempValidity: r.properties.TempValidity,
+                    TypeAddInfo: r.properties.TypeAddInfo,
+                    value: 1,
+                    newState: newNode
+                  })
+
+                  nodes.filter(function(q, p) {
+                    return q.id == r.startNode
+                  })[0].connectivity++
+                  nodes.filter(function(q, p) {
+                    return q.id == r.endNode
+                  })[0].connectivity++
+
+                }
+              }));
+            });
+          })
+
+
+          ///connectivity for Person/Corp only
+          graph.links.forEach(function(d, i) {
+            //console.log(nodes.filter(function(q, p) {return p == d._source.id}))
+
+            //  console.log(graph.nodes)
+            //  console.log(nodes.filter(function(q, p) {return p == d.source})[0].Label)
+            if (nodes.filter(function(q, p) {
+                return p == d.source_copy
+              })[0].Label != "GeoName" && nodes.filter(function(q, p) {
+                return p == d.target_copy
+              })[0].Label != "GeoName" &&
+              nodes.filter(function(q, p) {
+                return p == d.source_copy
+              })[0].Label != "TopicTerm" && nodes.filter(function(q, p) {
+                return p == d.target_copy
+              })[0].Label != "TopicTerm" &&
+              nodes.filter(function(q, p) {
+                return p == d.source_copy
+              })[0].Label != "IsilTerm" && nodes.filter(function(q, p) {
+                return p == d.target_copy
+              })[0].Label != "IsilTerm" &&
+              nodes.filter(function(q, p) {
+                return p == d.source_copy
+              })[0].Label != "Resource" && nodes.filter(function(q, p) {
+                return p == d.target_copy
+              })[0].Label != "Resource" &&
+              nodes.filter(function(q, p) {
+                return p == d.source_copy
+              })[0].Label != "ChronTerm" && nodes.filter(function(q, p) {
+                return p == d.target_copy
+              })[0].Label != "ChronTerm") {
+
+
+              ///connectivityclean (rechnet beidseitige Kanten doppelt)
+              nodes.filter(function(q, p) {
+                return p == d.source_copy
+              })[0].connectivityPerCorp++
+              nodes.filter(function(q, p) {
+                return p == d.target_copy
+              })[0].connectivityPerCorp++
+
+            }
+          })
+
+          //start linksclean
+          ///connectivity for Person/Corp only
+          graph.links.forEach(function(d, i) {
+
+            //  console.log(graph.nodes)
+            //  console.log(nodes.filter(function(q, p) {return p == d.source})[0].Label)
+            if (nodes.filter(function(q, p) {
+                return p == d.source
+              })[0].Label != "GeoName" && nodes.filter(function(q, p) {
+                return p == d.target
+              })[0].Label != "GeoName" &&
+              nodes.filter(function(q, p) {
+                return p == d.source
+              })[0].Label != "TopicTerm" && nodes.filter(function(q, p) {
+                return p == d.target
+              })[0].Label != "TopicTerm" &&
+              nodes.filter(function(q, p) {
+                return p == d.source
+              })[0].Label != "IsilTerm" && nodes.filter(function(q, p) {
+                return p == d.target
+              })[0].Label != "IsilTerm" &&
+              nodes.filter(function(q, p) {
+                return p == d.source
+              })[0].Label != "Resource" && nodes.filter(function(q, p) {
+                return p == d.target
+              })[0].Label != "Resource" &&
+              nodes.filter(function(q, p) {
+                return p == d.source
+              })[0].Label != "Resource" && nodes.filter(function(q, p) {
+                return p == d.target
+              })[0].Label != "MeetName" &&
+              nodes.filter(function(q, p) {
+                return p == d.source
+              })[0].Label != "Resource" && nodes.filter(function(q, p) {
+                return p == d.target
+              })[0].Label != "UniTitle" &&
+              nodes.filter(function(q, p) {
+                return p == d.source
+              })[0].Label != "ChronTerm" && nodes.filter(function(q, p) {
+                return p == d.target
+              })[0].Label != "ChronTerm") {
+
+              nodes.filter(function(q, p) {
+                return p == d.source
+              })[0].connectivityPerCorp++
+              nodes.filter(function(q, p) {
+                return p == d.target
+              })[0].connectivityPerCorp++
+
+            }
+          })
+
+          //console.log(graph.nodes)
+
+          let personNodes = []
+
+          graph.links.forEach(function(d, i) {
+            if (d._source.Label == "PerName" && d._target.Label == "PerName" ||
+              d._source.Label == "PerName" && d._target.Label == "CorpName" ||
+              d._source.Label == "CoprName" && d._target.Label == "PerName" ||
+              d._source.Label == "CoprName" && d._target.Label == "CorpName"
+            ) {
+              if (linksClean.filter(function(D) {
+                  return D.source_copy == d.source_copy && D.target_copy == d.target_copy || D.source_copy == d.target_copy && D.target_copy == d.source_copy
+                }).length == 0) {
+
+                linksClean.push({
+                  source: d.source,
+                  target: d.target,
+                  _source: d._source,
+                  _target: d._target,
+                  source_copy: d.source_copy,
+                  target_copy: d.target_copy,
+                  // Source:  d.Source,
+                  //  SourceType: d.SourceType,
+                  // TempValidity: d.TempValidity,
+                  // TypeAddInfo: d.TypeAddInfo,
+                  value: 1
+                })
+
+
+
+                linksClean.filter(function(D) {
+                  return D.source_copy == d.source_copy && D.target_copy == d.target_copy || D.source_copy == d.target_copy && D.target_copy == d.source_copy
+                })[0]["children"] = []
+
+                let originDateApproxBegin = (graph.nodes.filter(function(x) {
+                  return x.n4jID == d.Source
+                })[0] != undefined) ? graph.nodes.filter(function(x) {
+                  return x.n4jID == d.Source
+                })[0].DateApproxBegin2 : undefined
+                let originDateApproxEnd = (graph.nodes.filter(function(x) {
+                  return x.n4jID == d.Source
+                })[0] != undefined) ? graph.nodes.filter(function(x) {
+                  return x.n4jID == d.Source
+                })[0].DateApproxEnd2 : undefined
+                let TempValidityBegin = undefined
+                let TempValidityEnd = undefined
+
+                if (d.TempValidity != undefined && d.TempValidity.length == 4) {
+                  TempValidityBegin = d.TempValidity
+                } else if (d.TempValidity != undefined && d.TempValidity.indexOf("-") != -1 && d.TempValidity.length == 9) {
+                  TempValidityBegin = d.TempValidity.split("-")[0]
+                  TempValidityEnd = d.TempValidity.split("-")[1]
+                }
+
+                let linkDateDateApproxBegin = (TempValidityBegin != undefined) ? TempValidityBegin : originDateApproxBegin
+                let linkDateDateApproxEnd = (TempValidityBegin != undefined) ? TempValidityEnd : originDateApproxEnd
+
+
+                //timeline stuff start
+                if (linkDateDateApproxBegin != undefined && linkDateDateApproxEnd != undefined) {
+                  for (x = Number(new Date(linkDateDateApproxBegin).getFullYear()); x <= Number(new Date(linkDateDateApproxEnd).getFullYear()); x++) {
+                    if (timeline[x]) {
+                      timeline[x]["countEdge"]++
+                    } else {
+                      timeline[x] = {},
+                        timeline[x]["date"] = x,
+                        timeline[x]["countPerson"] = 0,
+                        timeline[x]["countResource"] = 0,
+                        timeline[x]["countEdge"] = 1
+                    }
+                  }
+                } else if (linkDateDateApproxBegin != undefined) {
+                  x = Number(new Date(linkDateDateApproxBegin).getFullYear())
+                  if (timeline[x]) {
+                    timeline[x]["countEdge"]++
+                  } else {
+                    timeline[x] = {},
+                      timeline[x]["date"] = x,
+                      timeline[x]["countPerson"] = 0,
+                      timeline[x]["countResource"] = 0,
+                      timeline[x]["countEdge"] = 1
+                  }
+                }
+                //timeline stuff ende
+
+
+                linksClean.filter(function(D) {
+                  return D.source_copy == d.source_copy && D.target_copy == d.target_copy || D.source_copy == d.target_copy && D.target_copy == d.source_copy
+                })[0]["children"].push({
+                  source: d.source,
+                  target: d.target,
+                  _source: d._source,
+                  _target: d._target,
+                  source_copy: d.source_copy,
+                  target_copy: d.target_copy,
+                  Source: d.Source,
+                  SourceType: d.SourceType,
+                  TempValidity: d.TempValidity,
+                  TypeAddInfo: d.TypeAddInfo,
+                  origin: (graph.nodes.filter(function(x) {
+                    return x.n4jID == d.Source
+                  })[0] != undefined) ? graph.nodes.filter(function(x) {
+                    return x.n4jID == d.Source
+                  })[0].Name : undefined,
+                  originUri: (graph.nodes.filter(function(x) {
+                    return x.n4jID == d.Source
+                  })[0] != undefined) ? graph.nodes.filter(function(x) {
+                    return x.n4jID == d.Source
+                  })[0].Uri : undefined,
+                  originId: (graph.nodes.filter(function(x) {
+                    return x.n4jID == d.Source
+                  })[0] != undefined) ? graph.nodes.filter(function(x) {
+                    return x.n4jID == d.Source
+                  })[0].Id : undefined,
+                  originType: originType((graph.nodes.filter(function(x) {
+                      return x.n4jID == d.Source
+                    })[0] != undefined) ? graph.nodes.filter(function(x) {
+                      return x.n4jID == d.Source
+                    })[0].Uri : undefined,
+                    (graph.nodes.filter(function(x) {
+                      return x.n4jID == d.Source
+                    })[0] != undefined) ? graph.nodes.filter(function(x) {
+                      return x.n4jID == d.Source
+                    })[0].Id : undefined),
+                  //        originDateApproxBegin: (graph.nodes.filter(function(x){return x.n4jID == d.Source})[0] != undefined) ? graph.nodes.filter(function(x){return x.n4jID == d.Source})[0].DateApproxBegin2 : undefined,
+                  //          originDateApproxEnd: (graph.nodes.filter(function(x){return x.n4jID == d.Source})[0] != undefined) ? graph.nodes.filter(function(x){return x.n4jID == d.Source})[0].DateApproxEnd2 : undefined,
+                  linkDateDateApproxBegin: linkDateDateApproxBegin,
+                  linkDateDateApproxEnd: linkDateDateApproxEnd,
+
+                  //      origin_DateApprox
+                  value: 1
+                })
+
+
+
+
+                function originType(uri, id) {
+                  if (id != undefined) {
+                    if (id.includes("(DE-101)") || id.includes("DE_101")) {
+                      return "DNB"
+                    } else if (id.includes("DE-599") || id.includes("DE_599")) {
+                      return "SBB"
+                    } else if (id.includes("DE-611") || id.includes("DE_611")) {
+                      return "KPE"
+                    }
+
+                  } else if (uri != undefined && uri.includes("kall")) {
+                    return "KPE"
+                  } else {
+                    return "GND"
+                  }
+                }
+
+
+
+
+
+
+
+                //  console.log( (graph.nodes.filter(function(x){return x.n4jID == d.Source})[0] != undefined) ? graph.nodes.filter(function(x){return x.n4jID == d.Source})[0].Uri : undefined).includes()
+
+
+                nodes.filter(function(q, p) {
+                  return p == d.source_copy
+                })[0].connectivityClean++
+                nodes.filter(function(q, p) {
+                  return p == d.target_copy
+                })[0].connectivityClean++
+
+
+              } else {
+                if (linksClean.filter(function(D) {
+                    return D.source_copy == d.source_copy && D.target_copy == d.target_copy || D.source_copy == d.target_copy && D.target_copy == d.source_copy
+                  })[0]["children"]
+                  .filter(function(x, y) {
+                    return x.Source == d.Source && x.SourceType == d.SourceType && x.TypeAddInfo == d.TypeAddInfo && x.TempValidity == d.TempValidity
+                  }).length == 0) {
+
+                  linksClean.filter(function(D) {
+                    return D.source_copy == d.source_copy && D.target_copy == d.target_copy || D.source_copy == d.target_copy && D.target_copy == d.source_copy
+                  })[0].value++
+
+
+                  let originDateApproxBegin = (graph.nodes.filter(function(x) {
+                    return x.n4jID == d.Source
+                  })[0] != undefined) ? graph.nodes.filter(function(x) {
+                    return x.n4jID == d.Source
+                  })[0].DateApproxBegin2 : undefined
+                  let originDateApproxEnd = (graph.nodes.filter(function(x) {
+                    return x.n4jID == d.Source
+                  })[0] != undefined) ? graph.nodes.filter(function(x) {
+                    return x.n4jID == d.Source
+                  })[0].DateApproxEnd2 : undefined
+                  let TempValidityBegin = undefined
+                  let TempValidityEnd = undefined
+
+                  if (d.TempValidity != undefined && d.TempValidity.length == 4) {
+                    TempValidityBegin = d.TempValidity
+                  } else if (d.TempValidity != undefined && d.TempValidity.indexOf("-") != -1 && d.TempValidity.length == 9) {
+                    TempValidityBegin = d.TempValidity.split("-")[0]
+                    TempValidityEnd = d.TempValidity.split("-")[1]
+                  }
+
+                  let linkDateDateApproxBegin = (TempValidityBegin != undefined) ? TempValidityBegin : originDateApproxBegin
+                  let linkDateDateApproxEnd = (TempValidityBegin != undefined) ? TempValidityEnd : originDateApproxEnd
+
+                  //timeline stuff start
+                  if (linkDateDateApproxBegin != undefined && linkDateDateApproxEnd != undefined) {
+                    for (x = Number(new Date(linkDateDateApproxBegin).getFullYear()); x <= Number(new Date(linkDateDateApproxEnd).getFullYear()); x++) {
+                      if (timeline[x]) {
+                        timeline[x]["countEdge"]++
+                      } else {
+                        timeline[x] = {},
+                          timeline[x]["date"] = x,
+                          timeline[x]["countPerson"] = 0,
+                          timeline[x]["countResource"] = 0,
+                          timeline[x]["countEdge"] = 1
+                      }
+                    }
+                  } else if (linkDateDateApproxBegin != undefined) {
+                    x = Number(new Date(linkDateDateApproxBegin).getFullYear())
+                    if (timeline[x]) {
+                      timeline[x]["countEdge"]++
+                    } else {
+                      timeline[x] = {},
+                        timeline[x]["date"] = x,
+                        timeline[x]["countPerson"] = 0,
+                        timeline[x]["countResource"] = 0,
+                        timeline[x]["countEdge"] = 1
+                    }
+                  }
+                  //timeline stuff ende
+
+                  linksClean.filter(function(D) {
+                    return D.source_copy == d.source_copy && D.target_copy == d.target_copy || D.source_copy == d.target_copy && D.target_copy == d.source_copy
+                  })[0]["children"].push({
+                    source: d.source,
+                    target: d.target,
+                    _source: d._source,
+                    _target: d._target,
+                    source_copy: d.source_copy,
+                    target_copy: d.target_copy,
+                    Source: d.Source,
+                    SourceType: d.SourceType,
+                    TempValidity: d.TempValidity,
+                    TypeAddInfo: d.TypeAddInfo,
+                    origin: (graph.nodes.filter(function(x) {
+                      return x.n4jID == d.Source
+                    })[0] != undefined) ? graph.nodes.filter(function(x) {
+                      return x.n4jID == d.Source
+                    })[0].Name : undefined,
+                    originUri: (graph.nodes.filter(function(x) {
+                      return x.n4jID == d.Source
+                    })[0] != undefined) ? graph.nodes.filter(function(x) {
+                      return x.n4jID == d.Source
+                    })[0].Uri : undefined,
+                    originId: (graph.nodes.filter(function(x) {
+                      return x.n4jID == d.Source
+                    })[0] != undefined) ? graph.nodes.filter(function(x) {
+                      return x.n4jID == d.Source
+                    })[0].Id : undefined,
+                    originType: originType((graph.nodes.filter(function(x) {
+                        return x.n4jID == d.Source
+                      })[0] != undefined) ? graph.nodes.filter(function(x) {
+                        return x.n4jID == d.Source
+                      })[0].Uri : undefined,
+                      (graph.nodes.filter(function(x) {
+                        return x.n4jID == d.Source
+                      })[0] != undefined) ? graph.nodes.filter(function(x) {
+                        return x.n4jID == d.Source
+                      })[0].Id : undefined),
+                    //      originDateApproxBegin: (graph.nodes.filter(function(x){return x.n4jID == d.Source})[0] != undefined) ? graph.nodes.filter(function(x){return x.n4jID == d.Source})[0].DateApproxBegin2 : undefined,
+                    //        originDateApproxEnd: (graph.nodes.filter(function(x){return x.n4jID == d.Source})[0] != undefined) ? graph.nodes.filter(function(x){return x.n4jID == d.Source})[0].DateApproxEnd2 : undefined,
+                    linkDateDateApproxBegin: linkDateDateApproxBegin,
+                    linkDateDateApproxEnd: linkDateDateApproxEnd,
+                    value: 1
+                  })
+                }
+
+
+
+
+                function originType(uri, id) {
+                  if (id != undefined) {
+                    if (id.includes("(DE-101)") || id.includes("DE_101")) {
+                      return "DNB"
+                    } else if (id.includes("DE-599") || id.includes("DE_599")) {
+                      return "SBB"
+                    } else if (id.includes("DE-611") || id.includes("DE_611")) {
+                      return "KPE"
+                    }
+
+                  } else if (uri != undefined && uri.includes("kall")) {
+                    return "KPE"
+                  } else {
+                    return "GND"
+                  }
+                }
+
+              }
+
+
+
+
+
+            }
+
+          })
+
+          //ende linksclean
+
+          console.log(linksClean)
+
+          console.log(graph.nodes)
+
+          console.log(graph.links)
+          if (type == "execute") {
+            renderNetwork()
+          } else {
+            //updateNetwork()
+            renderNetwork()
+          }
+
+
+          //      console.log(timeline)
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+          $('#messageArea').html('<h3>' + textStatus + ' : ' + errorThrown + '</h3>')
+        });
+    };
+
+
+    var tooltip = d3.select("body").append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0)
+      .append("p");
+
+    maxValueinNodes = Math.max(...graph.nodes.filter(function(d) {
+      return d.Label == "PerName" || d.Label == "CorpName"
+    }).map(o => o.connectivityClean), 0) //Math.max
+
+
+    let nodeSize = d3.scaleSqrt()
+      .domain([0, maxValueinNodes])
+      .range([3, 15]);
+
+    const edgeColors = d3.scaleOrdinal()
+      .domain(["KPE", "GND", "SBB", "DNB", "computed"])
+      .range(["#e6c815", "#d2397d", "rgb(123, 236, 161)", "#e26e35", "white"])
+    //  .range(["orange", "rgb(167, 211, 231)", "rgb(123, 236, 161)", "yellow", "white"])
+
+
+
+    let edgeNoScale = d3.scaleLinear()
+      .domain([1, maxValueinLinks])
+      .range(["rgb(112, 112, 112)", "white"])
+
+    let edgeNoScaleWidth = d3.scaleLinear()
+      .domain([1, maxValueinLinks])
+      .range([0.75, 7])
+
+
+    let detailview = false;
+
+
+
+
+    const color = d3.scaleOrdinal()
+      .domain(["PerName", "CorpName", "MeetName", "UniTitle", "TopicTerm", "GeoName", "Resource", "ChronTerm"])
+      .range(["white", "grey", "rgb(218, 218, 218)", "rgb(218, 218, 218)", "rgb(218, 218, 218)", "rgb(218, 218, 218)", "rgb(218, 218, 218)", "rgb(218, 218, 218)"]);
+
+    const temporalColor = d3.scaleLinear()
+      .domain([1780, 2000])
+      .range(["blue", "white"])
+
+    const overlay = d3.select("#overlay")
+
+    const svg = d3.select("#graph")
+      .attr("preserveAspectRatio", "xMidYMid")
+      .attr("viewBox", "0 0 " + windowWidth + " " + windowHeight)
+      .call(d3.zoom()
+        .scaleExtent([1 / 4, 3])
+        .on("zoom", zoomed))
+      .on("dblclick.zoom", null);
+
+    let svgG = svg.append("g").attr("class", "svgG")
+
+    function zoomed() {
+      svgG.attr("transform", d3.event.transform);
+    }
+
+
+    function listDropdownChange() {
+      let type = $('#listDropdown').val()
+
+      if (type != "SourceType" && type != "TypeAddInfo" && type != "TempValidity") {
+
+
+        d3.select("#perNameListDiv")
+          .selectAll("p")
+          .data(graph.nodes.filter(function(d, i) {
+            return d.Label == type
+          }).sort(function(a, b) {
+            return d3.descending(a.connectivityClean ? a.connectivityClean : a.connectivity, b.connectivityClean ? b.connectivityClean : b.connectivity)
+          }))
+          .join("p")
+          .classed("filterListItem", true)
+          .text(function(d, i) {
+            if (d.Label == "PerName" || d.Label == "CorpName") {
+              return d.Name + " (" + d.connectivityClean + ")"
+            } else {
+              return d.Name + " (" + d.connectivity + ")"
+            }
+          })
+          .on("click", function(d, i) {
+            d3.select("#details").style("display", "none").selectAll("p").remove()
+            d3.selectAll(".filterCross").remove()
+
+            detailview = true;
+
+            d3.select(this).append("span").text("✕").attr("class", "filterCross").on("click", function(d, i) {
+              d3.event.stopPropagation()
+              d3.select("#details").style("display", "none").selectAll("p").remove()
+              detailview = false;
+              mouseOut(d, i)
+            })
+
+            mouseClick(d, i)
+          })
+      } else if (type == "SourceType") {
+
+        let linkSourceTypeCount = d3.nest()
+          .key(function(d) {
+            return d.SourceType;
+          })
+          .rollup(function(v) {
+            return v.length;
+          })
+          .entries(links.filter(function(d) {
+            return d._source.Label == "PerName" && d._target.Label == "PerName" || d.type == "SocialRelation" ||
+              d._source.Label == "PerName" && d._target.Label == "CorpName" ||
+              d._source.Label == "CorpName" && d._target.Label == "PerName" ||
+              d._source.Label == "CorpName" && d._target.Label == "CorpName"
+          }));
+
+
+        d3.select("#perNameListDiv")
+          .selectAll("p")
+          .data(linkSourceTypeCount.sort((a, b) => d3.descending(a.value, b.value)).filter(function(d) {
+            return d.key != "undefined"
+          }))
+          .join("p")
+          .classed("filterListItem", true)
+          .classed("linklistentry", true)
+          .text(function(d, i) {
+            return d.key + " (" + d.value + ")"
+          })
+          .on("click", function(d, i) {
+            d3.select("#details").style("display", "none").selectAll("p").remove()
+            d3.selectAll(".filterCross").remove()
+            detailview = false;
+
+            mouseOut()
+
+            d3.selectAll(".link").filter(function(D, I) {
+                return D.children.filter(function(x) {
+                  return x.SourceType === d.key
+                }).length < 1
+              })
+              .style("opacity", 0)
+
+            d3.select(this).append("span").text("✕").attr("class", "filterCross").on("click", function(d, i) {
+              d3.event.stopPropagation()
+              d3.select("#details").style("display", "none").selectAll("p").remove()
+              detailview = false;
+              mouseOut(d, i)
+            })
+
+            let connectedNodes = []
+
+            d3.selectAll(".link").filter(function(D, I) {
+                return D.children.filter(function(x) {
+                  return x.SourceType === d.key
+                }).length > 0
+              })
+              .style("opacity", 1)
+              .each(function(D, I) {
+                if (connectedNodes.filter(function(x) {
+                    return x == D._source.id
+                  }).length == 0) {
+                  connectedNodes.push(
+                    D._source.id
+                  )
+                }
+                if (connectedNodes.filter(function(x) {
+                    return x == D._target.id
+                  }).length == 0) {
+                  connectedNodes.push(
+                    D._target.id
+                  )
+                }
+              })
+
+            d3.selectAll(".nodes").classed("filteredIn", false).classed("filteredOut", true)
+
+            d3.selectAll(".nodes")
+              .filter(function(E, G) {
+                return connectedNodes.filter(function(d) {
+                  return d == E.id
+                }).length > 0
+              }).classed("filteredIn", true).classed("filteredOut", false)
+
+          })
+
+        ///ende mausclick
+
+      } else if (type == "TypeAddInfo") {
+        let linkTypeAddInfoCount = d3.nest()
+          .key(function(d) {
+            return d.TypeAddInfo;
+          })
+          .rollup(function(v) {
+            return v.length;
+          })
+          .entries(links.filter(function(d) {
+            return d._source.Label == "PerName" && d._target.Label == "PerName" || d.type == "SocialRelation" ||
+              d._source.Label == "PerName" && d._target.Label == "CorpName" ||
+              d._source.Label == "CorpName" && d._target.Label == "PerName" ||
+              d._source.Label == "CorpName" && d._target.Label == "CorpName"
+          }));
+
+
+        d3.select("#perNameListDiv")
+          .selectAll("p")
+          .data(linkTypeAddInfoCount.sort((a, b) => d3.descending(a.value, b.value)).filter(function(d) {
+            return d.key != "undefined"
+          }))
+          .join("p")
+          .classed("filterListItem", true)
+          .classed("linklistentry", true)
+          .text(function(d, i) {
+            return d.key + " (" + d.value + ")"
+          })
+          .on("click", function(d, i) {
+            d3.select("#details").style("display", "none").selectAll("p").remove()
+            d3.selectAll(".filterCross").remove()
+            detailview = false;
+
+            mouseOut()
+
+
+            d3.selectAll(".link").filter(function(D, I) {
+                return D.children.filter(function(x) {
+                  return x.TypeAddInfo === d.key
+                }).length < 1
+              })
+              .style("opacity", 0)
+
+            d3.select(this).append("span").text("✕").attr("class", "filterCross").on("click", function(d, i) {
+              d3.event.stopPropagation()
+              d3.select("#details").style("display", "none").selectAll("p").remove()
+              detailview = false;
+              mouseOut(d, i)
+            })
+
+            let connectedNodes = []
+
+            d3.selectAll(".link").filter(function(D, I) {
+                return D.children.filter(function(x) {
+                  return x.TypeAddInfo === d.key
+                }).length > 0
+              })
+              .style("opacity", 1)
+              .each(function(D, I) {
+                if (connectedNodes.filter(function(x) {
+                    return x == D._source.id
+                  }).length == 0) {
+                  connectedNodes.push(
+                    D._source.id
+                  )
+                }
+                if (connectedNodes.filter(function(x) {
+                    return x == D._target.id
+                  }).length == 0) {
+                  connectedNodes.push(
+                    D._target.id
+                  )
+                }
+              })
+
+            d3.selectAll(".nodes").classed("filteredIn", false).classed("filteredOut", true)
+
+            d3.selectAll(".nodes")
+              .filter(function(E, G) {
+                return connectedNodes.filter(function(d) {
+                  return d == E.id
+                }).length > 0
+              }).classed("filteredIn", true).classed("filteredOut", false)
+
+          })
+
+        ///ende mausclick
+
+      } else {
+
+        let linkTempValidityCount = d3.nest()
+          .key(function(d) {
+            return d.TempValidity;
+          })
+          .rollup(function(v) {
+            return v.length;
+          })
+          .entries(links);
+
+
+        d3.select("#perNameListDiv")
+          .selectAll("p")
+          .data(linkTempValidityCount.sort((a, b) => d3.descending(a.value, b.value)))
+          .join("p")
+          .classed("filterListItem", true)
+          .classed("linklistentry", true)
+          .text(function(d, i) {
+            return d.key + " (" + d.value + ")"
+          })
+          .on("click", function(d, i) {
+            d3.select("#details").style("display", "none").selectAll("p").remove()
+            d3.selectAll(".filterCross").remove()
+            detailview = false;
+
+            mouseOut()
+
+
+            d3.selectAll(".link").filter(function(D, I) {
+                return D.children.filter(function(x) {
+                  return x.TempValidity === d.key
+                }).length < 1
+              })
+              .style("opacity", 0)
+
+            d3.select(this).append("span").text("✕").attr("class", "filterCross").on("click", function(d, i) {
+              d3.event.stopPropagation()
+              d3.select("#details").style("display", "none").selectAll("p").remove()
+              detailview = false;
+              mouseOut(d, i)
+            })
+
+            let connectedNodes = []
+
+            d3.selectAll(".link").filter(function(D, I) {
+                return D.children.filter(function(x) {
+                  return x.TempValidity === d.key
+                }).length > 0
+              })
+              .style("opacity", 1)
+              .each(function(D, I) {
+                if (connectedNodes.filter(function(x) {
+                    return x == D._source.id
+                  }).length == 0) {
+                  connectedNodes.push(
+                    D._source.id
+                  )
+                }
+                if (connectedNodes.filter(function(x) {
+                    return x == D._target.id
+                  }).length == 0) {
+                  connectedNodes.push(
+                    D._target.id
+                  )
+                }
+              })
+
+            d3.selectAll(".nodes").classed("filteredIn", false).classed("filteredOut", true)
+
+            d3.selectAll(".nodes")
+              .filter(function(E, G) {
+                return connectedNodes.filter(function(d) {
+                  return d == E.id
+                }).length > 0
+              }).classed("filteredIn", true).classed("filteredOut", false)
+
+          })
+
+        ///ende mausclick
+
+
+
+      }
+
+
+
+    }
+
+
+    function statsUpdate() {
+      ///statistics start
+      d3.select("#statsDiv").selectAll("p").remove()
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "Personen: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "PerName"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", color("PerName"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "männlich " + graph.nodes.filter(function(d, i) {
+            return d.Label == "PerName" && d.Gender == "1"
+          }).length
+        })
+        .style("color", color("PerName"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "weiblich: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "PerName" && d.Gender == "2"
+          }).length
+        })
+        .style("color", color("PerName"))
+        .classed("topicterm", true)
+
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "n/a: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "PerName" && d.Gender != "1" && d.Gender != "2" && d.Gender != "3"
+          }).length
+        })
+        .style("color", color("PerName"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("br")
+
+
+
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "Körperschaften: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "CorpName"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", color("CorpName"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("br")
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "Konferenzen: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "MeetName"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", color("MeetName"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "Werke: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "UniTitle"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", color("UniTitle"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "Sachbegriffe: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "TopicTerm"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", color("TopicTerm"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "Geografika: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "GeoName"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", color("GeoName"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "Ressourcen: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "Resource"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", color("Resource"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("br")
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "GND Relationen: " + graph.links.filter(function(d, i) {
+            return d.Source == "GND"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", edgeColors("GND"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "Kalliope Relationen: " + graph.links.filter(function(d, i) {
+            return d.Source == "KPE"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", edgeColors("KPE"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "DNB Relationen: " + graph.links.filter(function(d, i) {
+            return d.Source == "DNB"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", edgeColors("DNB"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "SBB Relationen: " + graph.links.filter(function(d, i) {
+            return d.Source == "SBB"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", edgeColors("SBB"))
+
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "Zusätzlich abgeleitete Relationen: " + graph.links.filter(function(d, i) {
+            return d.type == "SocialRelation"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", edgeColors("computed"))
+        .classed("topicterm", true)
+
+    }
+
+
+    let simulation = d3.forceSimulation()
+      .force("link", d3.forceLink().id(function(d, i) {
+          return i;
+        })
+        //    .strength(function(d,i){return 1/ Math.min(d.source.connectivityPerCorp,d.target.connectivityPerCorp)})
+        // .strength(function(d, i) {
+        //   if (d.source.connectivityPerCorp && d.target.connectivityPerCorp) {
+        //     return 1/ Math.min(d.source.connectivityPerCorp,d.target.connectivityPerCorp)
+        //   } else {
+        //     return 0
+        //   }
+        // })
+        //  .strength(function(d,i){return d.value})
+      )
+      .force("charge", d3.forceManyBody().strength(function(d, i) {
+        if (d.Label == "GeoName" || d.Label == "TopicTerm" || d.Label == "IsilTerm" || d.Label == "Resource") {
+          return 0
+        } else {
+          return -30
+        }
+      }))
+      .force('collision', d3.forceCollide().radius(function(d, i) {
+        if (d.Label == "GeoName" || d.Label == "TopicTerm" || d.Label == "IsilTerm" || d.Label == "Resource") {
+          return 0
+        } else {
+          return nodeSize(d.connectivityClean) + 2
+        }
+      }))
+      .force("center", d3.forceCenter(windowWidth / 2, windowHeight / 2));
+
+
+    let link = svgG.append("g").attr("class", "linkG")
+    let node = svgG.append("g").attr("class", "nodeG")
+    // let labels = svgG.append("g").attr("class", "labelG")
+
+
+
+
+
+
+    function renderNetwork() {
+
+      let nodeLabelCount = d3.nest()
+        .key(function(d) {
+          return d.Label;
+        })
+        .rollup(function(v) {
+          return v.length;
+        })
+        .entries(nodes);
+
+      let linkSourceCount = d3.nest()
+        .key(function(d) {
+          return d.Source;
+        })
+        .rollup(function(v) {
+          return v.length;
+        })
+        .entries(links);
+
+
+
+      let linkTypeAddInfoCount = d3.nest()
+        .key(function(d) {
+          return d.TypeAddInfo;
+        })
+        .rollup(function(v) {
+          return v.length;
+        })
+        .entries(links);
+
+
+      // console.log(nodeLabelCount)
+      // console.log(linkSourceCount)
+      // console.log(linkSourceTypeCount)
+      // console.log(linkTypeAddInfoCount)
+
+
+      detailview = false;
+
+
+      maxValueinNodes = Math.max(...graph.nodes.filter(function(d) {
+        return d.Label == "PerName" || d.Label == "CorpName"
+      }).map(o => o.connectivityClean), 0) //Math.max
+
+
+      nodeSize = d3.scaleSqrt()
+        .domain([0, maxValueinNodes])
+        .range([3, 15]);
+
+      //  d3.selectAll("svg").selectAll("g").remove()
+
+      // d3.select("#keywordListDiv").selectAll("p").remove()
+      // d3.select("#geoListDiv").selectAll("p").remove()
+      // d3.select("#perNameListDiv").selectAll("p").remove()
+      d3.select("#timelineSVG").selectAll("g").remove()
+
+
+      listDropdownChange()
+      statsUpdate()
+
+      simulation.alpha(1).restart();
+
+
+
+      simulation
+        .nodes(graph.nodes)
+        .on("tick", ticked);
+
+      simulation
+        .force("link")
+        .links(linksClean);
+
+
+
+
+
+
+      maxValueinLinks = Math.max(...linksClean.map(o => o.value), 0)
+      //console.log(maxValueinLinks)
+
+      let edgeNoScale = d3.scaleLinear()
+        .domain([1, maxValueinLinks])
+        .range(["rgb(112, 112, 112)", "white"])
+
+      let edgeNoScaleWidth = d3.scaleLinear()
+        .domain([1, maxValueinLinks])
+        .range([0.75, 7])
+
+
+      console.log(linksClean)
+
+      link.selectAll(".link")
+        .data(linksClean)
+        .join("path")
+        .style("fill", "none")
+        .attr("class", "link")
+        .style("stroke", function(d, i) {
+          return edgeNoScale(d.value)
+        })
+        .style("stroke-width", function(d, i) {
+          return edgeNoScaleWidth(d.value)
+        })
+        .style("opacity", 1)
+        .style("cursor", "pointer")
+        .on("click", function(d, i) {
+          edgeClick(d, i)
+
+          d3.select(this).transition().style("opacity", 0)
+          d3.selectAll(".link").transition().style("opacity", 0.1)
+          d3.selectAll(".nodes").filter(function(D) {
+            return D.id != d._source.id || D.id != d._target.id
+          }).transition().style("opacity", 0.3)
+          d3.selectAll(".nodes").filter(function(D) {
+            return D.id == d._source.id || D.id == d._target.id
+          }).transition().style("opacity", 1)
+
+          d3.select(".linkG").selectAll(".linkChild")
+            .data(d.children)
+            .join("path")
+            .style("fill", "none")
+            .attr("stroke-width", 1)
+            .attr("class", "linkChild")
+            .style("stroke-dasharray", function(D, I) {
+              if (D.originType == "GND") {
+                return null
+              } else {
+                return "4 1"
+              }
+            })
+            .style("stroke", function(D, I) {
+              return edgeColors(D.originType)
+
+            })
+            .attr("d", function(D, I) {
+              //  console.log(I)
+              let x1 = d.source.x
+              let y1 = d.source.y
+              let x2 = d.target.x
+              let y2 = d.target.y
+              let a = Math.hypot(x2 - x1, y2 - y1)
+              let b = 1
+              let c = Math.sqrt(Math.pow((a / 2), 2) + Math.pow(b, 2))
+              let x3 = calculate_third_point(x1, y1, x2, y2, a, c, 0, false).Bx
+              let y3 = calculate_third_point(x1, y1, x2, y2, a, c, 0, false).By
+
+              //  console.log(dr)
+              return "M" + d.source.x + " " + d.source.y +
+                " C " + x3 + " " + y3 + " " +
+                x3 + " " + y3 + " " +
+                d.target.x + " " + d.target.y
+              //      return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+            })
+            .transition()
+            .duration(800)
+            .attr("d", function(D, I) {
+              //  console.log(I)
+              let x1 = d.source.x
+              let y1 = d.source.y
+              let x2 = d.target.x
+              let y2 = d.target.y
+              let a = Math.hypot(x2 - x1, y2 - y1)
+              let b = I * 10
+              let c = Math.sqrt(Math.pow((a / 2), 2) + Math.pow(b, 2))
+              let x3 = calculate_third_point(x1, y1, x2, y2, a, c, I * 2, false).Bx
+              let y3 = calculate_third_point(x1, y1, x2, y2, a, c, I * 2, false).By
+
+              //  console.log(dr)
+              return "M" + d.source.x + " " + d.source.y +
+                " C " + x3 + " " + y3 + " " +
+                x3 + " " + y3 + " " +
+                d.target.x + " " + d.target.y
+              //      return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+            })
+
+          //    console.log(d.children)
+        })
+      //		.style("pointer-events", "none")
+
+
+      //https://stackoverflow.com/questions/53277245/javascript-function-to-find-third-point-of-triangle-when-all-sides-angles-and-f
+      function calculate_third_point(Ax, Ay, Cx, Cy, b, c, A, alt) {
+
+        var Bx;
+        var By;
+        alt = typeof alt === 'undefined' ? false : alt;
+
+        //unit vector
+        uACx = (Cx - Ax) / b;
+        uACy = (Cy - Ay) / b;
+
+        if (alt) {
+
+          //rotated vector
+          uABx = uACx * Math.cos(toRadians(A)) - uACy * Math.sin(toRadians(A));
+          uABy = uACx * Math.sin(toRadians(A)) + uACy * Math.cos(toRadians(A));
+
+          //B position uses length of edge
+          Bx = Ax + c * uABx;
+          By = Ay + c * uABy;
+        } else {
+          //vector rotated into another direction
+          uABx = uACx * Math.cos(toRadians(A)) + uACy * Math.sin(toRadians(A));
+          uABy = -uACx * Math.sin(toRadians(A)) + uACy * Math.cos(toRadians(A));
+
+          //second possible position
+          Bx = Ax + c * uABx;
+          By = Ay + c * uABy;
+        }
+
+        return {
+          Bx: Bx,
+          By: By
+        };
+      }
+
+      function toRadians(angle) {
+        return angle * (Math.PI / 180);
+      }
+
+
+
+      node.selectAll("ellipse")
+        .data(graph.nodes.filter(function(d) {
+          return d.Label != "GeoName" && d.Label != "TopicTerm" &&
+            d.Label != "IsilTerm" && d.Label != "Resource" && d.Label != "ChronTerm" &&
+            d.Label != "UniTitle" && d.Label != "MeetName"
+          //& d.connectivity > 1
+        }))
+        .join("ellipse")
+        .attr("class", "nodes")
+        .style("fill", function(d, i) {
+          if (($('#search_category_select').val() == "GND-ID") && d.Id == $('#suche').val()) {
+            return "white"
+          } else if (d.Label == "PerName") {
+            return color(d.Label)
+          } else {
+            return color(d.Label)
+          }
+
+        })
+        .style("stroke", function(d, i) {
+          if (d.newState == true) {
+            return "rgb(10, 3, 36)"
+          } else {
+            return "rgb(10, 3, 36)"
+          }
+        })
+        .style("stroke-width", function(d, i) {
+          if (d.newState == true) {
+            return 0.5
+          } else {
+            return 0.5
+          }
+        })
+        .attr("rx", function(d, i) {
+          return nodeSize(d.connectivityClean)
+        })
+        .attr("ry", function(d, i) {
+          return nodeSize(d.connectivityClean)
+        })
+        .style("filter", function(d, i) {
+          if (queryCollection.filter(function(D) {
+              return D == d.Id
+            }).length > 0) {
+            return "url(#glow)"
+          } else {
+            return null
+          }
+        })
+        //
+        // .on("mouseover", function(d, i) {
+        //   if (detailview == false) {
+        //     mouseClick(d, i)
+        //   }
+        // })
+        .on("click", function(d, i) {
+
+          detailview = true;
+          mouseClick(d, i)
+        })
+        // .on("mouseout", function(d, i) {
+        //   mouseOut(d, i)
+        // })
+        .on("mousemove", function(d, i) {
+          d3.select(".tooltip").select("p")
+            .text(function() {
+              return d.Name + " (" + d.DateApproxBegin + "–" + d.DateApproxEnd + ")"
+            })
+            .style("font-weight", "bold")
+
+          d3.select(".tooltip")
+            .style("opacity", .9)
+            .style("left", (d3.event.pageX + 5) + "px")
+            .style("top", (d3.event.pageY - 5) + "px");
+        })
+        .on("mouseout", function(d, i) {
+          d3.select(".tooltip").select("p")
+            .text(null)
+
+          d3.select(".tooltip")
+            .style("opacity", 0)
+            .style("left", (d3.event.pageX + 5) + "px")
+            .style("top", (d3.event.pageY - 5) + "px");
+        })
+        .filter(function(d, i) {
+          return d.Label == "PerName"
+        })
+        .on("dblclick", function(d, i) {
+          d3.select("#load").style("display", "block");
+          d3.select("#loadbg").style("display", "block");
+          d3.select("#details").style("display", "none").selectAll("p").remove()
+          detailview = false;
+          mouseOut(d, i)
+
+          post_cypherquery("addByNode", d.Id)
+        })
+
+
+
+
+
+      d3.selectAll("#closedetails")
+        .on("click", function(d, i) {
+          d3.select("#details").style("display", "none").selectAll("p").remove()
+          detailview = false;
+          mouseOut(d, i)
+        })
+
+
+
+
+      ////////////timeline start
+
+      //get all keys (years) of timeline array and transform the strings to numbers. use that for a flexible scale
+      //  console.log(timeline.filter(function(d){return d.countPerson != 0 || d.countEdge != 0})[0].date)
+      let timelinelengthHelper = timeline.filter(function(d) {
+        return d.countPerson != 0 || d.countEdge != 0
+      }).length
+      let timelineStartEndWithoutRessources = [timeline.filter(function(d) {
+        return d.countPerson != 0 || d.countEdge != 0
+      })[0].date, timeline.filter(function(d) {
+        return d.countPerson != 0 || d.countEdge != 0
+      })[timelinelengthHelper - 1].date]
+      //console.log(timelineStartEndWithoutRessources)
+
+
+      let timelineYears = Object.keys(timeline).map(Number)
+      let timelineCountArray = []
+      let timelineCountResourceArray = []
+      let timelineCountEdgeseArray = []
+
+
+
+      //create array of all count-numbers of the years to use that for the max year count for a flexible scale
+      timeline.forEach(function(d, i) {
+        timelineCountArray.push(d.countPerson)
+        timelineCountResourceArray.push(d.countResource)
+        timelineCountEdgeseArray.push(d.countEdge)
+      })
+
+      let timelineMaxCount = d3.max(timelineCountArray)
+      let timelineMaxResourceCount = d3.max(timelineCountResourceArray)
+      let timelineMaxEdgesCount = d3.max(timelineCountEdgeseArray)
+
+
+
+
+      let timelineMarginTop = 145
+
+      let timelineScale = d3.scaleLinear()
+        .domain(d3.extent(timelineStartEndWithoutRessources))
+        .range([0, windowHeight - timelineMarginTop]);
+
+
+
+
+      let timelineXScale = d3.scaleLinear()
+        .domain([0, timelineMaxCount])
+        .range([0, 75])
+
+      d3.selectAll("#timebrushPStart, #timebrushRStart").property("value", timelineStartEndWithoutRessources[0])
+      d3.selectAll("#timebrushPEnd, #timebrushREnd").property("value", timelineStartEndWithoutRessources[1])
+
+      let timelineXScaleResources = d3.scaleLinear()
+        .domain([0, timelineMaxCount]) //timelineMaxResourceCount])
+        .range([0, 75])
+
+      let timelineXScaleEdges = d3.scaleLinear()
+        .domain([0, timelineMaxCount]) //timelineMaxResourceCount])
+        .range([0, 75])
+
+
+      let brushPerson = d3.brushY()
+        .extent([
+          [-150, 0],
+          [-40, windowHeight - timelineMarginTop]
+        ])
+      // .on("end", function brushended(d, i, j) {
+      //
+      //   let category = "PerName"
+      //   let interaction = "brush"
+      //   timeSelection(category, interaction)
+
+      //  })
+
+      const brushResource = d3.brushY()
+        .extent([
+          [40, 0],
+          [115, windowHeight]
+        ])
+      //  .on("brush", brushed)
+      // .on("end", function brushended(d, i, j) {
+      //   let category = "Resource"
+      //   let interaction = "brush"
+      //   reset = false
+      //   timeSelectionEdge(category, interaction)
+      // })
+
+      d3.selectAll("#timebrushRStart, #timebrushREnd").on("change", function() {
+
+        let category = "Resource"
+        let interaction = "input"
+        reset = false
+        timeSelectionEdge(category, interaction)
+      })
+
+      d3.selectAll("#timebrushPStart, #timebrushPEnd").on("change", function() {
+        let category = "PerName"
+        let interaction = "input"
+        reset = false
+        timeSelection(category, interaction)
+      })
+
+      d3.selectAll("#timelineReset").on("click", function() {
+        let category = "Reset"
+        let interaction = "input"
+        reset = true
+        timeReset(category, interaction)
+      })
+
+      // console.log(d3.extent(timelineYears.filter(function(d){console.log(d)
+      //   return d.countPerson != 0 || d.countEdge != 0 })))
+
+      let brushPStart = d3.extent(timelineStartEndWithoutRessources)[0]
+      let brushPEnd = d3.extent(timelineStartEndWithoutRessources)[1]
+      let brushRStart = d3.extent(timelineStartEndWithoutRessources)[0]
+      let brushREnd = d3.extent(timelineStartEndWithoutRessources)[1]
+      let reset = false
+
+      function timeReset() {
+        d3.selectAll(".link").classed("timefilteredOut", false)
+        d3.selectAll(".nodes").classed("timefilteredOut", false)
+
+
+        brushPStart = d3.extent(timelineStartEndWithoutRessources)[0]
+        brushPEnd = d3.extent(timelineStartEndWithoutRessources)[1]
+        brushRStart = d3.extent(timelineStartEndWithoutRessources)[0]
+        brushREnd = d3.extent(timelineStartEndWithoutRessources)[1]
+
+        d3.selectAll("#timebrushRStart").property("value", brushRStart)
+        d3.selectAll("#timebrushREnd").property("value", brushREnd)
+        d3.selectAll("#timebrushPStart").property("value", brushPStart)
+        d3.selectAll("#timebrushPEnd").property("value", brushPEnd)
+        d3.select(".timelinePer").call(brushPerson.move, null);
+        d3.select(".timelineRes").call(brushResource.move, null);
+      }
+
+      function timeSelection(category, interaction) {
+
+
+        if (d3.event.selection === null && interaction == "brush") {
+          if (category == "PerName") {
+            reset = true
+            brushPStart = d3.extent(timelineStartEndWithoutRessources)[0]
+            brushPEnd = d3.extent(timelineStartEndWithoutRessources)[1]
+          } else if (category == "Resource") {
+
+            brushRStart = d3.extent(timelineStartEndWithoutRessources)[0]
+            brushREnd = d3.extent(timelineStartEndWithoutRessources)[1]
+          }
+
+          d3.selectAll(".link").classed("timefilteredOut", false)
+          d3.selectAll(".nodes").classed("timefilteredOut", false)
+
+
+        } else {
+          reset = false
+          if (interaction == "brush") {
+            if (category == "PerName") {
+              brushPStart = Math.round(timelineScale.invert(d3.event.selection[0]))
+              brushPEnd = Math.round(timelineScale.invert(d3.event.selection[1]))
+              brushRStart = d3.extent(timelineStartEndWithoutRessources)[0]
+              brushREnd = d3.extent(timelineStartEndWithoutRessources)[1]
+              d3.select(".timelineRes").call(brushResource.move, null);
+            } else if (category == "Resource") {
+              brushRStart = Math.round(timelineScale.invert(d3.event.selection[0]))
+              brushREnd = Math.round(timelineScale.invert(d3.event.selection[1]))
+              brushPStart = d3.extent(timelineStartEndWithoutRessources)[0]
+              brushPEnd = d3.extent(timelineStartEndWithoutRessources)[1]
+              d3.select(".timelinePer").call(brushPerson.move, null);
+            }
+
+
+
+
+          } else if (interaction == "input") {
+            if (category == "PerName") {
+              brushPStart = d3.selectAll("#timebrushPStart").property("value")
+              brushPEnd = d3.selectAll("#timebrushPEnd").property("value")
+              brushRStart = d3.extent(timelineStartEndWithoutRessources)[0]
+              brushREnd = d3.extent(timelineStartEndWithoutRessources)[1]
+              d3.select(".timelinePer").call(brushPerson.move, [timelineScale(brushPStart), timelineScale(brushPEnd)]);
+              d3.select(".timelineRes").call(brushResource.move, null);
+
+            } else if (category == "Resource") {
+              brushRStart = d3.selectAll("#timebrushRStart").property("value")
+              brushREnd = d3.selectAll("#timebrushREnd").property("value")
+              brushPStart = d3.extent(timelineStartEndWithoutRessources)[0]
+              brushPEnd = d3.extent(timelineStartEndWithoutRessources)[1]
+              d3.select(".timelineRes").call(brushResource.move, [timelineScale(brushRStart), timelineScale(brushREnd)]);
+              d3.select(".timelinePer").call(brushPerson.move, null);
+            }
+
+
+          }
+
+          d3.selectAll("#timebrushRStart").property("value", brushRStart)
+          d3.selectAll("#timebrushREnd").property("value", brushREnd)
+          d3.selectAll("#timebrushPStart").property("value", brushPStart)
+          d3.selectAll("#timebrushPEnd").property("value", brushPEnd)
+        }
+
+
+
+        if (reset == false) {
+
+          let connectedNodes = []
+
+          d3.selectAll(".link").classed("timefilteredOut", true)
+
+          d3.selectAll(".nodes")
+            .classed("timefilteredOut", true)
+            .filter(function(d, i) {
+              return d.Label == category
+            })
+            .filter(function(d, i) {
+              if (category == "PerName") {
+                console.log(brushPStart + " / " + brushPEnd)
+                return (d.DateApproxBegin <= brushPStart && d.DateApproxBegin >= brushPEnd) ||
+                  (d.DateApproxBegin >= brushPStart && d.DateApproxBegin <= brushPEnd) ||
+                  (d.DateApproxBegin <= brushPStart && d.DateApproxEnd >= brushPStart)
+              } else {
+                return d.Label == "Resource" &&
+                  (d.DateApproxBegin2 >= brushRStart && d.DateApproxBegin2 <= brushREnd)
+              }
+            })
+            .classed("timefilteredOut", false)
+            .each(function(D, I) {
+
+              connectedNodes.push(
+                D.id)
+
+            })
+
+          d3.selectAll(".link")
+            .filter(function(E, G) {
+              return connectedNodes.filter(function(d) {
+                return d == E._source.id
+              }).length > 0 && connectedNodes.filter(function(d) {
+                return d == E._target.id
+              }).length > 0
+            })
+            .classed("timefilteredOut", false)
+
+
+
+        } else if (reset == true) {
+
+
+          brushPStart = d3.extent(timelineStartEndWithoutRessources)[0]
+          brushPEnd = d3.extent(timelineStartEndWithoutRessources)[1]
+          brushRStart = d3.extent(timelineStartEndWithoutRessources)[0]
+          brushREnd = d3.extent(timelineStartEndWithoutRessources)[1]
+
+          d3.selectAll("#timebrushRStart").property("value", brushRStart)
+          d3.selectAll("#timebrushREnd").property("value", brushREnd)
+          d3.selectAll("#timebrushPStart").property("value", brushPStart)
+          d3.selectAll("#timebrushPEnd").property("value", brushPEnd)
+
+          d3.selectAll(".nodes")
+            .classed("timefilteredOut", false)
+
+          //console.log("test")
+
+          d3.selectAll(".link").classed("timefilteredOut", false)
+
+
+        }
+
+      }
+
+
+      function timeSelectionEdge(category, interaction) {
+
+
+        if (d3.event.selection === null && interaction == "brush") {
+          if (category == "Resource") {
+            reset = true
+            brushRStart = d3.extent(timelineStartEndWithoutRessources)[0]
+            brushREnd = d3.extent(timelineStartEndWithoutRessources)[1]
+          }
+
+          d3.selectAll(".link").classed("timefilteredOut", false)
+          d3.selectAll(".nodes").classed("timefilteredOut", false)
+
+
+        } else {
+          reset = false
+          if (interaction == "brush") {
+            if (category == "Resource") {
+              brushRStart = Math.round(timelineScale.invert(d3.event.selection[0]))
+              brushREnd = Math.round(timelineScale.invert(d3.event.selection[1]))
+              // brushPStart = d3.extent(timelineStartEndWithoutRessources)[0]
+              // brushPEnd = d3.extent(timelineStartEndWithoutRessources)[1]
+              // d3.select(".timelinePer").call(brushPerson.move, null);
+            }
+
+
+          } else if (interaction == "input") {
+            if (category == "Resource") {
+              brushRStart = d3.selectAll("#timebrushRStart").property("value")
+              brushREnd = d3.selectAll("#timebrushREnd").property("value")
+              brushPStart = d3.extent(timelineStartEndWithoutRessources)[0]
+              brushPEnd = d3.extent(timelineStartEndWithoutRessources)[1]
+              d3.select(".timelineRes").call(brushResource.move, [timelineScale(brushRStart), timelineScale(brushREnd)]);
+              d3.select(".timelinePer").call(brushPerson.move, null);
+            }
+
+          }
+
+          d3.selectAll("#timebrushRStart").property("value", brushRStart)
+          d3.selectAll("#timebrushREnd").property("value", brushREnd)
+          d3.selectAll("#timebrushPStart").property("value", brushPStart)
+          d3.selectAll("#timebrushPEnd").property("value", brushPEnd)
+        }
+
+
+
+        if (reset == false) {
+
+          let connectedNodes = []
+
+          d3.selectAll(".link")
+            .classed("timefilteredOut", true)
+            .filter(function(d, i) {
+              return d.children.filter(function(x) {
+                return (x.linkDateDateApproxBegin <= brushRStart && x.linkDateDateApproxBegin >= brushREnd) ||
+                  (x.linkDateDateApproxBegin >= brushRStart && x.linkDateDateApproxBegin <= brushREnd) ||
+                  (x.linkDateDateApproxBegin <= brushRStart && x.linkDateDateApproxEnd >= brushRStart)
+              }).length > 0
+            })
+            .classed("timefilteredOut", false)
+            .each(function(D, I) {
+              if (connectedNodes.filter(function(x) {
+                  return x == D._source.id
+                }).length == 0) {
+                connectedNodes.push(
+                  D._source.id
+                )
+              }
+              if (connectedNodes.filter(function(x) {
+                  return x == D._target.id
+                }).length == 0) {
+                connectedNodes.push(
+                  D._target.id
+                )
+              }
+            })
+
+          d3.selectAll(".nodes").classed("timefilteredOut", true)
+            .filter(function(E, G) {
+              return connectedNodes.filter(function(d) {
+                return d == E.id
+              }).length > 0
+            })
+            .classed("timefilteredOut", false)
+
+
+
+
+        } else if (reset == true) {
+
+
+          brushPStart = d3.extent(timelineStartEndWithoutRessources)[0]
+          brushPEnd = d3.extent(timelineStartEndWithoutRessources)[1]
+          brushRStart = d3.extent(timelineStartEndWithoutRessources)[0]
+          brushREnd = d3.extent(timelineStartEndWithoutRessources)[1]
+
+          d3.selectAll("#timebrushRStart").property("value", brushRStart)
+          d3.selectAll("#timebrushREnd").property("value", brushREnd)
+          d3.selectAll("#timebrushPStart").property("value", brushPStart)
+          d3.selectAll("#timebrushPEnd").property("value", brushPEnd)
+
+          d3.selectAll(".nodes")
+            .classed("timefilteredOut", false)
+
+          //console.log("test")
+
+          d3.selectAll(".link").classed("timefilteredOut", false)
+
+
+        }
+
+      }
+
+
+
+
+
+      let timelineVis = d3.select("#timelineSVG").style("height", windowHeight)
+
+
+      timelineVis.append("g").attr("class", "axisTime").classed("timelineRes", true).call(d3.axisRight(timelineScale).ticks(30).tickFormat("")).attr("transform", "translate(" + 75 + "," + timelineMarginTop + ")").call(brushResource)
+      timelineVis.append("g").attr("class", "axisTime").classed("timelinePer", true).call(d3.axisLeft(timelineScale).ticks(30).tickFormat(d3.format("d"))).attr("transform", "translate(" + 115 + "," + timelineMarginTop + ")").call(brushPerson)
+
+
+      // const gb = svg.append("g")
+      //
+      //   .call(brush.move, defaultSelection);
+
+
+
+      timelineVis.append("g").attr("transform", "translate(" + 75 + "," + timelineMarginTop + ")")
+        .selectAll("rect")
+        .data(timeline.filter(function(d) {
+          return d != undefined
+        }))
+        .join("rect")
+        .style("pointer-events", "none")
+        .attr("x", function(d, i) {
+          if (d != undefined) {
+            return -timelineXScale(d.countPerson)
+          } else {
+            return 0
+          }
+        })
+        .attr("y", function(d, i) {
+          if (d != undefined) {
+            return timelineScale(d.date)
+          }
+        })
+        .attr("height", 1)
+        .attr("width", function(d, i) {
+          if (d != undefined) {
+            return timelineXScale(d.countPerson)
+          } else {
+            return 0
+          }
+        })
+        .style("fill", color("PerName"))
+
+
+
+      timelineVis.append("g").attr("transform", "translate(" + 116 + "," + timelineMarginTop + ")")
+        .selectAll("rect")
+        .data(timeline.filter(function(d) {
+          return d != undefined
+        }))
+        .join("rect")
+        .style("pointer-events", "none")
+        .attr("x", function(d, i) {
+          return 0
+        })
+        .attr("y", function(d, i) {
+          if (d != undefined) {
+            return timelineScale(d.date)
+          }
+        })
+        .attr("height", 1)
+        .attr("width", function(d, i) {
+          if (d != undefined) {
+            return timelineXScaleResources(d.countEdge)
+          } else {
+            return 0
+          }
+        })
+        .style("fill", "white")
+
+
+
+
+
+
+      ////////////timeline end
+
+
+
+
+
+    }
+
+
+
+    function ticked() {
+      if (simulation.alpha() < 0.05) {
+        simulation.stop()
+
+        d3.select("#load").style("display", "none");
+        d3.select("#loadbg").style("display", "none");
+
+
+        d3.selectAll(".link")
+          .attr("d", function(d) {
+            var dr = 10000 /// d.linknum;
+            return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+          })
+
+
+        d3.selectAll(".nodes")
+          .attr("cx", function(d) {
+            return d.x;
+          })
+          .attr("cy", function(d) {
+            return d.y;
+          });
+
+      }
+    }
+
+
+    function edgeClick(D, I) {
+      d3.select("#details").style("display", "none").selectAll("p").remove()
+      d3.select("#details").style("display", "none").selectAll("a").remove()
+      d3.select("#closedetails").style("display", "block")
+      d3.select("#details").style("display", "block")
+
+      d3.select("#details").append("p").attr("class", "detail_key").text("Beziehung:")
+      d3.select("#details").append("p").attr("class", "detail_value").style("margin-bottom", 0).text(D._source.Name).on("click", function() {
+
+        detailview = true;
+        mouseClick(D._source)
+      })
+      d3.select("#details").append("p").attr("class", "detail_value").text(D._target.Name).on("click", function() {
+
+        detailview = true;
+        mouseClick(D._target)
+      })
+
+      d3.select("#details").append("p").attr("class", "relationsheadline, detail_key").text("Beziehungsquellen" + " (" + D.children.length + ")")
+
+      D.children.sort(function(a, b) {
+          return d3.ascending(a.linkDateDateApproxBegin, b.linkDateDateApproxBegin || d3.ascending(a.originType, b.originType))
+        })
+        .forEach(function(connection, i) {
+          d3.select("#details").append("a").attr("href", connection.originUri).attr("target", "_blank").attr("class", "detail_value, relations_value").append("p")
+            .style("color", edgeColors(connection.originType))
+            .text(function() {
+              console.log(connection)
+              return nodes.filter(function(n) {
+                return n.Id == connection.originId
+              })[0] ? nodes.filter(function(n) {
+                return n.Id == connection.originId
+              })[0].Name : "GND Relation: " + connection._source.Name + " → " + connection._target.Name
+
+            })
+            .append("span")
+            .style("margin-left", "4px")
+            .style("color", "white")
+            .style("font-weight", "300")
+            .text(function() {
+              return "(" + connection.originType + ", " + connection.SourceType +
+                ", " + connection.TypeAddInfo
+                //+ ", " + connection.TempValidity
+                +
+                (connection.linkDateDateApproxBegin != undefined ? (", " + connection.linkDateDateApproxBegin) : "") +
+                ((connection.linkDateDateApproxEnd != undefined) ? ("–" + connection.linkDateDateApproxEnd + ")") : ")")
+            })
+
+        })
+
+    }
+
+
+
+    function mouseClick(D, I) {
+      d3.select("#details").style("display", "none").selectAll("p").remove()
+      d3.select("#details").style("display", "none").selectAll("a").remove()
+      d3.select("#closedetails").style("display", "block")
+      d3.selectAll(".nodes").classed("filteredIn", false).classed("filteredOut", true)
+      d3.selectAll(".linkChild").remove()
+      d3.selectAll(".link").style("opacity", null)
+      d3.selectAll(".nodes").style("opacity", null)
+
+
+      let connections = linksClean.filter(function(E, G) {
+        return E._source.id == D.id ||
+          E._target.id == D.id
+      })
+
+
+      let allConnections = links.filter(function(E, G) {
+        return E._source.id == D.id ||
+          E._target.id == D.id
+      })
+
+
+      let connectedNodes = []
+
+
+
+      allConnections.forEach(function(E, G) {
+        d3.selectAll(".nodes").filter(function(X, Y) {
+            return X.id == E._source.id || X.id == E._target.id
+          }).classed("filteredIn", true).classed("filteredOut", false)
+          .each(function(X, Y) {
+            connectedNodes.push(
+              X.id
+            )
+          })
+
+
+        d3.selectAll(".nodes")
+          .filter(function(d, i) {
+            return D.id == d.id
+          }).classed("filteredIn", true).classed("filteredOut", false)
+
+
+      })
+
+
+
+
+      d3.selectAll(".link").style("opacity", 0)
+
+      d3.selectAll(".link")
+
+        .filter(function(E, G) {
+          return connectedNodes.filter(function(d) {
+            return d == E._source.id
+          }).length > 0 && connectedNodes.filter(function(d) {
+            return d == E._target.id
+          }).length > 0
+        })
+        .style("opacity", 1)
+
+
+
+      d3.select("#details").style("display", "block")
+
+      Object.entries(D).forEach(entry => {
+        let key = entry[0];
+        let value = entry[1];
+
+        if (value != "" && value != null && key != "x" && key != "y" && key != "vx" && key != "vy" && key != "index" && key != "connectivity" && key != "connectivityPerCorp") {
+          if (key != "Uri") {
+            d3.select("#details").append("p").attr("class", "detail_key").text(key)
+            d3.select("#details").append("p").attr("class", "detail_value").text(value)
+
+            //        d3.select("#details").append("p").attr("class", "detail_value").text(value.replace(/;;;/g, "; "))
+          } else {
+            d3.select("#details").append("p").attr("class", "detail_key").text(key)
+            d3.select("#details").append("a").attr("href", value).attr("target", "_blank").attr("class", "detail_value").text(value.replace(/;;;/g, "; "))
+          }
+
+        }
+
+
+      });
+
+      d3.select("#details").append("p").attr("class", "relationsheadline, detail_key").text("Verbundene Orte")
+
+      allConnections.filter(function(x, y) {
+        return x.type == "RelationToGeoName"
+      }).forEach(function(connection, i) {
+        d3.select("#details").append("p").attr("class", "detail_value, relations_value").style("color", "white")
+          .text(function() {
+            return connection._target.Name + " (" + connection.SourceType + ")"
+          })
+      })
+
+
+      d3.select("#details").append("p").attr("class", "relationsheadline, detail_key").text("Verbundene Sachbegriffe")
+      allConnections.filter(function(x, y) {
+        return x.type == "RelationToTopicTerm"
+      }).forEach(function(connection, i) {
+        d3.select("#details").append("p").attr("class", "detail_value, relations_value").style("color", "white")
+          .text(function() {
+            return connection._target.Name + " (" + connection.SourceType + ")"
+          })
+      })
+
+      d3.select("#details").append("p").attr("class", "relationsheadline, detail_key").text("Verbundene Ressourcen")
+      allConnections.filter(function(x, y) {
+        return x._source.Label == "Resource" || x._target.Label == "Resource"
+      }).forEach(function(connection, i) {
+        d3.select("#details").append("p").attr("class", "detail_value, relations_value").style("color", "white")
+          .text(function() {
+            return connection._source.Name + " (" + connection.SourceType + ", " + connection.Source +
+              ", " + connection.TypeAddInfo + ", " + connection.TempValidity + ")"
+          })
+      })
+
+      d3.select("#details").append("p").attr("class", "relationsheadline, detail_key").text("Verbundene Personen")
+
+      connections.filter(function(x, y) {
+          return x._source.Label == "PerName" && x._target.Label == "PerName"
+        })
+        .sort((a, b) => d3.descending(a.children.length, b.children.length))
+        .forEach(function(connection, i) {
+          d3.select("#details").append("p").attr("class", "detail_value, relations_value")
+            .text(function() {
+              if (D.Id == connection._source.Id) {
+                return connection._target.Name + " (" + connection.children.length + ")"
+              } else {
+                return connection._source.Name
+              }
+
+            })
+          //  .on("click", edgeClick(connection))
+
+        })
+
+      d3.select("#details").append("p").attr("class", "relationsheadline, detail_key").text("Verbundene Körperschaften")
+
+      connections.filter(function(x, y) {
+        return x._source.Label == "CorpName" || x._target.Label == "CorpName"
+      }).forEach(function(connection, i) {
+        d3.select("#details").append("p").attr("class", "detail_value, relations_value").style("color", function() {
+          if (connection.type == "SocialRelation") {
+            return "white" //edgeColors("computed")
+          } else {
+            return "white" //edgeColors(connection.Source)
+          }
+        }).text(function() {
+          if (D.Id == connection._source.Id) {
+            return connection._target.Name
+          } else {
+            return connection._source.Name
+          }
+
+        })
+      })
+
+
+    }
+
+
+    function mouseOut(D, I) {
+      if (detailview != true) {
+        // d3.selectAll(".topicterm,.geoname").classed("topicGeoNotDisplayed", false)
+        d3.select("#closedetails").style("display", "none")
+        d3.selectAll(".filterCross").remove()
+        d3.selectAll(".nodes").classed("filteredIn", true).classed("filteredOut", false)
+        //  d3.selectAll(".label").style("font-size", "4px").style("display", function(d,i){if(d.connectivity <20 || d.Label != "PerName" && d.Label != "CorpName"){return "none"}})
+
+        d3.selectAll(".link").style("opacity", 1)
+
+        d3.selectAll(".linkChild").remove()
+        d3.selectAll(".link").style("opacity", null)
+        d3.selectAll(".nodes").style("opacity", null)
+
+        d3.select("#details").style("display", "none").selectAll("p").remove()
+      }
+    }
+
+    function idIndex(a, id) {
+      for (let i = 0; i < a.length; i++) {
+        if (a[i].id == id) {
+          return i
+        }
+      }
+      return null;
+    }
+  </script>
+
+</body>
+
+</html>

@@ -97,11 +97,11 @@ The visualization concepts in SoNAR(IDH) were developed iteratively and included
 
 ### 09: Radial graph layout to visualize shared resources
 <img src="/img/16.jpg" width="150" heigth="150">
-<a href="https://sonar.fh-potsdam.de/demos/userstudy/ressource_focus.html">[Demo]</a>[Code]
+<a href="https://sonar.fh-potsdam.de/demos/userstudy/ressource_focus.html">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/demo09">[Code]</a>
 
 ### 10: Data exploration tool v.2
 <img src="/img/17.jpg" width="150" heigth="150">
-<a href="https://sonar.fh-potsdam.de/demos/userstudy/index_edges.html">[Demo]</a>[Code]
+<a href="https://sonar.fh-potsdam.de/demos/userstudy/index_edges.html">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/demo10">[Code]</a>
 
 
 ## Final project prototype

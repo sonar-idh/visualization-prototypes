@@ -1,0 +1,2254 @@
+<html>
+
+<head>
+  <title>SoNAR</title>
+  <meta charset="utf-8">
+  <script src="https://code.jquery.com/jquery-2.1.3.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+
+  <style>
+    :root {
+      --main-bg-color: rgb(29, 25, 24);
+    }
+
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background-color: var(--main-bg-color);
+      color: white;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    ::-webkit-scrollbar {
+      width: 0px;
+      /* Remove scrollbar space */
+      background: transparent;
+      /* Optional: just make scrollbar invisible */
+    }
+
+    /* unvisited link */
+    a:link {
+      color: white;
+      text-decoration: underline;
+    }
+
+    /* visited link */
+    a:visited {
+      color: white;
+      text-decoration: underline;
+    }
+
+    /* mouse over link */
+    a:hover {
+      color: white;
+      text-decoration: none;
+    }
+
+    /* selected link */
+    a:active {
+      color: white;
+      text-decoration: underline;
+    }
+
+    h1 {
+      font-weight: 100;
+      font-size: 40px;
+      letter-spacing: 5px;
+      margin-top: 20px;
+      margin-bottom: 5px;
+    }
+
+    h2 {
+      font-weight: 100;
+      font-size: 20px;
+      letter-spacing: 5px;
+      margin-top: 0px;
+      margin-bottom: 5px;
+    }
+
+
+
+    #searchfield {
+      position: fixed;
+      z-index: 500;
+      width: 100%;
+      margin-top: 1em;
+      text-align: center;
+      pointer-events: none;
+    }
+
+
+    .cypher-in {
+      width: 200px;
+      pointer-events: all;
+    }
+
+    #search_category_select {
+      pointer-events: all;
+    }
+
+    #cypher-in2 {
+      width: 500px;
+      pointer-events: all;
+      font-size: 11px;
+    }
+
+    form {
+      margin: 0 auto;
+    }
+
+    #searchbutton {
+      pointer-events: all;
+    }
+
+    #timelineDiv {
+      position: absolute;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      right: 10px;
+      top: 0px;
+      height: 100%;
+      text-align: right;
+    }
+
+    #timeHeadline {
+      position: absolute;
+      margin-top: 25px;
+      right: 10px;
+      top: 0px;
+      width: 200px;
+      text-align: center;
+    }
+
+    #timeHeadline h2 {
+      margin-bottom: 0;
+
+    }
+
+    #timeHeadline p {
+      margin: 0;
+      font-weight: 100;
+      font-size: 0.75em;
+      display: block;
+      margin-bottom: 0;
+    }
+
+    #timeHeadline span {
+      margin: 0;
+      font-weight: 100;
+      font-size: 0.75em;
+      margin-bottom: 0;
+    }
+
+    #timeHeadline form {
+      margin-bottom: 0.5em;
+    }
+
+    .timelineYears {
+      width: 40px;
+      font-size: 1em;
+      text-align: center;
+      background-color: var(--main-bg-color);
+      border-right: 0;
+      border-left: 0;
+      border-top: 0;
+      border-style: dotted;
+      color: white;
+      border-color: white;
+      font-family: monospace;
+    }
+
+
+
+    #keywordListDiv {
+      position: absolute;
+      top: 33%;
+      right: 230px;
+      width: 200px;
+      padding-right: 15px;
+      color: white;
+      text-align: right;
+      height: calc(33% - 20px);
+      overflow-y: scroll;
+    }
+
+    #geoListDiv {
+      position: absolute;
+      top: 66%;
+      margin-bottom: 100px;
+      padding-right: 15px;
+      right: 230px;
+      color: white;
+      text-align: right;
+      height: calc(33% - 20px);
+      overflow-y: scroll;
+    }
+
+    #perNameListDiv {
+      position: absolute;
+      top: 20px;
+      padding-right: 15px;
+      margin-top: 10px;
+      right: 230px;
+      color: white;
+      text-align: right;
+      height: calc(100% - 30px);
+      width: 210px;
+      overflow-y: scroll;
+      -ms-overflow-style: -ms-autohiding-scrollbar;
+    }
+
+    .PerName {
+      color: white;
+      margin: 0px;
+      font-size: 12px;
+    }
+
+    #statsDiv {
+      position: absolute;
+      bottom: 20px;
+      padding-right: 15px;
+      left: 10px;
+      color: white;
+      text-align: left;
+      overflow-y: scroll;
+      font-size: 12px;
+      -ms-overflow-style: -ms-autohiding-scrollbar;
+    }
+
+
+
+    #statsDiv p {
+      margin: 0;
+    }
+
+
+
+    .topicGeoNotDisplayed {
+      display: none;
+    }
+
+    #details {
+      background-color: rgba(50, 50, 50, 1);
+      margin: 0px;
+      font-size: 0.8em;
+      position: fixed;
+      overflow-y: auto;
+      top: 0;
+      left: 0;
+      width: 400px;
+      height: 100%;
+      display: none;
+      text-align: left;
+      padding: 20px;
+    }
+
+    #graph {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      cursor: move;
+    }
+
+    #overlay {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+    }
+
+    #closedetails {
+      position: fixed;
+      left: 390;
+      top: 0;
+      font-size: 30;
+      color: white;
+      cursor: pointer;
+      display: none;
+    }
+
+    .nodes {
+      cursor: pointer;
+    }
+
+    .detail_key {
+      font-weight: normal;
+      color: grey;
+      margin-bottom: 0;
+    }
+
+    .detail_value {
+      margin-top: 0;
+      font-weight: bold;
+      color: white;
+    }
+
+    .relations_value {
+      margin-top: 0;
+      margin-bottom: 5;
+      font-weight: bold;
+      font-size: 0.7em;
+      color: white;
+    }
+
+    .domain {
+      visibility: visible;
+    }
+
+    .filteredOut {
+      opacity: 0;
+    }
+
+    .filteredIn {
+      opacity: 1;
+    }
+
+    .timefilteredOut {
+      display: none;
+    }
+
+    div.tooltip {
+      position: absolute;
+      text-align: left;
+      width: auto;
+      height: auto;
+      margin: 2;
+      padding: 2px;
+      font: 10px sans-serif;
+      background: white;
+      color: black;
+      border: 0px;
+      border-radius: 8px;
+      pointer-events: none;
+    }
+
+    div.tooltip p {
+      margin: 5px;
+      padding: 0;
+    }
+
+    #timelineReset {
+      cursor: pointer;
+    }
+
+
+    /*
+ * === LOADING ICON===
+ */
+    #loadbg {
+      z-index: 700;
+      position: absolute;
+      background-color: var(--main-bg-color);
+      width: 100%;
+      height: 100%;
+      opacity: 0.6;
+      top: 0;
+      display: none;
+    }
+
+    #load {
+      position: absolute;
+      z-index: 700;
+      left: calc(50%);
+      top: calc(50% - 50px);
+      display: none;
+    }
+
+    .loader {
+      border: 20px solid rgb(254, 75, 51);
+      border-top: 20px solid yellow;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 2s linear 15;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+
+</head>
+
+<body>
+  <div id="searchfield">
+    <div id="messageArea"></div>
+    <!-- <form class="cypher-in">
+  <textarea name="cypher" rows="4" id="cypher-in2">MATCH (p:PerName) - [rel:RelationToPerName | RelationToResource | RelationToChroTerm | RelationToUniTitle] - (friends) - [rel2:RelationToPerName | RelationToResource | RelationToGeoName | RelationToTopicTerm | RelationToCorpName | RelationToUniTitle] - (friendsfriends), (p:PerName) - [rel3:RelationToTopicTerm | RelationToGeoName | RelationToCorpName | RelationToMeetName | RelationToUniTitle] - (other) WHERE (p.Id = "(DE-588)115568808") OR (p.Id = "(DE-588)116917423") OR (p.Id = "(DE-588)117185930") OR (p.Id = "(DE-588)118896202") OR (p.Id = "(DE-588)116764694") OR (p.Id = "(DE-588)118800000") OR (p.Id = "(DE-588)119133628")  RETURN DISTINCT*</textarea>
+    <br>
+  </form> -->
+    <select name="search_category" id="search_category_select">
+      <option value="GND-ID">GND-ID (Person)</option>
+      <!-- <option value="Schlagwort">Schlagwort</option> -->
+    </select>
+    <input type="text" id="suche" class="cypher-in" name="suche" value="(DE-588)118896202">
+    <button name="post cypher" id="searchbutton" onclick="post_cypherquery('execute');">Ausführen</button>
+    <!-- <button name="post cypher" id="searchbutton" onclick="post_cypherquery('addByQuery');">Hinzufügen</button> -->
+  </div>
+
+
+  <svg id="overlay"></svg>
+  <svg id="graph"></svg>
+  <div id="statsDiv">
+  </div>
+
+
+
+  <div id="timelineDiv">
+
+    <svg id="timelineSVG" width="200"> </svg>
+  </div>
+  <div id="timeHeadline">
+    <h2>Zeit-Filter</h2>
+    <form>
+      <p>Personen</p><input class="timelineYears" id="timebrushPStart"><span>–</span><input class="timelineYears" id="timebrushPEnd">
+    </form>
+    <form>
+      <p>Ressourcen</p><input class="timelineYears" id="timebrushRStart"><span>–</span><input class="timelineYears" id="timebrushREnd">
+    </form>
+    <p id="timelineReset">[RESET]</p>
+
+  </div>
+
+  <div id="perNameListDiv">
+    <form>
+      <select name="listDropdown" id="listDropdown" onchange="listDropdownChange()">
+        <option value="PerName">Personen</option>
+        <option value="CorpName">Körperschaften</option>
+        <option value="MeetName">Konferenzen</option>
+        <option value="UniTitle">Werke</option>
+        <option value="Resource">Ressourcen</option>
+        <option value="TopicTerm">Sachbegriffe</option>
+        <option value="GeoName">Orte</option>
+        <!-- <option value="SourceType">Beziehungstypen</option>
+        <option value="TypeAddInfo">TypeAddInfo</option>
+        <option value="TempValidity">TempValidity</option> -->
+      </select>
+    </form>
+  </div>
+
+  <div id="details"></div>
+  <p id="closedetails">✕</p>
+
+  <div id="loadbg"></div>
+  <div id="load" class="loader"></div>
+
+
+  <script type="text/javascript">
+    const margin = 20;
+    let windowWidth = window.innerWidth - 2 * margin
+    let windowHeight = window.innerHeight - 2 * margin
+    let searchquery
+
+
+    const neo4jLogin = 'sonar';
+    const neo4jPassword = 'sonar2021';
+
+    function setupNeo4jLoginForAjax(login, passwd) {
+      $.ajaxSetup({
+        contentType: 'application/json',
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('Authorization', 'Basic ' + btoa(login + ':' + passwd));
+        }
+      });
+    }
+
+    $(function() {
+      setupNeo4jLoginForAjax(neo4jLogin, neo4jPassword);
+
+    });
+
+    let nodes = [],
+      links = [];
+    let graph = {
+      nodes: nodes,
+      links: links
+    };
+    let timeline = []
+    let newNode = false
+
+    if (window.location.hash) {
+      console.log(window.location.hash.split("#"))
+      let hashId = window.location.hash.split("#")[1]
+      d3.select(".cypher-in").attr("value", hashId)
+      post_cypherquery('execute')
+    }
+
+    function post_cypherquery(type, id) {
+
+      let cypherStatement
+      let cypherStatement2
+      let cypherStatement3
+
+      // let cypherStatement4
+
+      if (type == "execute") {
+        searchquery = $('#suche').val()
+      } else {
+        searchquery = id
+      }
+
+
+      if (type == "execute" || type == "addByQuery" || type == "executeByNode") {
+        d3.select("#load").style("display", "block");
+        d3.select("#loadbg").style("display", "block");
+
+        if ($('#search_category_select').val() == "GND-ID") {
+          if (type == "execute") {
+            window.location.hash = "#" + searchquery
+          }
+
+
+          cypherStatement = `MATCH (p:PerName) - [rel:RelationToPerName | RelationToResource | RelationToUniTitle | RelationToMeetName] - (friends) - [rel2:RelationToTopicTerm | RelationToGeoName  | RelationToUniTitle | RelationToCorpName | RelationToPerName | RelationToMeetName] - (friendsfriends)
+                            WHERE (p.Id = "${searchquery}" AND (friends:Resource OR friends:UniTitle OR friends:MeetName))
+                            RETURN DISTINCT*`
+
+          cypherStatement2 = `MATCH (p:PerName) - [rel:RelationToPerName | RelationToResource | RelationToUniTitle | RelationToMeetName] - (friends) - [rel2:RelationToTopicTerm | RelationToGeoName  | RelationToUniTitle | RelationToCorpName | RelationToPerName | RelationToMeetName] - (friendsfriends) - [rel3:RelationToTopicTerm | RelationToGeoName | RelationToMeetName] - (friendsfriendsfriends)
+                            WHERE (p.Id = "${searchquery}" AND (friends:Resource OR friends:UniTitle OR friends:MeetName) AND (friendsfriends:PerName OR friendsfriends:CorpName))
+                            RETURN DISTINCT*`
+
+          cypherStatement3 = `MATCH (p:PerName) - [rel:RelationToPerName] - (friends) - [rel2:RelationToTopicTerm | RelationToGeoName  | RelationToUniTitle | RelationToCorpName | RelationToPerName | RelationToMeetName] - (friendsfriends) - [rel3:RelationToTopicTerm | RelationToGeoName | RelationToMeetName] - (friendsfriendsfriends)
+                                              WHERE (p.Id = "${searchquery}" AND (friends:PerName OR friends:CorpName) AND (friendsfriends:PerName OR friendsfriends:CorpName))
+                                              RETURN DISTINCT*`
+
+        }
+
+      } else {
+        cypherStatement =
+          `MATCH (p:PerName) - [rel:RelationToPerName | RelationToResource | RelationToChronTerm | RelationToUniTitle] - (friends), (p:PerName) - [rel3:RelationToTopicTerm | RelationToGeoName | RelationToCorpName | RelationToMeetName | RelationToUniTitle] - (other)  WHERE (p.Id = "${id}") RETURN DISTINCT*`
+      }
+
+
+
+
+
+      $.ajax({
+          url: "https://h2918680.stratoserver.net:7473/db/data/transaction/commit",
+          type: 'POST',
+          data: JSON.stringify({
+            "statements": [{
+                "statement": cypherStatement,
+                "resultDataContents": ["graph"]
+              }, {
+                "statement": cypherStatement2,
+                "resultDataContents": ["graph"]
+              },
+              {
+                "statement": cypherStatement3,
+                "resultDataContents": ["graph"]
+              }
+            ],
+          }),
+          contentType: 'application/json',
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(neo4jLogin + ':' + neo4jPassword));
+          },
+          accept: 'application/json; charset=UTF-8'
+        }).done(function(data) {
+
+          console.log(data)
+
+
+          if (type == "execute" || type == "executeByNode") {
+            nodes = []
+            links = []
+            graph = {
+              nodes: nodes,
+              links: links
+            };
+            timeline = []
+            newNode = false
+
+          } else {
+            newNode = true
+          }
+
+
+
+
+          data.results.forEach(function(statement) {
+            statement.data.forEach(function(row) {
+              row.graph.nodes.forEach(function(n) {
+                if (idIndex(nodes, n.id) == null) {
+
+                  if (n.labels[0] == "ChronTerm") {
+                    nodes.push({
+                      id: n.id,
+                      Id: n.properties.Id,
+                      Label: n.labels[0],
+                      Name: n.properties.Name,
+                      //EntityGenType:n.properties.EntityGenType,
+                      //EntitySpecType:n.properties.EntitySpecType,
+                      VariantName: n.properties.VariantName,
+                      connectivity: 0,
+                      connectivityPerCorp: 0,
+                      newState: newNode
+
+                    })
+                  } else if (n.labels[0] == "PerName" || n.labels[0] == "TopicTerm" || n.labels[0] == "CorpName" || n.labels[0] == "GeoName" || n.labels[0] == "MeetName" || n.labels[0] == "UniTitle") {
+                    //  console.log(n.labels[0]+ ": "+ n.properties.DateApproxBegin + " - "+ n.properties.DateApproxEnd+" / " + n.properties.DateStrictBegin + " + "+ n.properties.DateStrictEnd)
+                    nodes.push({
+                      Name: n.properties.Name,
+                      Title: n.properties.Title,
+                      VariantName: n.properties.VariantName,
+                      id: n.id,
+                      Id: n.properties.Id,
+                      Label: n.labels[0],
+                      GenType: n.properties.GenType,
+                      GenSubdiv: n.properties.GenSubdiv,
+                      SpecType: n.properties.SpecType,
+                      Genre: n.properties.Genre,
+                      SourcePath: n.properties.SourcePath,
+                      Medium: n.properties.Medium,
+                      SubUnit: n.properties.SubUnit,
+                      Gender: n.properties.Gender,
+                      Place: n.properties.Place,
+                      GeoArea: n.properties.GeoArea,
+                      Coordinates: n.properties.Coordinates,
+                      IdGeonames: n.properties.IdGeonames,
+                      Info: n.properties.Info,
+                      DateApproxBegin: n.properties.DateApproxBegin,
+                      DateApproxEnd: n.properties.DateApproxEnd,
+                      DateStrictBegin: n.properties.DateStrictBegin,
+                      DateStrictEnd: n.properties.DateStrictEnd,
+                      Uri: n.properties.Uri,
+                      connectivity: 0,
+                      connectivityPerCorp: 0,
+                      newState: newNode
+
+                    })
+
+                    let dateStart = n.properties.DateApproxBegin
+                    let dateEnd = n.properties.DateApproxEnd
+
+                    if (dateStart != null && dateEnd != null) {
+                      for (x = Number(new Date(dateStart).getFullYear()); x <= Number(new Date(dateEnd).getFullYear()); x++) {
+                        if (timeline[x]) {
+                          timeline[x]["countPerson"]++
+                        } else {
+                          timeline[x] = {},
+                            timeline[x]["date"] = x,
+                            timeline[x]["countPerson"] = 1,
+                            timeline[x]["countResource"] = 0
+
+                        }
+                      }
+                    }
+
+
+
+                  } else if (n.labels[0] == "Resource") {
+
+                    let dateStart = n.properties.DateApproxBegin
+                    let dateEnd = n.properties.DateApproxEnd
+                    let dateStartYear
+                    let dateEndYear
+
+
+
+                    if (dateStart !== undefined) {
+                      if (dateStart.length == 4) {
+                        dateStartYear = dateStart
+                      } else if (dateStart.indexOf("-") != -1) {
+                        dateStartYear = dateStart.split("-")[0]
+                      } else if (dateStart.length == 8) {
+                        dateStartYear = dateStart.slice(0, 4)
+                      } else if (dateStart.indexOf("[") != -1) {
+                        dateStartYear = dateStart.slice(1, 5)
+                      } else {
+                        dateStartYear = undefined
+                      }
+                    }
+
+                    if (dateEnd && dateEnd !== null) {
+                      if (dateEnd.length == 4) {
+                        dateEndYear = dateEnd
+                      } else if (dateEnd.indexOf("-") != -1) {
+                        dateEndYear = dateEnd.split("-")[0]
+                      } else if (dateEnd.length == 8) {
+                        dateEndYear = dateEnd.slice(0, 4)
+                      } else if (dateEnd.indexOf("[") != -1) {
+                        dateEndYear = dateEnd.slice(1, 5)
+                      } else {
+                        dateEndYear = undefined
+                      }
+                    }
+
+                    nodes.push({
+                      id: n.id,
+                      Id: n.properties.Id,
+                      Label: n.labels[0],
+                      Name: (n.properties.Title != null) ? n.properties.Title : n.properties.Name,
+                      VariantName: n.properties.VariantName,
+                      Genre: n.properties.Genre,
+                      Creator: n.properties.Creator,
+                      Lang: n.properties.Lang,
+
+                      GenType: n.properties.GenType,
+                      GenSubdiv: n.properties.GenSubdiv,
+                      SpecType: n.properties.SpecType,
+                      Genre: n.properties.Genre,
+                      SourcePath: n.properties.SourcePath,
+                      Medium: n.properties.Medium,
+                      SubUnit: n.properties.SubUnit,
+                      Gender: n.properties.Gender,
+                      Place: n.properties.Place,
+                      GeoArea: n.properties.GeoArea,
+                      Coordinates: n.properties.Coordinates,
+                      IdGeonames: n.properties.IdGeonames,
+                      Info: n.properties.Info,
+                      DateApproxBegin: n.properties.DateApproxBegin,
+                      DateApproxEnd: n.properties.DateApproxEnd,
+                      DateStrictBegin: n.properties.DateStrictBegin,
+                      DateStrictEnd: n.properties.DateStrictEnd,
+
+                      DateApproxBegin2: Number(dateStartYear),
+                      DateApproxEnd2: Number(dateEndYear),
+                      ResourcePublPlace: n.properties.ResourcePublPlace,
+                      Uri: n.properties.Uri,
+                      connectivity: 0,
+                      connectivityPerCorp: 0,
+                      newState: newNode
+                    })
+
+                    ////////////////////////
+
+
+
+
+
+                    if (dateStartYear != null && dateStartYear != undefined && dateEndYear != null && dateEndYear != undefined) {
+                      for (x = Number(new Date(dateStartYear).getFullYear()); x <= Number(new Date(dateEndYear).getFullYear()); x++) {
+                        if (timeline[x]) {
+                          timeline[x]["countResource"]++
+                        } else {
+                          timeline[x] = {},
+                            timeline[x]["date"] = x,
+                            timeline[x]["countPerson"] = 0,
+                            timeline[x]["countResource"] = 1
+                        }
+                      }
+                    }
+                    //  console.log(timeline)
+
+                    ////////////////////////
+
+                  }
+
+
+                }
+
+
+              });
+              (row.graph.relationships.map(function(r) {
+                //wenn der Link noch nicht vorkommt, füge ihn hinzu
+                if ((links.filter(links => links.id === r.id)).length == 0) {
+                  //console.log(r.startNode)
+                  //console.log(r.properties.TempValidity)
+                  // console.log(idIndex(nodes, r.startNode))
+                  links.push({
+                    id: r.id,
+                    source: idIndex(nodes, r.startNode),
+                    target: idIndex(nodes, r.endNode),
+                    _source: nodes[idIndex(nodes, r.startNode)],
+                    _target: 0,
+                    type: r.type,
+                    Source: r.properties.Source,
+                    SourceType: (r.properties.SourceType != null) ? r.properties.SourceType : r.properties.SourceTyp,
+                    TempValidity: r.properties.TempValidity,
+                    TypeAddInfo: r.properties.TypeAddInfo,
+                    value: 1,
+                    newState: newNode
+                  })
+
+                  nodes.filter(function(q, p) {
+                    return q.id == r.startNode
+                  })[0].connectivity++
+                  nodes.filter(function(q, p) {
+                    return q.id == r.endNode
+                  })[0].connectivity++
+
+                }
+              }));
+            });
+          })
+
+
+          ///connectivity for Person/Corp only
+          graph.links.forEach(function(d, i) {
+
+            if (nodes.filter(function(q, p) {
+                return p == d.source
+              })[0].Label != "GeoName" && nodes.filter(function(q, p) {
+                return p == d.target
+              })[0].Label != "GeoName" &&
+              nodes.filter(function(q, p) {
+                return p == d.source
+              })[0].Label != "TopicTerm" && nodes.filter(function(q, p) {
+                return p == d.target
+              })[0].Label != "TopicTerm" &&
+              nodes.filter(function(q, p) {
+                return p == d.source
+              })[0].Label != "IsilTerm" && nodes.filter(function(q, p) {
+                return p == d.target
+              })[0].Label != "IsilTerm" &&
+              nodes.filter(function(q, p) {
+                return p == d.source
+              })[0].Label != "Resource" && nodes.filter(function(q, p) {
+                return p == d.target
+              })[0].Label != "Resource" &&
+              nodes.filter(function(q, p) {
+                return p == d.source
+              })[0].Label != "ChronTerm" && nodes.filter(function(q, p) {
+                return p == d.target
+              })[0].Label != "ChronTerm") {
+
+              nodes.filter(function(q, p) {
+                return p == d.source
+              })[0].connectivityPerCorp++
+              nodes.filter(function(q, p) {
+                return p == d.target
+              })[0].connectivityPerCorp++
+
+            }
+          })
+
+
+          let personNodes = []
+
+
+          console.log(graph.links)
+          if (type == "execute" || type == "executeByNode") {
+            renderNetwork(searchquery)
+          } else {
+            updateNetwork()
+          }
+
+
+          //      console.log(timeline)
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+          $('#messageArea').html('<h3>' + textStatus + ' : ' + errorThrown + '</h3>')
+        });
+    };
+
+
+    var tooltip = d3.select("body").append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0)
+      .append("p");
+
+
+    const nodeSize = d3.scaleSqrt()
+      .domain([1, 800])
+      .range([3, 10]);
+
+    const edgeColors = d3.scaleOrdinal()
+      .domain(["KPE", "GND", "DNB", "SBB", "computed"])
+      .range(["orange", "rgb(167, 211, 231)", "rgb(123, 236, 161)", "yellow", "rgb(250, 140, 173)"])
+
+    let detailview = false;
+
+
+
+
+    const color = d3.scaleOrdinal()
+      .domain(["PerName", "CorpName", "MeetName", "UniTitle", "TopicTerm", "GeoName", "Resource", "ChronTerm"])
+      .range(["rgb(254, 75, 51)", "rgb(0, 186, 255)", "rgb(46, 217, 119)", "rgb(128, 89, 238)", "rgb(218, 218, 218)", "rgb(218, 218, 218)", "rgb(218, 218, 218)", "rgb(218, 218, 218)"]);
+
+    const overlay = d3.select("#overlay")
+
+    const svg = d3.select("#graph")
+      .attr("preserveAspectRatio", "xMidYMid")
+      .attr("viewBox", "0 0 " + windowWidth + " " + windowHeight)
+      .call(d3.zoom()
+        .scaleExtent([1 / 4, 3])
+        .on("zoom", zoomed))
+      .on("dblclick.zoom", null);
+
+    let svgG = svg.append("g").attr("class", "svgG")
+
+    function zoomed() {
+      svgG.attr("transform", d3.event.transform);
+    }
+
+
+    function listDropdownChange() {
+      let type = $('#listDropdown').val()
+
+      if (type != "SourceType" && type != "TypeAddInfo" && type != "TempValidity") {
+
+
+        d3.select("#perNameListDiv")
+          .selectAll("p")
+          .data(graph.nodes.filter(function(d, i) {
+            return d.Label == type
+          }).sort((a, b) => d3.descending(a.connectivity, b.connectivity)))
+          .join("p")
+          .classed("PerName", true)
+          .text(function(d, i) {
+            return d.Name + " (" + d.connectivity + ")"
+          })
+          .on("click", function(d, i) {
+            d3.select("#details").style("display", "none").selectAll("p").remove()
+            detailview = true;
+            mouseClick(d, i)
+          })
+      } else if (type == "SourceType") {
+
+        let linkSourceTypeCount = d3.nest()
+          .key(function(d) {
+            return d.SourceType;
+          })
+          .rollup(function(v) {
+            return v.length;
+          })
+          .entries(links);
+
+
+        d3.select("#perNameListDiv")
+          .selectAll("p")
+          .data(linkSourceTypeCount.sort((a, b) => d3.descending(a.value, b.value)))
+          .join("p")
+          .classed("PerName", true)
+          .text(function(d, i) {
+            return d.key + " (" + d.value + ")"
+          })
+
+      } else if (type == "TypeAddInfo") {
+        let linkTypeAddInfoCount = d3.nest()
+          .key(function(d) {
+            return d.TypeAddInfo;
+          })
+          .rollup(function(v) {
+            return v.length;
+          })
+          .entries(links);
+
+
+        d3.select("#perNameListDiv")
+          .selectAll("p")
+          .data(linkTypeAddInfoCount.sort((a, b) => d3.descending(a.value, b.value)))
+          .join("p")
+          .classed("PerName", true)
+          .text(function(d, i) {
+            return d.key + " (" + d.value + ")"
+          })
+
+      } else {
+
+        let linkTempValidityCount = d3.nest()
+          .key(function(d) {
+            return d.TempValidity;
+          })
+          .rollup(function(v) {
+            return v.length;
+          })
+          .entries(links);
+
+
+        d3.select("#perNameListDiv")
+          .selectAll("p")
+          .data(linkTempValidityCount.sort((a, b) => d3.descending(a.value, b.value)))
+          .join("p")
+          .classed("PerName", true)
+          .text(function(d, i) {
+            return d.key + " (" + d.value + ")"
+          })
+
+
+      }
+
+
+
+    }
+
+
+    function statsUpdate() {
+      ///statistics start
+      d3.select("#statsDiv").selectAll("p").remove()
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "Persons: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "PerName"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", color("PerName"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "male: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "PerName" && d.Gender == "1"
+          }).length
+        })
+        .style("color", color("PerName"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "female: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "PerName" && d.Gender == "2"
+          }).length
+        })
+        .style("color", color("PerName"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "diverse: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "PerName" && d.Gender == "3"
+          }).length
+        })
+        .style("color", color("PerName"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "n/a: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "PerName" && d.Gender != "1" && d.Gender != "2" && d.Gender != "3"
+          }).length
+        })
+        .style("color", color("PerName"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("br")
+
+
+
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "CorpNames " + graph.nodes.filter(function(d, i) {
+            return d.Label == "CorpName"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", color("CorpName"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "MeetNames: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "MeetName"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", color("MeetName"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "UniTitle: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "UniTitle"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", color("UniTitle"))
+        .classed("topicterm", true)
+
+
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "Resources: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "Resource"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", color("Resource"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("br")
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "GND Relations: " + graph.links.filter(function(d, i) {
+            return d.Source == "GND"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", edgeColors("GND"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "KPE Relations: " + graph.links.filter(function(d, i) {
+            return d.Source == "KPE"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", edgeColors("KPE"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "DNB Relations: " + graph.links.filter(function(d, i) {
+            return d.Source == "DNB"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", edgeColors("DNB"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "SBB Relations: " + graph.links.filter(function(d, i) {
+            return d.Source == "SBB"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", edgeColors("SBB"))
+
+
+
+    }
+
+
+
+    let simulation = d3.forceSimulation()
+      .force("link", d3.forceLink().id(function(d, i) {
+        return i;
+      }))
+      .force("charge", d3.forceManyBody().strength(function(d, i) {
+        if (d.Label == "GeoName" || d.Label == "TopicTerm" || d.Label == "IsilTerm") {
+          return 0
+        } else {
+          return -20
+        }
+      }))
+      .force('collision', d3.forceCollide().radius(function(d, i) {
+        if (d.Label == "GeoName" || d.Label == "TopicTerm" || d.Label == "IsilTerm") {
+          return 0
+        } else {
+          return nodeSize(d.connectivity) + 2
+        }
+      }))
+      .force("r", d3.forceRadial(function(d) {
+          if (d.Id == searchquery) {
+            return 0
+          } else if (d.Label == "Resource" || d.Label == "UniTitle") {
+            return 200
+          } else {
+            return 400
+          }
+        })
+        .strength(function() {
+          return 5
+        }))
+
+
+    let link = svgG.append("g").attr("class", "linkG")
+    let node = svgG.append("g").attr("class", "nodeG")
+
+
+
+
+    function renderNetwork(id) {
+
+      let nodeLabelCount = d3.nest()
+        .key(function(d) {
+          return d.Label;
+        })
+        .rollup(function(v) {
+          return v.length;
+        })
+        .entries(nodes);
+
+      let linkSourceCount = d3.nest()
+        .key(function(d) {
+          return d.Source;
+        })
+        .rollup(function(v) {
+          return v.length;
+        })
+        .entries(links);
+
+
+
+      let linkTypeAddInfoCount = d3.nest()
+        .key(function(d) {
+          return d.TypeAddInfo;
+        })
+        .rollup(function(v) {
+          return v.length;
+        })
+        .entries(links);
+
+
+      detailview = false;
+
+      d3.select("#timelineSVG").selectAll("g").remove()
+
+
+      listDropdownChange()
+      statsUpdate()
+
+      simulation.alpha(1).restart();
+
+
+
+      simulation
+        .nodes(graph.nodes)
+        .on("tick", ticked);
+
+      simulation
+        .force("link")
+        .links(graph.links);
+
+
+      let personLinks = []
+
+
+
+
+
+
+      link.selectAll(".link")
+        .data(graph.links.filter(function(E, G) {
+          return E.source.Label != "GeoName" && E.target.Label != "GeoName" &&
+            E.source.Label != "TopicTerm" && E.target.Label != "TopicTerm" &&
+            E.source.Label != "IsilTerm" && E.target.Label != "IsilTerm" &&
+            E.source.Label != "ChronTerm" && E.target.Label != "ChronTerm"
+        }))
+        .join("line")
+        .style("fill", "none")
+        .attr("stroke-width", 1)
+        .attr("class", "link")
+        .style("stroke", function(d, i) {
+          return edgeColors(d.Source)
+        })
+        .style("opacity", 1)
+
+
+
+
+
+
+
+      node.selectAll("circle")
+        .data(graph.nodes.filter(function(d) {
+          return d.Label != "GeoName" && d.Label != "TopicTerm" &&
+            d.Label != "IsilTerm" && d.Label != "ChronTerm" //& d.connectivity > 1
+        }))
+        .join("circle")
+        .attr("class", "nodes")
+        .style("fill", function(d, i) {
+          return color(d.Label)
+        })
+        .style("stroke", function(d, i) {
+          if (d.newState == true) {
+            return "rgb(10, 3, 36)"
+          } else {
+            return "rgb(10, 3, 36)"
+          }
+        })
+        .style("stroke-width", function(d, i) {
+          if (d.newState == true) {
+            return 0.5
+          } else {
+            return 0.5
+          }
+        })
+        .attr("r", function(d, i) {
+          return nodeSize(d.connectivity)
+        })
+        .on("click", function(d, i) {
+
+          detailview = true;
+          mouseClick(d, i)
+        })
+        .on("dblclick", function(d, i) {
+          if (d.Label == "PerName") {
+            d3.select("#details").style("display", "none").selectAll("p").remove()
+            detailview = false;
+            mouseOut(d, i)
+            post_cypherquery("executeByNode", d.Id)
+          }
+
+        })
+        .on("mousemove", function(d, i) {
+          d3.select(".tooltip").select("p")
+            .text(function() {
+              return d.Name + " (" + d.DateApproxBegin + "–" + d.DateApproxEnd + ")"
+            })
+            .style("font-weight", "bold")
+
+          d3.select(".tooltip")
+            .style("opacity", .9)
+            .style("left", (d3.event.pageX + 5) + "px")
+            .style("top", (d3.event.pageY - 5) + "px");
+        })
+        .on("mouseout", function(d, i) {
+          d3.select(".tooltip").select("p")
+            .text(null)
+
+          d3.select(".tooltip")
+            .style("opacity", 0)
+            .style("left", (d3.event.pageX + 5) + "px")
+            .style("top", (d3.event.pageY - 5) + "px");
+        })
+
+
+
+
+      d3.selectAll("#closedetails")
+        .on("click", function(d, i) {
+          d3.select("#details").style("display", "none").selectAll("p").remove()
+          detailview = false;
+          mouseOut(d, i)
+        })
+
+
+
+      //
+      // labels
+      //   .selectAll("text")
+      //   //  .data(graph.nodes.filter(function(d){return d.Label == "PerName" || d.Label == "CorpName"}))
+      //   .data(graph.nodes.filter(function(d) {
+      //     return d.Label != "GeoName" && d.Label != "TopicTerm"  && d.Label != "Resource"
+      //   }))
+      //   .join("text")
+      //   .attr("class", "label")
+      //   .style("fill", "white")
+      //   .style("font-size", "4")
+      //   .text(function(d) {
+      //     return d.Name
+      //   })
+      //   .style("display", function(d,i){if(d.connectivity <20 || d.Label != "PerName" && d.Label != "CorpName"){return "none"}})
+      //   .style("pointer-events", "none")
+
+
+
+
+
+
+
+
+
+      ////////////timeline start
+
+      //get all keys (years) of timeline array and transform the strings to numbers. use that for a flexible scale
+
+      let timelineYears = Object.keys(timeline).map(Number)
+      let timelineCountArray = []
+      let timelineCountResourceArray = []
+
+
+      //create array of all count-numbers of the years to use that for the max year count for a flexible scale
+      timeline.forEach(function(d, i) {
+        timelineCountArray.push(d.countPerson)
+        timelineCountResourceArray.push(d.countResource)
+      })
+
+      let timelineMaxCount = d3.max(timelineCountArray)
+      let timelineMaxResourceCount = d3.max(timelineCountResourceArray)
+
+
+      let timelineMarginTop = 145
+
+      let timelineScale = d3.scaleLinear()
+        .domain(d3.extent(timelineYears))
+        .range([0, windowHeight - timelineMarginTop]);
+
+
+
+
+      let timelineXScale = d3.scaleLinear()
+        .domain([0, timelineMaxCount])
+        .range([0, 75])
+
+      d3.selectAll("#timebrushPStart, #timebrushRStart").property("value", d3.min(timelineYears))
+      d3.selectAll("#timebrushPEnd, #timebrushREnd").property("value", d3.max(timelineYears))
+
+      let timelineXScaleResources = d3.scaleLinear()
+        .domain([0, timelineMaxCount]) //timelineMaxResourceCount])
+        .range([0, 1000])
+
+
+      let brushPerson = d3.brushY()
+        .extent([
+          [-150, 0],
+          [-40, windowHeight - timelineMarginTop]
+        ])
+        .on("end", function brushended(d, i, j) {
+          let category = "PerName"
+          let interaction = "brush"
+          timeSelection(category, interaction)
+
+        })
+
+      const brushResource = d3.brushY()
+        .extent([
+          [40, 0],
+          [115, windowHeight]
+        ])
+        //  .on("brush", brushed)
+        .on("end", function brushended(d, i, j) {
+          let category = "Resource"
+          let interaction = "brush"
+          reset = false
+          timeSelection(category, interaction)
+        })
+
+      d3.selectAll("#timebrushRStart, #timebrushREnd").on("change", function() {
+        let category = "Resource"
+        let interaction = "input"
+        reset = false
+        timeSelection(category, interaction)
+      })
+
+      d3.selectAll("#timebrushPStart, #timebrushPEnd").on("change", function() {
+        let category = "PerName"
+        let interaction = "input"
+        reset = false
+        timeSelection(category, interaction)
+      })
+
+      d3.selectAll("#timelineReset").on("click", function() {
+        let category = "Reset"
+        let interaction = "input"
+        reset = true
+        timeSelection(category, interaction)
+      })
+
+
+      let brushPStart = d3.extent(timelineYears)[0]
+      let brushPEnd = d3.extent(timelineYears)[1]
+      let brushRStart = d3.extent(timelineYears)[0]
+      let brushREnd = d3.extent(timelineYears)[1]
+      let reset = false
+
+      function timeSelection(category, interaction) {
+
+
+        if (d3.event.selection === null && interaction == "brush") {
+          //  console.log("deselected")
+          if (category == "PerName") {
+            brushPStart = d3.extent(timelineYears)[0]
+            brushPEnd = d3.extent(timelineYears)[1]
+          } else if (category == "Resource") {
+            brushRStart = d3.extent(timelineYears)[0]
+            brushREnd = d3.extent(timelineYears)[1]
+          }
+
+        } else {
+          if (interaction == "brush") {
+            if (category == "PerName") {
+              brushPStart = Math.round(timelineScale.invert(d3.event.selection[0]))
+              brushPEnd = Math.round(timelineScale.invert(d3.event.selection[1]))
+              brushRStart = d3.extent(timelineYears)[0]
+              brushREnd = d3.extent(timelineYears)[1]
+              d3.select(".timelineRes").call(brushResource.move, null);
+            } else if (category == "Resource") {
+              brushRStart = Math.round(timelineScale.invert(d3.event.selection[0]))
+              brushREnd = Math.round(timelineScale.invert(d3.event.selection[1]))
+              brushPStart = d3.extent(timelineYears)[0]
+              brushPEnd = d3.extent(timelineYears)[1]
+              d3.select(".timelinePer").call(brushPerson.move, null);
+            }
+
+
+
+
+          } else if (interaction == "input") {
+            if (category == "PerName") {
+              brushPStart = d3.selectAll("#timebrushPStart").property("value")
+              brushPEnd = d3.selectAll("#timebrushPEnd").property("value")
+              brushRStart = d3.extent(timelineYears)[0]
+              brushREnd = d3.extent(timelineYears)[1]
+              d3.select(".timelinePer").call(brushPerson.move, [timelineScale(brushPStart), timelineScale(brushPEnd)]);
+              d3.select(".timelineRes").call(brushResource.move, null);
+
+            } else if (category == "Resource") {
+              brushRStart = d3.selectAll("#timebrushRStart").property("value")
+              brushREnd = d3.selectAll("#timebrushREnd").property("value")
+              brushPStart = d3.extent(timelineYears)[0]
+              brushPEnd = d3.extent(timelineYears)[1]
+              d3.select(".timelineRes").call(brushResource.move, [timelineScale(brushRStart), timelineScale(brushREnd)]);
+              d3.select(".timelinePer").call(brushPerson.move, null);
+            }
+
+
+          }
+
+          d3.selectAll("#timebrushRStart").property("value", brushRStart)
+          d3.selectAll("#timebrushREnd").property("value", brushREnd)
+          d3.selectAll("#timebrushPStart").property("value", brushPStart)
+          d3.selectAll("#timebrushPEnd").property("value", brushPEnd)
+        }
+
+
+
+        if (reset == false) {
+
+          d3.selectAll(".link").classed("timefilteredOut", true)
+          console.log(brushPStart)
+
+          d3.selectAll(".nodes")
+            .classed("timefilteredOut", true)
+            .filter(function(d, i) {
+              return d.Label == category
+            })
+            .filter(function(d, i) {
+              if (category == "PerName") {
+                return (d.DateApproxBegin <= brushPStart && d.DateApproxBegin >= brushPEnd) ||
+                  (d.DateApproxBegin >= brushPStart && d.DateApproxBegin <= brushPEnd) ||
+                  (d.DateApproxBegin <= brushPStart && d.DateApproxEnd >= brushPStart)
+              } else {
+                return d.Label == "Resource" &&
+                  (d.DateApproxBegin2 >= brushRStart && d.DateApproxBegin2 <= brushREnd)
+              }
+            })
+            .classed("timefilteredOut", false)
+            .each(function(D, I) {
+
+
+
+              let connections = links.filter(function(E, G) {
+                return E.source.id == D.id ||
+                  E.target.id == D.id
+
+              })
+
+              connections.forEach(function(E, G) {
+                d3.selectAll(".nodes").filter(function(X, Y) {
+                  return X.id == E.source.id || X.id == E.target.id
+                }).classed("timefilteredOut", false)
+
+
+                d3.selectAll(".nodes")
+                  .filter(function(d, i) {
+                    return D.id == d.id
+                  }).classed("timefilteredOut", false)
+
+
+                d3.selectAll(".link").filter(function(E, G) {
+                  return E.source.id == D.id || E.target.id == D.id
+                }).classed("timefilteredOut", false)
+
+              })
+            })
+
+
+
+
+        } else if (reset == true) {
+          d3.select(".timelineRes").call(brushResource.move, null);
+          d3.select(".timelinePer").call(brushResource.move, null);
+
+          brushPStart = d3.extent(timelineYears)[0]
+          brushPEnd = d3.extent(timelineYears)[1]
+          brushRStart = d3.extent(timelineYears)[0]
+          brushREnd = d3.extent(timelineYears)[1]
+
+          d3.selectAll("#timebrushRStart").property("value", brushRStart)
+          d3.selectAll("#timebrushREnd").property("value", brushREnd)
+          d3.selectAll("#timebrushPStart").property("value", brushPStart)
+          d3.selectAll("#timebrushPEnd").property("value", brushPEnd)
+
+          d3.selectAll(".nodes")
+            .classed("timefilteredOut", false)
+
+          d3.selectAll(".link").classed("timefilteredOut", false)
+
+
+        }
+
+      }
+
+
+
+
+
+      let timelineVis = d3.select("#timelineSVG").style("height", windowHeight)
+
+
+      timelineVis.append("g").attr("class", "axisTime").classed("timelineRes", true).call(d3.axisRight(timelineScale).ticks(30).tickFormat("")).attr("transform", "translate(" + 75 + "," + timelineMarginTop + ")").call(brushResource)
+      timelineVis.append("g").attr("class", "axisTime").classed("timelinePer", true).call(d3.axisLeft(timelineScale).ticks(30).tickFormat(d3.format("d"))).attr("transform", "translate(" + 115 + "," + timelineMarginTop + ")").call(brushPerson)
+
+
+      // const gb = svg.append("g")
+      //
+      //   .call(brush.move, defaultSelection);
+
+
+
+      timelineVis.append("g").attr("transform", "translate(" + 75 + "," + timelineMarginTop + ")")
+        .selectAll("rect")
+        .data(timeline.filter(function(d) {
+          return d != undefined
+        }))
+        .join("rect")
+        .style("pointer-events", "none")
+        .attr("x", function(d, i) {
+          if (d != undefined) {
+            return -timelineXScale(d.countPerson)
+          } else {
+            return 0
+          }
+        })
+        .attr("y", function(d, i) {
+          if (d != undefined) {
+            return timelineScale(d.date)
+          }
+        })
+        .attr("height", 1)
+        .attr("width", function(d, i) {
+          if (d != undefined) {
+            return timelineXScale(d.countPerson)
+          } else {
+            return 0
+          }
+        })
+        .style("fill", color("PerName"))
+
+
+
+      timelineVis.append("g").attr("transform", "translate(" + 116 + "," + timelineMarginTop + ")")
+        .selectAll("rect")
+        .data(timeline.filter(function(d) {
+          return d != undefined
+        }))
+        .join("rect")
+        .style("pointer-events", "none")
+        .attr("x", function(d, i) {
+          return 0
+        })
+        .attr("y", function(d, i) {
+          if (d != undefined) {
+            return timelineScale(d.date)
+          }
+        })
+        .attr("height", 1)
+        .attr("width", function(d, i) {
+          if (d != undefined) {
+            return timelineXScaleResources(d.countResource)
+          } else {
+            return 0
+          }
+        })
+        .style("fill", "white")
+
+
+
+
+
+
+      ////////////timeline end
+
+
+
+    }
+
+
+
+    function updateNetwork() {
+      d3.select("#statsDiv").selectAll("p").remove()
+      d3.select("#keywordListDiv").selectAll("p").remove()
+      d3.select("#geoListDiv").selectAll("p").remove()
+      d3.select("#timelineSVG").selectAll("g").remove()
+
+      simulation.alpha(1).restart();
+
+      link.selectAll(".link")
+        .data(graph.links.filter(function(E, G) {
+          return E.type != "RelationToGeoName" && E.type != "RelationToTopicTerm" && E.type != "RelationToIsilTerm" && E.type != "RelationToResource"
+        }))
+        // .join("path")
+        .join("line")
+        .style("fill", "none")
+        .attr("stroke-width", 1)
+        .attr("class", "link")
+        .style("stroke", function(d, i) {
+          if (d.newState == true) {
+            return edgeColors(d.Source)
+          } else {
+            return edgeColors(d.Source)
+          }
+        })
+        .style("opacity", 1)
+
+
+      node.selectAll("circle")
+        .data(graph.nodes.filter(function(d) {
+          return d.Label != "GeoName" && d.Label != "TopicTerm" &&
+            d.Label != "IsilTerm" //& d.connectivity > 1
+        }))
+        .join("circle")
+        .attr("class", "nodes")
+        .style("fill", function(d, i) {
+          return color(d.Label)
+        })
+        .style("stroke", function(d, i) {
+          if (d.newState == true) {
+            return "rgb(10, 3, 36)"
+          } else {
+            return "rgb(10, 3, 36)"
+          }
+        })
+        .style("stroke-width", function(d, i) {
+          if (d.newState == true) {
+            return 0.5
+          } else {
+            return 0.5
+          }
+        })
+        .attr("r", function(d, i) {
+          if (d.Label == "Resource") {
+            return nodeSize(d.connectivity)
+          } else {
+            return nodeSize(d.connectivity)
+          }
+        })
+        .on("click", function(d, i) {
+
+          detailview = true;
+          mouseClick(d, i)
+        })
+
+
+
+
+      simulation
+        .nodes(graph.nodes)
+        .on("tick", ticked);
+
+      simulation
+        .force("link")
+        .links(graph.links);
+
+
+
+
+
+
+
+
+
+      ////////////timeline start
+
+      //get all keys (years) of timeline array and transform the strings to numbers. use that for a flexible scale
+
+      let timelineYears = Object.keys(timeline).map(Number)
+      let timelineCountArray = []
+      let timelineCountResourceArray = []
+
+
+      //create array of all count-numbers of the years to use that for the max year count for a flexible scale
+      timeline.forEach(function(d, i) {
+        timelineCountArray.push(d.countPerson)
+        timelineCountResourceArray.push(d.countResource)
+      })
+
+      let timelineMaxCount = d3.max(timelineCountArray)
+      let timelineMaxResourceCount = d3.max(timelineCountResourceArray)
+
+      let timelineScale = d3.scaleLinear()
+        .domain(d3.extent(timelineYears))
+        .range([0, windowHeight]);
+
+      let timelineXScale = d3.scaleLinear()
+        .domain([0, timelineMaxCount])
+        .range([0, 75])
+
+
+      let timelineXScaleResources = d3.scaleLinear()
+        .domain([0, timelineMaxCount]) //timelineMaxResourceCount])
+        .range([0, 75])
+
+
+      const brushPerson = d3.brushY()
+        .extent([
+          [-150, 0],
+          [-40, windowHeight]
+        ])
+        .on("end", function brushended(d, i, j) {
+          let brushStart
+          let brushEnd
+          let category = "PerName"
+          let reset
+          if (d3.event.selection === null) {
+            //  console.log("deselected")
+            brushStart = d3.extent(timelineYears)[0]
+            brushEnd = d3.extent(timelineYears)[1]
+            reset = true
+
+          } else {
+            brushStart = Math.round(timelineScale.invert(d3.event.selection[0]))
+            brushEnd = Math.round(timelineScale.invert(d3.event.selection[1]))
+            reset = false
+          }
+          timeSelection(brushStart, brushEnd, category, reset)
+
+        })
+
+      const brushResource = d3.brushY()
+        .extent([
+          [40, 0],
+          [115, windowHeight]
+        ])
+        //  .on("brush", brushed)
+        .on("end", function brushended(d, i, j) {
+          let brushStart
+          let brushEnd
+          let category = "Resource"
+          let reset = false
+          if (d3.event.selection === null) {
+            //  console.log("deselected")
+            brushStart = d3.extent(timelineYears)[0]
+            brushEnd = d3.extent(timelineYears)[1]
+            reset = true
+          } else {
+            brushStart = Math.round(timelineScale.invert(d3.event.selection[0]))
+            brushEnd = Math.round(timelineScale.invert(d3.event.selection[1]))
+            reset = false
+          }
+          timeSelection(brushStart, brushEnd, category, reset)
+
+        })
+
+
+
+
+
+
+
+      let timelineVis = d3.select("#timelineSVG").style("height", windowHeight)
+
+      timelineVis.append("g").attr("class", "axisTime").call(d3.axisRight(timelineScale).tickFormat(d3.format("d"))).attr("transform", "translate(" + 75 + "," + 10 + ")").call(brushResource)
+      timelineVis.append("g").attr("class", "axisTime").call(d3.axisLeft(timelineScale).tickFormat(d3.format("d"))).attr("transform", "translate(" + 115 + "," + 10 + ")").call(brushPerson)
+
+
+
+
+      timelineVis.append("g").attr("transform", "translate(" + 75 + "," + 10 + ")")
+        .selectAll("rect")
+        .data(timeline.filter(function(d) {
+          return d != undefined
+        }))
+        .join("rect")
+        .style("pointer-events", "none")
+        .attr("x", function(d, i) {
+          if (d != undefined) {
+            return -timelineXScale(d.countPerson)
+          } else {
+            return 0
+          }
+        })
+        .attr("y", function(d, i) {
+          if (d != undefined) {
+            return timelineScale(d.date)
+          }
+        })
+        .attr("height", 1)
+        .attr("width", function(d, i) {
+          if (d != undefined) {
+            return timelineXScale(d.countPerson)
+          } else {
+            return 0
+          }
+        })
+        .style("fill", color("PerName"))
+
+
+
+      timelineVis.append("g").attr("transform", "translate(" + 116 + "," + 10 + ")")
+        .selectAll("rect")
+        .data(timeline.filter(function(d) {
+          return d != undefined
+        }))
+        .join("rect")
+        .style("pointer-events", "none")
+        .attr("x", function(d, i) {
+          return 0
+        })
+        .attr("y", function(d, i) {
+          if (d != undefined) {
+            return timelineScale(d.date)
+          }
+        })
+        .attr("height", 1)
+        .attr("width", function(d, i) {
+          if (d != undefined) {
+            return timelineXScaleResources(d.countResource)
+          } else {
+            return 0
+          }
+        })
+        .style("fill", "white")
+
+
+
+
+
+
+      ////////////timeline end
+
+
+      //links.forEach(function(d,i){ console.log(d.TempValidity)})
+      ///statistics start
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "Persons: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "PerName"
+          }).length
+        })
+        .style("color", color("PerName"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "CorpNames " + graph.nodes.filter(function(d, i) {
+            return d.Label == "CorpName"
+          }).length
+        })
+        .style("color", color("CorpName"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "Resources: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "Resource"
+          }).length
+        })
+        .style("color", color("Resource"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "MeetNames: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "MeetName"
+          }).length
+        })
+        .style("color", color("MeetName"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "UniTitle: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "UniTitle"
+          }).length
+        })
+        .style("color", color("UniTitle"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "Topic Terms: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "TopicTerm"
+          }).length
+        })
+        .style("color", color("TopicTerm"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "Geo Locations: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "GeoName"
+          }).length
+        })
+        .style("color", color("GeoName"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "ChronTerms: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "ChronTerm"
+          }).length
+        })
+        .style("color", color("ChronTerm"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "GND Relations: " + graph.links.filter(function(d, i) {
+            return d.Source == "GND"
+          }).length
+        })
+        .style("color", edgeColors("GND"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "KPE Relations: " + graph.links.filter(function(d, i) {
+            return d.Source == "KPE"
+          }).length
+        })
+        .style("color", edgeColors("KPE"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "DNB Relations: " + graph.links.filter(function(d, i) {
+            return d.Source == "DNB"
+          }).length
+        })
+        .style("color", edgeColors("DNB"))
+        .classed("topicterm", true)
+
+      d3.select("#statsDiv")
+        .append("p")
+        .text(function() {
+          return "Computed Relations: " + graph.links.filter(function(d, i) {
+            return d.Source == "computed"
+          }).length
+        })
+        .style("color", edgeColors("computed"))
+        .classed("topicterm", true)
+
+
+
+
+
+
+
+
+
+    }
+
+
+    function ticked() {
+      if (simulation.alpha() < 0.05) {
+        simulation.stop()
+
+        d3.select("#load").style("display", "none");
+        d3.select("#loadbg").style("display", "none");
+
+        d3.selectAll(".link")
+          .attr("x1", function(d) {
+            return d.source.x + (window.innerWidth) / 2;
+          })
+          .attr("y1", function(d) {
+            return d.source.y + (window.innerHeight) / 2
+          })
+          .attr("x2", function(d) {
+            return d.target.x + (window.innerWidth) / 2;
+          })
+          .attr("y2", function(d) {
+            return d.target.y + (window.innerHeight) / 2
+          });
+
+        d3.selectAll(".nodes")
+          .attr("cx", function(d) {
+            return d.x + (window.innerWidth) / 2;
+          })
+          .attr("cy", function(d) {
+            return d.y + (window.innerHeight) / 2
+          });
+
+
+
+
+      }
+    }
+
+
+    function tickedUpdate() {
+      if (simulation.alpha() < 0.1) {
+        simulation.stop()
+
+        d3.selectAll(".link").transition().attr("x1", function(d) {
+            return d.source.x;
+          })
+          .attr("y1", function(d) {
+            return d.source.y;
+          })
+          .attr("x2", function(d) {
+            return d.target.x;
+          })
+          .attr("y2", function(d) {
+            return d.target.y;
+          });
+
+        d3.selectAll(".nodes").transition()
+          .attr("cx", function(d) {
+            return d.x;
+          })
+          .attr("cy", function(d) {
+            return d.y;
+          });
+
+
+
+
+      }
+    }
+
+
+
+
+
+    function mouseClick(D, I, XY) {
+      d3.select("#details").style("display", "none").selectAll("p").remove()
+      d3.select("#details").style("display", "none").selectAll("a").remove()
+      d3.select("#closedetails").style("display", "block")
+      d3.selectAll(".nodes").classed("filteredIn", false).classed("filteredOut", true) //.style("opacity", 0.1)
+
+
+      let allConnections = links.filter(function(E, G) {
+        return E.source.id == D.id ||
+          E.target.id == D.id
+      })
+
+
+      let connectedNodes = []
+
+
+
+      allConnections.forEach(function(E, G) {
+        d3.selectAll(".nodes").filter(function(X, Y) {
+            return X.id == E.source.id || X.id == E.target.id
+          }).classed("filteredIn", true).classed("filteredOut", false)
+          .each(function(X, Y) {
+            connectedNodes.push(
+              X.id
+            )
+          })
+
+
+        d3.selectAll(".nodes")
+          .filter(function(d, i) {
+            return D.id == d.id
+          }).classed("filteredIn", true).classed("filteredOut", false)
+
+
+      })
+
+
+
+
+      d3.selectAll(".link").style("opacity", 0)
+
+      d3.selectAll(".link")
+
+        .filter(function(E, G) {
+          return connectedNodes.filter(function(d) {
+            return d == E.source.id
+          }).length > 0 && connectedNodes.filter(function(d) {
+            return d == E.target.id
+          }).length > 0
+        })
+        .style("opacity", 1)
+
+
+      // ////only for topics and geo locatins
+      if (XY) {
+
+
+        overlay.append("circle").style("fill", color(D.Label)).attr("r", nodeSize(D.connectivity)).attr("cx", XY.x).attr("cy", XY.y)
+
+
+      }
+
+
+      d3.selectAll(".link").style("opacity", 0)
+      d3.selectAll(".link").filter(function(E, G) {
+        return E.source.id == D.id || E.target.id == D.id
+      }).style("opacity", 1)
+
+
+
+      d3.select("#details").style("display", "block")
+
+      Object.entries(D).forEach(entry => {
+        let key = entry[0];
+        let value = entry[1];
+
+        if (value != "" && value != null && key != "x" && key != "y" && key != "vx" && key != "vy" && key != "index" && key != "connectivity" && key != "connectivityPerCorp" && key != "DateApproxBegin2" && key != "DateApproxEnd2") {
+          if (key != "Uri") {
+            d3.select("#details").append("p").attr("class", "detail_key").text(key)
+            d3.select("#details").append("p").attr("class", "detail_value").text(value.replace(/;;;/g, "; "))
+          } else {
+            d3.select("#details").append("p").attr("class", "detail_key").text(key)
+            d3.select("#details").append("a").attr("href", value).attr("target", "_blank").attr("class", "detail_value").text(value.replace(/;;;/g, "; "))
+          }
+
+        }
+
+
+      });
+
+      d3.select("#details").append("p").attr("class", "relationsheadline, detail_key").text("Relations (" + D.connectivity + ")")
+      allConnections.forEach(function(connection, i) {
+
+        d3.select("#details").append("p").attr("class", "detail_value, relations_value").style("color", function() {
+
+
+          return edgeColors(connection.Source)
+        }).text(function() {
+          return connection.source.Name + " ↔ " + connection.target.Name + " (" + connection.type + ", " + connection.Source +
+            ", " + connection.SourceType + ", " + connection.TypeAddInfo + ", " + connection.TempValidity + ")"
+        })
+
+      })
+    }
+
+
+    function mouseOut(D, I) {
+      if (detailview != true) {
+        d3.select("#closedetails").style("display", "none")
+        d3.selectAll(".nodes").classed("filteredIn", true).classed("filteredOut", false)
+
+        d3.selectAll(".link").style("opacity", 1)
+
+
+        d3.select("#details").style("display", "none").selectAll("p").remove()
+      }
+    }
+
+    function idIndex(a, id) {
+      for (let i = 0; i < a.length; i++) {
+        if (a[i].id == id) {
+          return i
+        }
+      }
+      return null;
+    }
+  </script>
+
+</body>
+
+</html>

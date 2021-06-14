@@ -52,7 +52,7 @@ $.ajax({
 d3.v5.min.js → [D3.js](https://d3js.org/): data-driven visualization library based on JavaScript
 
 jquery.min.js → [jQuery](https://jquery.com/): JavaScript library
-  
+
 netClustering.js --> [netClustering](https://github.com/john-guerra/netClusteringJs): detects clusters in networks using the Clauset, Newman and Moore community detection algorithm
 
 
@@ -76,7 +76,7 @@ The visualization concepts in SoNAR(IDH) were developed iteratively and included
 
 ### 04: Scrolling through time
 <img src="/img/09.jpg" width="150" heigth="150">
-<a href="https://sonar.fh-potsdam.de/demos/05_clusterAlgorithm.html">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/demo04">[Code]</a>
+<a href="https://sonar.fh-potsdam.de/demos/demo04/">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/demo04">[Code]</a>
 
 ### 05: Temporal network cascade by communities
 <img src="/img/11.jpg" width="150" heigth="150">

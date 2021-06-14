@@ -59,7 +59,7 @@ d3-weighted-voronoi.js and d3-voronoi-map.js -->
 
 
 ## Experimental prototypes
-The visualization concepts in SoNAR(IDH) were developed iteratively and included many small and experimental prototypes that were not created with the approach the data, open up new pathways, to find problems or challenges with the data, or to communicate with our project partners and domain experts for historical network analysis. The following list displays and links to code of selected results:
+The visualization concepts in SoNAR(IDH) were developed iteratively and included many small and experimental prototypes that were not created with the approach the data, open up new pathways, to find problems or challenges with the data, or to communicate with our project partners and domain experts for historical network analysis. The following list displays and links to code of selected results (note: the code is not yet fully cleaned/commented):
 
 ### 01: Unfolding Edges
 <img src="/img/03.jpg" width="150" heigth="150">

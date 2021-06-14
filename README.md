@@ -55,6 +55,8 @@ jquery.min.js → [jQuery](https://jquery.com/): JavaScript library
 
 netClustering.js --> [netClustering](https://github.com/john-guerra/netClusteringJs): detects clusters in networks using the Clauset, Newman and Moore community detection algorithm
 
+d3-weighted-voronoi.js and d3-voronoi-map.js -->
+
 
 ## Experimental prototypes
 The visualization concepts in SoNAR(IDH) were developed iteratively and included many small and experimental prototypes that were not created with the approach the data, open up new pathways, to find problems or challenges with the data, or to communicate with our project partners and domain experts for historical network analysis. The following list displays and links to code of selected results:
@@ -84,7 +86,7 @@ The visualization concepts in SoNAR(IDH) were developed iteratively and included
 
 ### 06: Topic term by year using a voronoi diagram
 <img src="/img/13.jpg" width="150" heigth="150">
-<a href="https://sonar.fh-potsdam.de/demos/jul2020/jobs_by-year_voronoi.html">[Demo]</a>[Code]
+<a href="https://sonar.fh-potsdam.de/demos/jul2020/jobs_by-year_voronoi.html">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/demo06">[Code]</a>
 
 ### 07: Data exploration tool v.1
 <img src="/img/14.jpg" width="150" heigth="150">

@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>SonAR Overview</title>
+  <meta name="description" content="SoNAR Overview">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+  <script src="https://d3js.org/d3.v5.min.js" charset="utf-8"></script>
+  <script src="https://rawcdn.githack.com/Kcnarf/d3-weighted-voronoi/v1.0.0/build/d3-weighted-voronoi.js"></script>
+  <script src="https://raw.githack.com/Kcnarf/d3-voronoi-map/master/build/d3-voronoi-map.js"></script>
+  <style>
+    body {
+      background-color: white;
+      font-family: 'Noto Serif', serif;
+    }
+
+
+    text.tiny {
+      font-size: 10pt;
+    }
+
+    text.light {
+      fill: lightgrey
+    }
+
+
+    .cell {
+      stroke: white;
+      stroke-width: 1px;
+    }
+
+
+    .label {
+      fill: lightgrey;
+      text-anchor: middle;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+
+    div.tooltip {
+      position: absolute;
+      text-align: left;
+      width: auto;
+      height: auto;
+      margin: 2;
+      padding: 2px;
+      font: 10px sans-serif;
+      background: white;
+      color: black;
+      border: 0px;
+      border-radius: 8px;
+      pointer-events: none;
+    }
+
+    div.tooltip p {
+      margin: 5px;
+      padding: 0;
+    }
+
+    #vis {
+      position: fixed;
+    }
+
+
+    #timelineDiv {
+
+      position: absolute;
+      right: 10px;
+      top: 0px;
+      height: 100%;
+      text-align: right;
+    }
+
+    #yearSlider {
+      background-color: white;
+      position: absolute;
+      right: 40px;
+      top: 100px;
+      vertical-align: middle;
+      height: 100%;
+      text-align: center;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: slider-vertical;
+      height: 600px;
+      direction: ltr;
+    }
+  </style>
+</head>
+
+<body>
+  <svg id="vis">
+    <defs>
+      <filter id="inset-shadow">
+        <feGaussianBlur stdDeviation="5" result="offset-blur"></feGaussianBlur>
+        <!-- Shadow Blur -->
+        <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse"></feComposite>
+        <!-- Invert the drop shadow to create an inner shadow -->
+        <feFlood flood-color="black" flood-opacity="1" result="color"></feFlood> <!-- Color & Opacity -->
+        <feComposite operator="in" in="color" in2="inverse" result="shadow"></feComposite>
+        <!-- Clip color inside shadow -->
+        <feComponentTransfer in="shadow" result="shadow">
+          <!-- Shadow Opacity -->
+          <feFuncA type="linear" slope=".75"></feFuncA>
+        </feComponentTransfer>
+        <feComposite operator="over" in="shadow" in2="SourceGraphic"></feComposite>
+        <!-- Put shadow over original object -->
+      </filter>
+    </defs>
+  </svg>
+
+
+  <div id="timelineDiv"><svg id="timelineSVG" width="200"> </svg></div>
+  <div id="yearSlider">
+    <div class="range-slider">
+      <input class="input-range" orient="vertical" type="range" step="25" value="1925" min="100" max="2000">
+      <p class="range-value"></p>
+    </div>
+  </div>
+
+  <script>
+    let range = d3.select(".input-range")
+    let value = d3.select(".range-value")
+
+    value.html(range.attr('value'));
+
+
+
+
+    var div = d3.select("body").append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0);
+
+    div.append("p")
+
+    //begin: constants
+    const _2PI = 2 * Math.PI;
+    //end: constants
+
+    //begin: raw data global def
+    let totalCount = 0
+    //end: raw data global def
+
+    //begin: data-related utils
+    function valueAccessor(d) {
+      return d.value;
+    };
+
+    //end: data-related utils
+
+    //begin: layout conf.
+    var svgWidth = 1600,
+      svgHeight = 800,
+      margin = {
+        top: 10,
+        right: 10,
+        bottom: 10,
+        left: 10
+      },
+      height = svgHeight - margin.top - margin.bottom,
+      width = svgWidth - margin.left - margin.right,
+      halfWidth = width / 2,
+      halfHeight = height / 2,
+      quarterWidth = width / 4,
+      quarterHeight = height / 4,
+      titleY = 20,
+      TreemapCenter = [svgWidth / 2, svgHeight / 2]
+    //end: layout conf.
+
+
+    let windowWidth = window.innerWidth - 2 * margin.left
+    let windowHeight = window.innerHeight - 2 * margin.top
+
+    let timelineVis = d3.select("#timelineSVG").style("height", windowHeight)
+    let timelineData = []
+
+    for (i = 100; i < 2100; i += 25) {
+      timelineData[i] = {},
+        timelineData[i]["date"] = i
+      timelineData[i]["countPerson"] = 0
+      timelineData[i]["countResource"] = 0
+    }
+
+
+    //begin: treemap conf.
+    let baseRadius = 100
+    let Radius
+    let CirclingPolygon
+    let Polygons
+    //end: treemap conf.
+
+    let top200Value = 0
+    let otherValue = 0
+    let totalValue = 0
+
+
+    const formatComma = d3.format(",")
+
+    const radiusScale = d3.scaleSqrt()
+      .domain([0, 500000])
+      .range([100, 300])
+
+    const colorScale = d3.scaleOrdinal()
+      .range(["#f0f9e8", "#ccebc5", "#a8ddb5", "#7bccc4", "#4eb3d3", "#2b8cbe", "#08589e"])
+
+    //begin: reusable d3Selection
+    var svg, drawingArea, categoryContainer;
+    //end: reusable d3Selection
+
+    d3.csv("berufe_long.csv").then(function(data) {
+      data.forEach(function(d) {
+        d.entityName = d.entityName;
+        d.value = +d.value;
+        d.year = +d.year;
+
+        totalCount += d.value;
+
+        //console.log(d.year)
+        timelineData[d.year]["countPerson"] += d.value
+
+
+        return d;
+      });
+
+
+      let yearSelected, selectionData, selectionDataState
+
+      range.on('change', function() {
+        value.html(this.value);
+        updateData(data)
+
+      });
+
+      updateData(data)
+
+      function updateData(data, i) {
+
+        baseRadius = 100
+        Radius
+        CirclingPolygon
+        Polygons
+        //end: treemap conf.
+
+        top200Value = 0
+        otherValue = 0
+        totalValue = 0
+
+
+        yearSelected = d3.select(".range-value").text()
+        //  console.log(d3.select(".range-value").text())
+
+        selectionData = data.filter(function(d) {
+          return d.year == yearSelected && d.value != ""
+        })
+
+
+        selectionDataState = selectionData.sort((a, b) => d3.descending(a.value, b.value)).slice(0)
+
+
+
+        selectionDataState.forEach(function(d, i) {
+          totalValue += d.value
+          if (i < 200) {
+            top200Value += d.value
+            d.show = true
+          } else {
+            otherValue += d.value
+            d.show = false
+          }
+        })
+
+
+        selectionDataState.push({
+          entityName: "Sonstige",
+          value: otherValue,
+          show: true,
+          year: yearSelected
+
+        })
+
+        initData(data);
+
+
+        console.log(selectionDataState)
+
+
+        Simulation = d3.voronoiMapSimulation(selectionDataState.filter(function(d, i) {
+            return d.show == true
+          }))
+          .clip(CirclingPolygon)
+          .weight(function(d) {
+            return d.value
+          })
+          .initialPosition(d3.voronoiMapInitialPositionPie().startAngle(-Math.PI * 3 / 5))
+          .on("tick", function() {
+            Polygons = Simulation.state().polygons;
+            if (Simulation.state().ended == true) {
+              updateTreemap()
+              console.log("yay")
+            }
+          })
+
+
+      }
+
+
+
+      initLayout();
+
+
+
+
+
+      Simulation = d3.voronoiMapSimulation(selectionDataState.filter(function(d, i) {
+          return d.show == true
+        }))
+        .clip(CirclingPolygon)
+        .weight(function(d) {
+          return d.value
+        })
+        .initialPosition(d3.voronoiMapInitialPositionPie().startAngle(-Math.PI * 3 / 5))
+        .on("tick", function() {
+          Polygons = Simulation.state().polygons;
+          if (Simulation.state().ended == true) {
+            drawTreemap()
+          }
+        })
+
+    });
+
+
+
+
+    function initData(data) {
+      Radius = radiusScale(totalValue)
+      CirclingPolygon = computeCirclingPolygon(Radius);
+    }
+
+    function computeCirclingPolygon(radius) {
+      var points = 60,
+        increment = _2PI / points,
+        circlingPolygon = [];
+
+      for (var a = 0, i = 0; i < points; i++, a += increment) {
+        circlingPolygon.push(
+          [radius * Math.cos(a), radius * Math.sin(a)]
+        )
+      }
+
+      return circlingPolygon;
+    };
+
+    function initLayout() {
+      svg = d3.select("svg")
+        .attr("width", svgWidth)
+        .attr("height", svgHeight);
+
+      drawingArea = svg.append("g")
+        .classed("drawingArea", true)
+        .attr("transform", "translate(" + [margin.left, margin.top] + ")");
+
+      categoryContainer = drawingArea.append("g")
+        .classed("container", true)
+        .attr("transform", "translate(" + TreemapCenter + ")");
+
+      categoryContainer.append("text")
+        .classed("label", true)
+        .attr("transform", "translate(0," + (-Radius - 6) + ")")
+        .text("Persons by Topic Term (" + formatComma(totalValue) + ")");
+
+      categoryContainer.append("g")
+        .classed('cells', true);
+
+
+    }
+
+
+
+    function updateTreemap() {
+      var container, polygons, costAccessor, totalCount, totalCountRotation;
+
+      container = categoryContainer;
+      polygons = Polygons;
+      costAccessor = valueAccessor;
+
+
+
+      svg.select(".drawingArea")
+        .transition()
+        .attr("transform", "translate(" + [margin.left, margin.top] + ")");
+
+      categoryContainer.select(".container")
+        .transition()
+        .attr("transform", "translate(" + TreemapCenter + ")");
+
+      categoryContainer.select(".label")
+        .transition()
+        .attr("transform", "translate(0," + (-Radius - 6) + ")")
+        .text("Persons by Topic Term (" + formatComma(totalValue) + ")");
+
+
+
+      var cells = container.select(".cells")
+        .selectAll(".cell")
+        .data(polygons);
+
+      cells.join("path")
+        .classed("cell", true)
+        .merge(cells)
+        //.transition()
+        //.attr("filter", "url(#inset-shadow)")
+        .transition()
+        .attr("d", function(d) {
+          return "M" + d.join(",") + "z";
+        })
+        .style("fill", function(d) {
+          if ((d.site.originalObject.data.originalData.entityName).endsWith("in") == false && d.site.originalObject.data.originalData.entityName != "Sonstige") {
+            return colorScale(d.site.originalObject.data.originalData.entityName)
+          } else if ((d.site.originalObject.data.originalData.entityName).endsWith("in") == true) {
+            return "rgb(250, 160, 55)"
+          } else if (d.site.originalObject.data.originalData.entityName == "Sonstige") {
+            return "rgb(217, 217, 217)"
+          }
+          //		return d.site.originalObject.data.originalData.color;
+        })
+
+      d3.selectAll(".cell").on("mouseover", function(d, i) {
+          div.select("p")
+            .text(d.site.originalObject.data.originalData.entityName + ": " + d.site.originalObject.data.originalData.value)
+            .style("font-weight", "bold")
+
+          div.style("opacity", .9)
+
+        })
+        .on("mousemove", function(d, i) {
+
+          div
+            .style("left", (d3.event.pageX + 5) + "px")
+            .style("top", (d3.event.pageY - 5) + "px");
+        })
+        .on("mouseout", function(d) {
+          d3.selectAll(".link").style("opacity", 0.2)
+
+          div.style("opacity", 0);
+        });
+
+
+
+    }
+
+
+
+
+
+    function drawTreemap() {
+      var container, polygons, costAccessor, totalCount, totalCountRotation;
+
+      container = categoryContainer;
+      polygons = Polygons;
+      costAccessor = valueAccessor;
+
+      var cells = container.select(".cells")
+        .selectAll(".cell")
+        .data(polygons);
+
+      cells.enter()
+        .append("path")
+        .classed("cell", true)
+        .merge(cells)
+        //  .attr("filter", "url(#inset-shadow)")
+        .attr("d", function(d) {
+          return "M" + d.join(",") + "z";
+        })
+        .style("fill", function(d) {
+          if ((d.site.originalObject.data.originalData.entityName).endsWith("in") == false && d.site.originalObject.data.originalData.entityName != "Sonstige") {
+            return colorScale(d.site.originalObject.data.originalData.entityName)
+          } else if ((d.site.originalObject.data.originalData.entityName).endsWith("in") == true) {
+            return "rgb(250, 160, 55)"
+          } else if (d.site.originalObject.data.originalData.entityName == "Sonstige") {
+            return "rgb(217, 217, 217)"
+          }
+          //		return d.site.originalObject.data.originalData.color;
+        })
+        .on("mouseover", function(d, i) {
+          div.select("p")
+            .text(d.site.originalObject.data.originalData.entityName + ": " + d.site.originalObject.data.originalData.value)
+            .style("font-weight", "bold")
+
+          div.style("opacity", .9)
+
+        })
+        .on("mousemove", function(d, i) {
+
+          div
+            .style("left", (d3.event.pageX + 5) + "px")
+            .style("top", (d3.event.pageY - 5) + "px");
+        })
+        .on("mouseout", function(d) {
+          d3.selectAll(".link").style("opacity", 0.2)
+
+          div.style("opacity", 0);
+        });
+
+
+
+    }
+  </script>
+</body>
+
+</html>

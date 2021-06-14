@@ -1,0 +1,524 @@
+<!-- Experiment created in the context of the project SoNAR(IDH) (sonar.fh-potsdam.de) by Mark-Jan BLudau (@markiaaan)-->
+<html>
+
+<head>
+  <title>Graph2Timeline</title>
+  <meta charset="utf-8">
+
+
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: rgb(10, 3, 36);
+      color: white;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    h1 {
+      position: absolute;
+      font-weight: lighter;
+      font-size: 30px;
+      letter-spacing: 5px;
+      margin-top: 20px;
+      margin-bottom: 5px;
+      margin-left: 20px;
+      text-align: left;
+      text-transform: uppercase;
+      pointer-events: none;
+      z-index: 20;
+    }
+
+
+    a:link {
+      color: white;
+      text-decoration: underline;
+    }
+
+    a:visited {
+      color: white;
+      text-decoration: underline;
+    }
+
+    a:hover {
+      color: white;
+      text-decoration: none;
+    }
+
+    a:active {
+      color: white;
+      text-decoration: underline;
+    }
+
+    #buttons {
+      position: absolute;
+      margin-top: 70px;
+      margin-left: 20px;
+      z-index: 500;
+      width: 250px;
+      text-align: left;
+      pointer-events: none;
+    }
+
+    .switchButton {
+      pointer-events: all;
+    }
+
+    button {
+      background-color: white;
+      border: none;
+      color: black;
+      padding: 5px 5px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    #details {
+      background-color: rgba(50, 50, 50, 0.63);
+      margin: 0px;
+      font-size: 0.8em;
+      position: fixed;
+      overflow-y: auto;
+      top: 0;
+      right: 0;
+      width: 400px;
+      height: 100%;
+      display: none;
+      text-align: left;
+      padding: 20px;
+      z-index: 10;
+    }
+
+    #graph {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      cursor: move;
+      z-index: 1;
+    }
+
+    #closedetails {
+      position: fixed;
+      right: 10;
+      top: 0;
+      font-size: 30;
+      color: white;
+      cursor: pointer;
+      display: none;
+      z-index: 30;
+    }
+
+
+    .detail_key {
+      font-weight: normal;
+      color: grey;
+      margin-bottom: 0;
+    }
+
+    .detail_value {
+      margin-top: 0;
+      font-weight: bold;
+      color: white;
+    }
+
+    .relations_value {
+      margin-top: 0;
+      margin-bottom: 5;
+      font-weight: bold;
+    }
+  </style>
+
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+
+  <!-- netClustering.js (https://github.com/john-guerra/netClusteringJs) allows you to detect clusters in networks using the Clauset, Newman and Moore community detection algorithm directly from the browser -->
+  <script src="https://unpkg.com/netclustering@0.0.3/dist/netClustering.js"></script>
+
+
+</head>
+
+<body>
+
+  <svg id="graph"></svg>
+  <div id="details"></div>
+  <p id="closedetails">✕</p>
+
+  <h1>SONAR–Graph2Timeline</h1>
+
+  <div id="buttons">
+    <button class="switchButton" onclick="morphToTimeline();">timeline</button>
+    <button class="switchButton" onclick="morphToGraph();">graph</button>
+  </div>
+
+
+  <script type="text/javascript">
+    const margin = 20
+    let windowWidth = window.innerWidth - 2 * margin
+    let windowHeight = window.innerHeight - 2 * margin
+
+    let graph
+
+    let detailview = false;
+
+
+    ///scale for the nodes
+    const nodeSize = d3.scaleLinear()
+      .domain([1, 40])
+      .range([5, 18]);
+
+    ///colors for potential varying edge categories
+    const edgeColors = d3.scaleOrdinal()
+      .domain(["a", "b", "c"])
+      .range(["rgb(135, 179, 237)", "rgb(255, 212, 226)", "rgb(123, 236, 161)"])
+
+    ///some potential colors for communities identfied by the community algorithm
+    const clusterColor = d3.scaleOrdinal(["rgb(0, 232, 255)", "rgb(255, 0, 199)", "rgb(255, 252, 0)", "rgb(46, 2117, 119)", "rgb(255, 122, 0)", "rgb(175, 68, 255)", "rgb(3, 82, 252)", "rgb(194, 252, 3)", "rgb(255, 255, 255)"]);
+
+
+    const temporalScale = d3.scaleLinear()
+      .domain([1600, 1950])
+      .range([0, window.innerWidth - 100]);
+
+    const svg = d3.select("#graph")
+      .attr("preserveAspectRatio", "xMidYMid")
+      .attr("viewBox", "0 0 " + windowWidth + " " + windowHeight)
+      .call(d3.zoom()
+        .scaleExtent([1 / 4, 3])
+        .on("zoom", zoomed))
+
+    const svgG = svg.append("g").attr("class", "svgG")
+    const link = svgG.append("g").attr("class", "linkG")
+    const node = svgG.append("g").attr("class", "nodeG")
+
+
+
+    function zoomed() {
+      svgG.attr("transform", d3.event.transform);
+    }
+
+
+
+
+    Promise.all([
+        d3.csv("les_mis_nodes.csv"), ///modified les miserables data. I randomly added values for dateStart & dateEnd for the timeline example
+        d3.csv("les_mis_edges.csv")
+      ])
+      .then(([nodes, edges]) => {
+
+        nodes.forEach(function(d, i) {
+          d.dateStart = +d.dateStart;
+          d.dateEnd = +d.dateEnd;
+        })
+
+        graph = {
+          nodes: nodes,
+          links: edges
+        }
+
+        renderNetwork()
+
+      })
+
+
+    ///force simulation
+    const simulation = d3.forceSimulation()
+      .force("link", d3.forceLink().id(function(d, i) {
+        return d.id;
+      }))
+      .force("charge", d3.forceManyBody())
+      .force('collision', d3.forceCollide())
+      .force("center", d3.forceCenter(windowWidth / 2, windowHeight / 2));
+
+
+    ///function to render the graph
+    function renderNetwork() {
+      detailview = false;
+
+      simulation.alpha(1).restart();
+
+
+      simulation
+        .nodes(graph.nodes)
+        .on("tick", ticked);
+
+      simulation
+        .force("link")
+        .links(graph.links);
+
+
+      link.selectAll(".link")
+        .data(graph.links)
+        .join("path")
+        .style("fill", "none")
+        .attr("stroke-width", 1)
+        .attr("class", "link")
+        .style("stroke", function(d, i) {
+          return edgeColors(d.relationType)
+        })
+        .style("opacity", 0.3)
+
+
+
+      node.selectAll("rect")
+        .data(graph.nodes)
+        .join("rect")
+        .attr("class", "nodes")
+        .style("stroke", "rgb(10, 3, 36)")
+        .style("stroke-width", .5)
+        .attr("width", function(d) {
+
+          // add connectivity value for data here by counting the numbers of links for each node
+          d.connectivity = graph.links.filter(function(l) {
+            return l.source.id == d.id || l.target.id == d.id
+          }).length
+
+          return nodeSize(d.connectivity)
+        })
+        .attr("height", function(d, i) {
+          return nodeSize(d.connectivity)
+        })
+        .on("mouseover", function(d, i) {
+          if (detailview == false) {
+            mouseClick(d, i)
+          }
+        })
+        .on("click", function(d, i) {
+          detailview = true;
+          mouseClick(d, i)
+        })
+        .on("mouseout", function(d, i) {
+          mouseOut(d, i)
+        })
+
+      d3.selectAll("#closedetails")
+        .on("click", function(d, i) {
+
+          d3.select("#details")
+            .style("display", "none")
+            .selectAll("p")
+            .remove()
+
+          detailview = false;
+          mouseOut(d, i)
+        })
+    }
+
+
+    /////////////////////////////////
+    //ticked function
+
+
+    function ticked() {
+      if (simulation.alpha() < 0.01) {
+        simulation.stop()
+
+
+        //after simulation has cooled down use netclustering to identify clusters in the data. each node will get assigned a cluster property after that
+        netClustering.cluster(graph.nodes, graph.links);
+
+        graph.nodes.sort(function(a, b) {
+          return a.cluster - b.cluster || a.dateStart - b.dateStart
+        });
+
+        ///order nodes by time and assigne an index for that for later use
+        graph.nodes.forEach(function(d, i) {
+          d.temporalIndex = i;
+        })
+
+
+        d3.selectAll(".link")
+          .transition()
+          .duration(2000)
+          .attr("d", function(d) {
+            let arcRadius = 100 //defines curvature of the links
+
+            return "M" + d.source.x + "," + d.source.y + "A" + arcRadius + "," + arcRadius + " 0 0,1 " + d.target.x + "," + d.target.y
+          })
+
+
+        d3.selectAll(".nodes")
+          .attr("x", function(d) {
+            return d.x - nodeSize(d.connectivity) / 2;
+          })
+          .attr("y", function(d) {
+            return d.y - nodeSize(d.connectivity) / 2;
+          })
+          .style("fill", function(d) {
+            return clusterColor(d.cluster);
+          })
+
+      }
+    }
+
+
+
+    /////////////////////////////////
+    //morph to graph function
+
+    function morphToGraph() {
+      d3.selectAll(".link").transition().duration(2000).attr("d", function(d) {
+        let arcRadius = 100 //defines curvature of the links
+
+        return "M" + d.source.x + "," + d.source.y + "A" + arcRadius + "," + arcRadius + " 0 0,1 " + d.target.x + "," + d.target.y
+      })
+
+
+      d3.selectAll(".nodes").transition().duration(2000)
+        .attr("x", function(d) {
+          return d.x - nodeSize(d.connectivity) / 2;
+        })
+        .attr("y", function(d) {
+          return d.y - nodeSize(d.connectivity) / 2;
+        })
+        .attr("width", function(d, i) {
+          return nodeSize(d.connectivity)
+        })
+        .attr("height", function(d, i) {
+          return nodeSize(d.connectivity)
+        })
+        .style("display", null)
+
+    }
+
+    /////////////////////////////////
+    //morph to timeline function
+
+    function morphToTimeline() {
+
+      d3.selectAll(".nodes")
+        .style("display", function(d) {
+          if (d.dateStart == undefined) {
+            return "none"
+          }
+        })
+        .transition()
+        .duration(2000)
+        .attr("x", function(d) {
+          return temporalScale(d.dateStart)
+        })
+        .attr("y", function(d, i) {
+          return (25 * d.temporalIndex)
+        })
+        .attr("width", function(d) {
+          return temporalScale(d.dateEnd) - temporalScale(d.dateStart)
+        })
+
+
+      d3.selectAll(".link")
+        .transition()
+        .duration(2000)
+        .attr("d", function(d) {
+          let arcRadius = 2
+
+          let nodeAx = temporalScale(d.source.dateStart)
+          let nodeAI = graph.nodes.filter(function(D, I) {
+            return D.id == d.source.id
+          })[0].temporalIndex
+
+          let nodeBx = temporalScale(d.target.dateStart)
+          let nodeBI = graph.nodes.filter(function(D, I) {
+            return D.id == d.target.id
+          })[0].temporalIndex
+
+          if (nodeAI < nodeBI) {
+            return "M" + nodeBx + "," + 25 * nodeBI + "A" + arcRadius + "," + arcRadius + " 0 0,1 " + nodeAx + "," + 25 * nodeAI
+          } else {
+            return "M" + nodeAx + "," + 25 * nodeAI + "A" + arcRadius + "," + arcRadius + " 0 0,1 " + nodeBx + "," + 25 * nodeBI
+          }
+        })
+    }
+
+
+
+    /////////////////////////////////
+    //mouseclick & mouseover function
+
+    function mouseClick(D, I) {
+      d3.select("#details").style("display", "none").selectAll("p").remove()
+      d3.select("#details").style("display", "none").selectAll("a").remove()
+      d3.select("#closedetails").style("display", "block")
+      d3.selectAll(".nodes").style("opacity", 0.1)
+
+      //identify connected nodes
+      let connections = graph.links.filter(function(E, G) {
+        return E.source.id == D.id ||
+          E.target.id == D.id
+      })
+
+      //highlight connected ndoes
+      connections.forEach(function(E, G) {
+        d3.selectAll(".nodes").filter(function(X, Y) {
+          return X.id == E.source.id || X.id == E.target.id
+        }).style("opacity", 1)
+
+        d3.selectAll(".nodes")
+          .filter(function(d, i) {
+            return D.id == d.id
+          })
+          .style("opacity", 1)
+
+      })
+
+      //highlight edges to connected nodes
+      d3.selectAll(".link").style("opacity", 0.1)
+      d3.selectAll(".link").filter(function(E, G) {
+        return E.source.id == D.id || E.target.id == D.id
+      })
+      .style("opacity", 1)
+
+
+      d3.select("#details").style("display", "block")
+
+      //fill detail view on right side with information
+      Object.entries(D).forEach(entry => {
+        console.log(entry)
+        let key = entry[0]
+        let value = entry[1]
+
+        d3.select("#details")
+          .append("p")
+          .attr("class", "detail_key")
+          .text(key)
+
+        d3.select("#details")
+          .append("p")
+          .attr("class", "detail_value")
+          .text(value)
+
+      });
+
+      d3.select("#details")
+        .append("p")
+        .attr("class", "relationsheadline, detail_key")
+        .text("Relations (" + D.connectivity + ")")
+
+      connections.forEach(function(connection, i) {
+        d3.select("#details")
+          .append("p")
+          .attr("class", "detail_value, relations_value")
+          .style("color", function() {
+            return edgeColors(connection.relationType)
+          }).text(function() {
+            return connection.source.id + " ↔ " + connection.target.id + " (" + connection.relationType + ")"
+          })
+      })
+    }
+
+    /////////////////////////////////
+    //mouseout function
+
+    function mouseOut(D, I) {
+      if (detailview != true) {
+        d3.select("#closedetails").style("display", "none")
+        d3.selectAll(".nodes").style("opacity", 1)
+        d3.selectAll(".link").style("opacity", 0.3)
+        d3.select("#details").style("display", "none").selectAll("p").remove()
+      }
+    }
+  </script>
+
+</body>
+
+</html>

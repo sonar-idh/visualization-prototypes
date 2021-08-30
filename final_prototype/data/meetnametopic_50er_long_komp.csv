@@ -1,0 +1,1711 @@
+entityName,year,value
+Synode,1000,1.0
+Synode,1050,1.0
+Reichstag,1050,1.0
+Synode,1100,1.0
+Synode,1150,1.0
+Reichstag,1150,1.0
+Synode,1200,1.0
+Konzil,1200,1.0
+Synode,1250,1.0
+Synode,1300,1.0
+Hanse,1350,1.0
+Versammlung,1350,1.0
+Synode,1400,3.0
+Reichstag,1400,4.0
+Konzil,1400,2.0
+Hanse,1400,1.0
+Versammlung,1400,1.0
+Landtag,1400,1.0
+Synode,1450,1.0
+Reichstag,1450,11.0
+Konzil,1450,1.0
+Landtag,1450,1.0
+Buchmesse,1450,1.0
+Kreuzzüge,1450,1.0
+Diözesansynode,1450,1.0
+Synode,1500,3.0
+Reichstag,1500,17.0
+Konzil,1500,2.0
+Landtag,1500,2.0
+Diözesansynode,1500,1.0
+Religionsgespräch,1500,3.0
+Reformation,1500,3.0
+Tridentinische Reform,1500,1.0
+Provinzialsynode,1500,1.0
+Berner Synodus,1500,1.0
+Synode,1550,4.0
+Reichstag,1550,7.0
+Versammlung,1550,1.0
+Landtag,1550,2.0
+Diözesansynode,1550,4.0
+Provinzialsynode,1550,4.0
+Augsburger Religionsfriede,1550,1.0
+Schützenfest,1550,1.0
+Erbsünde,1550,1.0
+Kurfürst,1550,1.0
+Synode,1600,9.0
+Reichstag,1600,3.0
+Hanse,1600,1.0
+Versammlung,1600,1.0
+Diözesansynode,1600,5.0
+Fest,1600,2.0
+Dreißigjähriger Krieg,1600,1.0
+Jahrmarkt,1600,1.0
+Viehmarkt,1600,1.0
+Reformierte Kirche,1600,1.0
+Synode,1650,1.0
+Reichstag,1650,1.0
+Buchmesse,1650,2.0
+Diözesansynode,1650,11.0
+Religionsgespräch,1650,1.0
+Provinzialsynode,1650,1.0
+Fest,1650,1.0
+Synode,1700,1.0
+Landtag,1700,1.0
+Diözesansynode,1700,4.0
+Provinzialsynode,1700,5.0
+Nationalkonzil,1700,1.0
+Synode,1750,1.0
+Diözesansynode,1750,3.0
+Provinzialsynode,1750,1.0
+Fest,1750,2.0
+Expedition,1750,2.0
+Passionsspiel,1750,2.0
+Veranstaltung,1750,1.0
+Rastatter Gesandtenmord,1750,1.0
+Erkenntnistheorie,1750,1.0
+Koalitionskrieg,1750,1.0
+Wettbewerb,1750,1.0
+Friedenskonferenz,1750,1.0
+Synode,1800,1.0
+Landtag,1800,1.0
+Diözesansynode,1800,8.0
+Provinzialsynode,1800,8.0
+Fest,1800,1.0
+Veranstaltung,1800,1.0
+Musikfestspiel,1800,5.0
+Musikveranstaltung,1800,5.0
+Kongress,1800,5.0
+Volksfest,1800,3.0
+Messe,1800,3.0
+Industrieausstellung,1800,2.0
+Germanistik,1800,2.0
+Politische Feier,1800,2.0
+Salon,1800,2.0
+Katholikentag,1800,2.0
+Winzerfest,1800,1.0
+Naturwissenschaftliche Gesellschaft,1800,1.0
+Landwirtschaftsfest,1800,1.0
+Internationale Politik,1800,1.0
+Kirchenfest,1800,1.0
+Konferenz,1800,1.0
+Festumzug,1800,1.0
+Bischofskonferenz,1800,1.0
+Turnfest,1800,1.0
+Landbau,1800,1.0
+Synode,1850,8.0
+Konzil,1850,1.0
+Versammlung,1850,1.0
+Diözesansynode,1850,21.0
+Provinzialsynode,1850,58.0
+Nationalkonzil,1850,2.0
+Expedition,1850,3.0
+Passionsspiel,1850,4.0
+Veranstaltung,1850,1.0
+Musikfestspiel,1850,6.0
+Musikveranstaltung,1850,4.0
+Kongress,1850,14.0
+Volksfest,1850,1.0
+Messe,1850,9.0
+Industrieausstellung,1850,4.0
+Politische Feier,1850,1.0
+Salon,1850,3.0
+Katholikentag,1850,3.0
+Kirchenfest,1850,1.0
+Konferenz,1850,6.0
+Festumzug,1850,2.0
+Turnfest,1850,6.0
+Landbau,1850,1.0
+Internationale Ausstellung,1850,23.0
+Kunstausstellung,1850,16.0
+Ausstellung,1850,16.0
+Landesausstellung,1850,7.0
+Schach,1850,7.0
+Plenarkonzil,1850,6.0
+Parteitag,1850,5.0
+Kunsthandwerk,1850,5.0
+Verkaufsausstellung,1850,4.0
+Internationale Sportveranstaltung,1850,4.0
+Sportveranstaltung,1850,4.0
+Landwirtschaftsausstellung,1850,3.0
+Elektrotechnik,1850,3.0
+Politik,1850,2.0
+Architektur,1850,2.0
+Gartenbauausstellung,1850,2.0
+Schießsport,1850,2.0
+Lehrer,1850,2.0
+Internationaler Kongress,1850,2.0
+Hygiene,1850,2.0
+Schachturnier,1850,2.0
+Wissenschaftliches Instrument,1850,1.0
+Recht,1850,1.0
+Wanderverein,1850,1.0
+Elektrifizierung,1850,1.0
+Diözesanverein,1850,1.0
+Weltumsegelung,1850,1.0
+Elektrizität,1850,1.0
+Balkanfrage,1850,1.0
+Laienapostolat,1850,1.0
+Wild west show,1850,1.0
+Design,1850,1.0
+Nationalbewusstsein,1850,1.0
+Literaturwettbewerb,1850,1.0
+Feuerwehrfest,1850,1.0
+Kunst,1850,1.0
+Kunstwettbewerb,1850,1.0
+Rettungswesen,1850,1.0
+Demographie,1850,1.0
+Mathematik,1850,1.0
+Novara,1850,1.0
+Sport,1850,1.0
+Kirchliches Lehramt,1850,1.0
+Bibliografie,1850,1.0
+Eintagesrennen,1850,1.0
+Friedenskongress,1850,1.0
+Fächer,1850,1.0
+Geografie,1850,1.0
+Fischerei,1850,1.0
+Internationale Konferenz,1850,1.0
+Partikularsynode,1850,1.0
+Musterschutz,1850,1.0
+Katholizismus,1850,1.0
+Sklaverei,1850,1.0
+Patentschutz,1850,1.0
+Christliche Kunst,1850,1.0
+Internationale Veranstaltung,1850,1.0
+Adventisten,1850,1.0
+Hauptversammlung,1850,1.0
+Arktisforschung,1850,1.0
+Synode,1900,10.0
+Landtag,1900,1.0
+Buchmesse,1900,3.0
+Diözesansynode,1900,19.0
+Provinzialsynode,1900,4.0
+Schützenfest,1900,1.0
+Fest,1900,3.0
+Expedition,1900,4.0
+Passionsspiel,1900,5.0
+Veranstaltung,1900,11.0
+Friedenskonferenz,1900,2.0
+Musikfestspiel,1900,46.0
+Musikveranstaltung,1900,11.0
+Kongress,1900,83.0
+Volksfest,1900,10.0
+Messe,1900,20.0
+Industrieausstellung,1900,7.0
+Katholikentag,1900,13.0
+Winzerfest,1900,1.0
+Kirchenfest,1900,1.0
+Konferenz,1900,16.0
+Festumzug,1900,1.0
+Turnfest,1900,18.0
+Internationale Ausstellung,1900,29.0
+Kunstausstellung,1900,103.0
+Ausstellung,1900,75.0
+Landesausstellung,1900,4.0
+Schach,1900,10.0
+Plenarkonzil,1900,3.0
+Parteitag,1900,22.0
+Kunsthandwerk,1900,10.0
+Verkaufsausstellung,1900,6.0
+Internationale Sportveranstaltung,1900,40.0
+Sportveranstaltung,1900,9.0
+Landwirtschaftsausstellung,1900,5.0
+Architektur,1900,19.0
+Gartenbauausstellung,1900,11.0
+Schießsport,1900,2.0
+Internationaler Kongress,1900,8.0
+Hygiene,1900,2.0
+Schachturnier,1900,19.0
+Recht,1900,2.0
+Design,1900,1.0
+Feuerwehrfest,1900,1.0
+Kunst,1900,3.0
+Mathematik,1900,2.0
+Internationale Konferenz,1900,9.0
+Katholizismus,1900,1.0
+Christliche Kunst,1900,2.0
+Internationale Veranstaltung,1900,7.0
+Student,1900,12.0
+Etappenrennen,1900,9.0
+Ökumenische Bewegung,1900,7.0
+Schriftsteller,1900,6.0
+Innenarchitektur,1900,5.0
+Kommunismus,1900,5.0
+Malerei,1900,4.0
+Theaterfestspiel,1900,4.0
+Kulturveranstaltung,1900,4.0
+Möbelindustrie,1900,3.0
+Sozialismus,1900,3.0
+Städtebau,1900,3.0
+Flugsport,1900,3.0
+Zionismus,1900,3.0
+Surrealismus,1900,3.0
+Frauenbewegung,1900,3.0
+Propaganda,1900,3.0
+Bibliothekarverband,1900,3.0
+Hochschule,1900,3.0
+Theater,1900,3.0
+Sängerfest,1900,3.0
+Fußball,1900,3.0
+Weltkrieg,1900,3.0
+Sozialistische Bewegung,1900,2.0
+Wasserflugzeug,1900,2.0
+Rosenmontagszug,1900,2.0
+Gewerbe,1900,2.0
+Motorsport,1900,2.0
+Flugschau,1900,2.0
+Denkmalpflege,1900,2.0
+Freiballonsport,1900,2.0
+Psychoanalyse,1900,2.0
+Automobilsport,1900,2.0
+Großveranstaltung,1900,2.0
+Mission,1900,2.0
+Presse,1900,2.0
+Fotografie,1900,2.0
+Kolonialismus,1900,2.0
+Volkskunst,1900,2.0
+Evangelische Kirche,1900,2.0
+Luftfahrt,1900,2.0
+Bucheinband,1900,2.0
+Krieg,1900,2.0
+Buchkunst,1900,1.0
+Physik,1900,1.0
+Festspiel,1900,1.0
+Kultur,1900,1.0
+Wanderausstellung,1900,1.0
+Dekorative Malerei,1900,1.0
+Frauenarbeit,1900,1.0
+Unabhängigkeitsbewegung,1900,1.0
+Historisches Festspiel,1900,1.0
+Internationale Polarjahre,1900,1.0
+Technische Chemie,1900,1.0
+Psychologie,1900,1.0
+Entartete Kunst,1900,1.0
+Studentenverbindung,1900,1.0
+Nationalsozialistisches Verbrechen,1900,1.0
+Frauenpolitik,1900,1.0
+Plastik,1900,1.0
+Europäische Integration,1900,1.0
+Geflügel,1900,1.0
+Fleischerhandwerk,1900,1.0
+Volkswandern,1900,1.0
+Weltwirtschaft,1900,1.0
+Ton,1900,1.0
+Medizin,1900,1.0
+Geophysik,1900,1.0
+Radrennsport,1900,1.0
+Wettflug,1900,1.0
+Orthodoxe Kirche,1900,1.0
+Philatelie,1900,1.0
+Luftfahrttechnik,1900,1.0
+Langstreckenflug,1900,1.0
+Geschichtswissenschaft,1900,1.0
+Kriegführung,1900,1.0
+Faschismus,1900,1.0
+Wasserbau,1900,1.0
+Bauwirtschaft,1900,1.0
+Katalanistik,1900,1.0
+Zuhause,1900,1.0
+Nationalsozialismus,1900,1.0
+Posament,1900,1.0
+Eucharistie,1900,1.0
+Buchgeschichte,1900,1.0
+Mönchtum,1900,1.0
+Stadtentwicklung,1900,1.0
+Abrüstungskonferenz,1900,1.0
+Christentum,1900,1.0
+Linguistik,1900,1.0
+Briefmarkenausstellung,1900,1.0
+Dauerausstellung,1900,1.0
+Gewerkschaft,1900,1.0
+Psychologische Gesellschaft,1900,1.0
+Wirtschaftsförderung,1900,1.0
+Forschungsprogramm,1900,1.0
+Gipfelkonferenz,1900,1.0
+Burgenkunde,1900,1.0
+Musikleben,1900,1.0
+Albanologie,1900,1.0
+Wasserwirtschaft,1900,1.0
+Gesundheit,1900,1.0
+Nationalsprache,1900,1.0
+Volkskunde,1900,1.0
+Religionsgeschichte,1900,1.0
+Brauchtum,1900,1.0
+Resistenza,1900,1.0
+Technik,1900,1.0
+Schifffahrt,1900,1.0
+Arbeitersport,1900,1.0
+Literaturveranstaltung,1900,1.0
+Baustoff,1900,1.0
+Möbel,1900,1.0
+Glaserhandwerk,1900,1.0
+Soziologie,1900,1.0
+Heimatpflege,1900,1.0
+Plakat,1900,1.0
+Besatzungszone,1900,1.0
+Musikwettbewerb,1900,1.0
+Historische Ausstellung,1900,1.0
+Antikommunismus,1900,1.0
+Stadtfest,1900,1.0
+Tennisturnier,1900,1.0
+Priester,1900,1.0
+Katechese,1900,1.0
+Archivarverband,1900,1.0
+Mannschaftskampf,1900,1.0
+Schule,1900,1.0
+Archivverband,1900,1.0
+Archäologie,1900,1.0
+Vereinigung,1900,1.0
+Evangelischer Jugendverband,1900,1.0
+Gesundheitserziehung,1900,1.0
+Straße,1900,1.0
+Museumskunde,1900,1.0
+Ausstattung,1900,1.0
+Kunstgeschichte,1900,1.0
+Katechetik,1900,1.0
+Lehrerverband,1900,1.0
+Verkehr,1900,1.0
+Arbeiterjugend,1900,1.0
+Altes Buch,1900,1.0
+Judenvernichtung,1900,1.0
+Weltanschauungsgemeinschaft,1900,1.0
+Zuckerhandel,1900,1.0
+Druckgrafik,1900,1.0
+Straßenbau,1900,1.0
+Glasmalerei,1900,1.0
+Erziehung,1900,1.0
+Stadtplanung,1900,1.0
+Wirtschaftliche Lage,1900,1.0
+Jubiläum,1900,1.0
+Philosophie,1900,1.0
+Wohnraum,1900,1.0
+Jagd,1900,1.0
+Architekturstudium,1900,1.0
+Schulfest,1900,1.0
+Synode,1950,17.0
+Konzil,1950,1.0
+Buchmesse,1950,77.0
+Diözesansynode,1950,18.0
+Schützenfest,1950,34.0
+Fest,1950,45.0
+Passionsspiel,1950,2.0
+Veranstaltung,1950,512.0
+Wettbewerb,1950,11.0
+Musikfestspiel,1950,704.0
+Musikveranstaltung,1950,332.0
+Kongress,1950,350.0
+Volksfest,1950,39.0
+Messe,1950,211.0
+Industrieausstellung,1950,4.0
+Germanistik,1950,1.0
+Katholikentag,1950,22.0
+Winzerfest,1950,14.0
+Internationale Politik,1950,8.0
+Kirchenfest,1950,1.0
+Konferenz,1950,25.0
+Festumzug,1950,10.0
+Turnfest,1950,18.0
+Internationale Ausstellung,1950,13.0
+Kunstausstellung,1950,232.0
+Ausstellung,1950,69.0
+Landesausstellung,1950,19.0
+Schach,1950,24.0
+Parteitag,1950,49.0
+Kunsthandwerk,1950,18.0
+Internationale Sportveranstaltung,1950,205.0
+Sportveranstaltung,1950,81.0
+Landwirtschaftsausstellung,1950,1.0
+Politik,1950,1.0
+Architektur,1950,11.0
+Gartenbauausstellung,1950,37.0
+Lehrer,1950,3.0
+Internationaler Kongress,1950,11.0
+Schachturnier,1950,34.0
+Recht,1950,2.0
+Wanderverein,1950,14.0
+Weltumsegelung,1950,1.0
+Laienapostolat,1950,2.0
+Design,1950,3.0
+Feuerwehrfest,1950,6.0
+Kunst,1950,7.0
+Kunstwettbewerb,1950,1.0
+Sport,1950,1.0
+Fischerei,1950,5.0
+Internationale Konferenz,1950,15.0
+Internationale Veranstaltung,1950,25.0
+Student,1950,6.0
+Etappenrennen,1950,10.0
+Ökumenische Bewegung,1950,17.0
+Schriftsteller,1950,20.0
+Malerei,1950,5.0
+Theaterfestspiel,1950,158.0
+Kulturveranstaltung,1950,169.0
+Möbelindustrie,1950,1.0
+Sozialismus,1950,1.0
+Städtebau,1950,3.0
+Zionismus,1950,1.0
+Frauenbewegung,1950,1.0
+Bibliothekarverband,1950,17.0
+Theater,1950,6.0
+Sängerfest,1950,1.0
+Fußball,1950,56.0
+Automobilsport,1950,29.0
+Großveranstaltung,1950,6.0
+Mission,1950,1.0
+Presse,1950,1.0
+Fotografie,1950,31.0
+Volkskunst,1950,1.0
+Evangelische Kirche,1950,9.0
+Festspiel,1950,39.0
+Kultur,1950,22.0
+Frauenarbeit,1950,1.0
+Historisches Festspiel,1950,8.0
+Technische Chemie,1950,1.0
+Psychologie,1950,1.0
+Frauenpolitik,1950,4.0
+Plastik,1950,23.0
+Europäische Integration,1950,3.0
+Fleischerhandwerk,1950,2.0
+Volkswandern,1950,5.0
+Medizin,1950,21.0
+Wettflug,1950,1.0
+Philatelie,1950,2.0
+Luftfahrttechnik,1950,2.0
+Langstreckenflug,1950,1.0
+Geschichtswissenschaft,1950,15.0
+Stadtentwicklung,1950,1.0
+Abrüstungskonferenz,1950,1.0
+Briefmarkenausstellung,1950,2.0
+Gewerkschaft,1950,1.0
+Gipfelkonferenz,1950,4.0
+Burgenkunde,1950,1.0
+Gesundheit,1950,1.0
+Volkskunde,1950,1.0
+Brauchtum,1950,6.0
+Literaturveranstaltung,1950,37.0
+Soziologie,1950,1.0
+Heimatpflege,1950,3.0
+Musikwettbewerb,1950,49.0
+Historische Ausstellung,1950,9.0
+Stadtfest,1950,27.0
+Tennisturnier,1950,33.0
+Katechese,1950,1.0
+Archivarverband,1950,9.0
+Mannschaftskampf,1950,3.0
+Schule,1950,7.0
+Archivverband,1950,9.0
+Archäologie,1950,1.0
+Katechetik,1950,1.0
+Verkehr,1950,4.0
+Druckgrafik,1950,9.0
+Jubiläum,1950,3.0
+Jagd,1950,6.0
+Filmfestspiel,1950,251.0
+Kunstmesse,1950,62.0
+Vertriebenenverband,1950,28.0
+Weinbau,1950,21.0
+Kinderliteratur,1950,21.0
+Jugendliteratur,1950,20.0
+Geschichte,1950,19.0
+Modellbau,1950,18.0
+Computerkunst,1950,17.0
+Spielzeug,1950,17.0
+Gedenkfeier,1950,17.0
+Ballettfestspiel,1950,16.0
+Trachtenfest,1950,16.0
+Medien,1950,15.0
+Regatta,1950,14.0
+Kirchweih,1950,13.0
+Pferdesport,1950,13.0
+Wallfahrt,1950,12.0
+Leichtathletik,1950,11.0
+Segeln,1950,11.0
+Umweltschutz,1950,11.0
+Zahntechnik,1950,10.0
+Papierindustrie,1950,10.0
+Verpackungstechnik,1950,10.0
+Tanzfest,1950,9.0
+Bildhauer,1950,9.0
+Druckgrafiker,1950,9.0
+Parade,1950,8.0
+Manöver,1950,8.0
+Motorradsport,1950,8.0
+Imkerei,1950,8.0
+Flurumgang,1950,8.0
+Jugendtreffen,1950,8.0
+Museum,1950,7.0
+Segelschiff,1950,7.0
+Kabarett,1950,7.0
+Reisemarkt,1950,7.0
+Entwicklungspolitik,1950,7.0
+Informationstechnik,1950,7.0
+Projektgruppe,1950,7.0
+Lauf,1950,7.0
+Mode,1950,7.0
+Holzwirtschaft,1950,7.0
+Schmuckwarenindustrie,1950,7.0
+Marktveranstaltung,1950,6.0
+Nordischer Skisport,1950,6.0
+Animationsfilm,1950,6.0
+Medienwirtschaft,1950,6.0
+Skilauf,1950,6.0
+Kirchenmusik,1950,6.0
+Kurs,1950,6.0
+Pferdehandel,1950,6.0
+Kleinplastik,1950,6.0
+Jugend,1950,6.0
+Getränkeindustrie,1950,6.0
+Dachverband,1950,5.0
+Schuhindustrie,1950,5.0
+Marathonlauf,1950,5.0
+Schwimmen,1950,5.0
+Segelflugsport,1950,5.0
+Musikerziehung,1950,5.0
+Baumaschine,1950,5.0
+Bausparkasse,1950,5.0
+Video,1950,5.0
+Videokunst,1950,5.0
+Golfturnier,1950,5.0
+Innung,1950,4.0
+Karikatur,1950,4.0
+Volkslauf,1950,4.0
+Straßenrennsport,1950,4.0
+Obstbau,1950,4.0
+Illustration,1950,4.0
+Konzertreihe,1950,4.0
+Altenarbeit,1950,4.0
+Tourismus,1950,4.0
+Handball,1950,4.0
+Gartenbau,1950,4.0
+Optische Industrie,1950,4.0
+Jagdhornmusik,1950,4.0
+Verfassungstag,1950,4.0
+Computeranimation,1950,3.0
+Einhandsegeln,1950,3.0
+Schmuckherstellung,1950,3.0
+Esperanto,1950,3.0
+Eisschnelllauf,1950,3.0
+Briefmarke,1950,3.0
+Multimedia,1950,3.0
+Werbung,1950,3.0
+Volleyball,1950,3.0
+Handwerk,1950,3.0
+Geräteturnen,1950,3.0
+Wasserfahrzeug,1950,3.0
+Konziliarer Prozess,1950,3.0
+Lutherische Kirche,1950,3.0
+Elektronik,1950,3.0
+Billard,1950,3.0
+Grafik,1950,3.0
+Brauerei,1950,3.0
+Kindertheater,1950,3.0
+Langstreckenlauf,1950,3.0
+Textilindustrie,1950,3.0
+Wassersport,1950,3.0
+Gesundheitsförderung,1950,2.0
+Literaturausstellung,1950,2.0
+Film,1950,2.0
+Mundarttheater,1950,2.0
+Musik,1950,2.0
+Jäger,1950,2.0
+Techno Pop,1950,2.0
+Modelleisenbahn,1950,2.0
+Hafnerkeramik,1950,2.0
+Basketball,1950,2.0
+Pharmazie,1950,2.0
+Automobilausstellung,1950,2.0
+Wissenschaft,1950,2.0
+Keramik,1950,2.0
+Jazz,1950,2.0
+Antiquität,1950,2.0
+Frau,1950,2.0
+Bibliotheksverband,1950,2.0
+Tanzturnier,1950,2.0
+Freizeit,1950,2.0
+Tanzveranstaltung,1950,2.0
+Jugendarbeit,1950,2.0
+Exlibris,1950,2.0
+Zoofachhandel,1950,2.0
+Brieftaubenzucht,1950,2.0
+Freizeitgestaltung,1950,2.0
+Siedlungsstruktur,1950,2.0
+Betriebssport,1950,2.0
+Wettkampf,1950,2.0
+Behindertensport,1950,2.0
+Umzug,1950,2.0
+Spartakiade,1950,2.0
+Open-air-Festival,1950,2.0
+Truck Race,1950,2.0
+Bairisch,1950,2.0
+Symposion,1950,2.0
+Ernährungswirtschaft,1950,2.0
+Künstlerfest,1950,2.0
+Evangelisation,1950,2.0
+Pflegeeinrichtung,1950,2.0
+Unternehmer,1950,2.0
+Blas- und Bläsermusik,1950,2.0
+Politischer Katholizismus,1950,2.0
+Pflanzenbau,1950,2.0
+Demonstration,1950,2.0
+Friseurhandwerk,1950,2.0
+Steinplastik,1950,2.0
+Amateurfilm,1950,2.0
+Jugendtheater,1950,2.0
+Zusammenkunft,1950,2.0
+Feuerwehr,1950,2.0
+Figurentheater,1950,2.0
+Zirkus,1950,2.0
+Akademiker,1950,2.0
+Rundwanderweg,1950,2.0
+Hundesport,1950,2.0
+Regionalwirtschaft,1950,1.0
+Gesang,1950,1.0
+Landwirtschaft,1950,1.0
+Mundart,1950,1.0
+Künstlerbuch,1950,1.0
+Bank,1950,1.0
+Tanz,1950,1.0
+Schwimmsport,1950,1.0
+Tanztheater,1950,1.0
+Industriedesign,1950,1.0
+Zulieferindustrie,1950,1.0
+Kulturlandschaft,1950,1.0
+Futtermittel,1950,1.0
+Wirtschaftspolitik,1950,1.0
+Klassische Musik,1950,1.0
+Übersetzung,1950,1.0
+Rechtsvergleich,1950,1.0
+Freilichtausstellung,1950,1.0
+Coetus Internationalis Patrum,1950,1.0
+Biennale,1950,1.0
+Orgel,1950,1.0
+Nachhaltigkeit,1950,1.0
+Auktionsbörse,1950,1.0
+Verkehrsrecht,1950,1.0
+Töpferware,1950,1.0
+Stadtgeschichte,1950,1.0
+Gesellschaft,1950,1.0
+Schreibwerkstatt,1950,1.0
+Volkskultur,1950,1.0
+Entführung,1950,1.0
+Datenverarbeitung,1950,1.0
+Klavierspiel,1950,1.0
+Wandern,1950,1.0
+Musikwissenschaft,1950,1.0
+Möbelbau,1950,1.0
+Russlanddeutsche,1950,1.0
+Polizei,1950,1.0
+Semiotik,1950,1.0
+Musikalische Erwachsenenbildung,1950,1.0
+Steiff-Tier,1950,1.0
+Violine,1950,1.0
+Freilichttheater,1950,1.0
+Märchen,1950,1.0
+Regionalplanung,1950,1.0
+Landschaftspflege,1950,1.0
+Heilpflanzen,1950,1.0
+Liturgik,1950,1.0
+UFO,1950,1.0
+Hochschulsport,1950,1.0
+Klimaschutz,1950,1.0
+Militär,1950,1.0
+Medienkunst,1950,1.0
+Bündische Jugend,1950,1.0
+Albanisch,1950,1.0
+Kraftfahrzeugzulieferindustrie,1950,1.0
+Leonhardiritt,1950,1.0
+Bekämpfung,1950,1.0
+Einzelhandel,1950,1.0
+Entwicklung,1950,1.0
+Partei,1950,1.0
+Raum,1950,1.0
+Darts,1950,1.0
+Automatisierungstechnik,1950,1.0
+Schweinezucht,1950,1.0
+Reprographie,1950,1.0
+Wirtschaftsverband,1950,1.0
+Fliegen,1950,1.0
+Typografie,1950,1.0
+Gaststättengewerbe,1950,1.0
+Schüler,1950,1.0
+Konditorhandwerk,1950,1.0
+Mineral,1950,1.0
+Elektroniktechnologie,1950,1.0
+Leistungspflügen,1950,1.0
+Viererzugfahren,1950,1.0
+Gitarrenbau,1950,1.0
+Kaufmännische Berufsfachschule,1950,1.0
+Lebenssinn,1950,1.0
+Fernsehproduktion,1950,1.0
+Dekonstruktivismus,1950,1.0
+Hi-Fi-Anlage,1950,1.0
+Schriftstellerverband,1950,1.0
+Psychiatrie,1950,1.0
+Revolution,1950,1.0
+Kraftfahrzeugindustrie,1950,1.0
+Ball,1950,1.0
+Pfadfinder,1950,1.0
+Bäckerhandwerk,1950,1.0
+Wissenschaftsgeschichte,1950,1.0
+Prellball,1950,1.0
+Computer,1950,1.0
+Pfälzisch,1950,1.0
+Judenverfolgung,1950,1.0
+Lehrerfortbildung,1950,1.0
+Entrepreneurship,1950,1.0
+Frauentheater,1950,1.0
+Tiermedizin,1950,1.0
+Fernsehsendung,1950,1.0
+Steinbearbeitung,1950,1.0
+Theatergemeinde,1950,1.0
+Kinderfreundlichkeit,1950,1.0
+Friedensbewegung,1950,1.0
+Zukunft,1950,1.0
+Klaviermusik,1950,1.0
+Glockenspiel,1950,1.0
+Sonderpädagogik,1950,1.0
+Umritt,1950,1.0
+Arztpraxis,1950,1.0
+Georg-Büchner-Preis,1950,1.0
+Ausländer,1950,1.0
+Stenografie,1950,1.0
+Stilllegung,1950,1.0
+Restaurator,1950,1.0
+Ingenieurgeologie,1950,1.0
+Sprachnorm,1950,1.0
+Radwandern,1950,1.0
+Tischler,1950,1.0
+Wohnungseinrichtung,1950,1.0
+Provinzialkapitel,1950,1.0
+Apartheid,1950,1.0
+Klavier,1950,1.0
+"Luther, Martin",1950,1.0
+Vor- und Frühgeschichte,1950,1.0
+Dinosaurier,1950,1.0
+Klimatechnik,1950,1.0
+Reliquienkult,1950,1.0
+Angewandte Kunst,1950,1.0
+Theologie,1950,1.0
+VW-Golf GTI,1950,1.0
+Rugby,1950,1.0
+Jugoslawen,1950,1.0
+Informatik,1950,1.0
+Weiterbildung,1950,1.0
+Slawistik,1950,1.0
+Soldatenverband,1950,1.0
+Pastoralkonferenz,1950,1.0
+Sportfischen,1950,1.0
+Tracht,1950,1.0
+Exkursion,1950,1.0
+Forstwirtschaft,1950,1.0
+Judo,1950,1.0
+Geistliche Musik,1950,1.0
+Spielmannszug,1950,1.0
+Schulsporttag,1950,1.0
+Kammermusik,1950,1.0
+Homosexuellenbewegung,1950,1.0
+Seifenkistenrennen,1950,1.0
+Posaune,1950,1.0
+Drucktechnik,1950,1.0
+Chorleitung,1950,1.0
+Literaturpreis,1950,1.0
+Deutschunterricht,1950,1.0
+Tag der offenen Tür,1950,1.0
+Antikernkraftbewegung,1950,1.0
+Gravitation,1950,1.0
+Gitarrenmusik,1950,1.0
+Arbeitsrecht,1950,1.0
+Eishockey,1950,1.0
+Handwerkerbund,1950,1.0
+Künstler,1950,1.0
+Spielmobil,1950,1.0
+Zoologie,1950,1.0
+Futsal,1950,1.0
+Weltgeschichte,1950,1.0
+Urologie,1950,1.0
+Spiel,1950,1.0
+Arabistik,1950,1.0
+Europabewegung,1950,1.0
+Krankenhaus,1950,1.0
+Psychopathologie,1950,1.0
+Violoncello,1950,1.0
+Kunstwissenschaft,1950,1.0
+Freie Liebe,1950,1.0
+Kommunikationstechnik,1950,1.0
+Bilderbuch,1950,1.0
+Landwirt,1950,1.0
+Kommunikationssystem,1950,1.0
+Bauführer,1950,1.0
+Accessoire,1950,1.0
+Orgelmusik,1950,1.0
+Schmuck,1950,1.0
+Verlag,1950,1.0
+Binnenschifffahrt,1950,1.0
+Drogenkriminalität,1950,1.0
+Maschinenschreiben,1950,1.0
+Sozialrecht,1950,1.0
+Gartenkunst,1950,1.0
+Kirchenbau,1950,1.0
+Synchronschwimmen,1950,1.0
+Katholischer Verein,1950,1.0
+Premio Manerbio,1950,1.0
+Frauenemanzipation,1950,1.0
+Tropenmedizin,1950,1.0
+Reise,1950,1.0
+Kältetechnik,1950,1.0
+Gastgewerbe,1950,1.0
+Sportwagen,1950,1.0
+Bulgaristik,1950,1.0
+Tischlerhandwerk,1950,1.0
+Militärischer Fünfkampf,1950,1.0
+Protestantismus,1950,1.0
+Welternährung,1950,1.0
+Snowboarding,1950,1.0
+Gotik,1950,1.0
+Friedenspreis des Börsenvereins des Deutschen Buchhandels,1950,1.0
+Seenotrettung,1950,1.0
+Numismatik,1950,1.0
+Freiwillige Feuerwehr,1950,1.0
+Textilkunst,1950,1.0
+Kricket,1950,1.0
+Skiunterricht,1950,1.0
+Skirennsport,1950,1.0
+Ökumene,1950,1.0
+Soziale Marktwirtschaft,1950,1.0
+Bergwandern,1950,1.0
+Alte Musik,1950,1.0
+Möbelhandel,1950,1.0
+Kosmetik,1950,1.0
+Tischtennis,1950,1.0
+Gymnastik,1950,1.0
+Pantomime,1950,1.0
+Chorgesang,1950,1.0
+Geländewagen,1950,1.0
+Synode,2000,23.0
+Versammlung,2000,1.0
+Buchmesse,2000,152.0
+Diözesansynode,2000,4.0
+Reformation,2000,3.0
+Schützenfest,2000,44.0
+Fest,2000,28.0
+Jahrmarkt,2000,11.0
+Expedition,2000,26.0
+Passionsspiel,2000,5.0
+Veranstaltung,2000,12282.0
+Wettbewerb,2000,6.0
+Musikfestspiel,2000,1068.0
+Musikveranstaltung,2000,180.0
+Kongress,2000,431.0
+Volksfest,2000,89.0
+Messe,2000,397.0
+Germanistik,2000,2.0
+Katholikentag,2000,9.0
+Winzerfest,2000,21.0
+Internationale Politik,2000,2.0
+Kirchenfest,2000,10.0
+Konferenz,2000,178.0
+Festumzug,2000,6.0
+Bischofskonferenz,2000,1.0
+Turnfest,2000,5.0
+Internationale Ausstellung,2000,6.0
+Kunstausstellung,2000,322.0
+Ausstellung,2000,114.0
+Landesausstellung,2000,26.0
+Schach,2000,6.0
+Parteitag,2000,57.0
+Kunsthandwerk,2000,14.0
+Verkaufsausstellung,2000,2.0
+Internationale Sportveranstaltung,2000,294.0
+Sportveranstaltung,2000,186.0
+Landwirtschaftsausstellung,2000,10.0
+Politik,2000,5.0
+Architektur,2000,25.0
+Gartenbauausstellung,2000,65.0
+Lehrer,2000,3.0
+Internationaler Kongress,2000,13.0
+Schachturnier,2000,3.0
+Recht,2000,5.0
+Wanderverein,2000,1.0
+Weltumsegelung,2000,2.0
+Design,2000,8.0
+Literaturwettbewerb,2000,24.0
+Kunst,2000,25.0
+Kunstwettbewerb,2000,1.0
+Rettungswesen,2000,4.0
+Mathematik,2000,3.0
+Sport,2000,3.0
+Geografie,2000,1.0
+Fischerei,2000,1.0
+Internationale Konferenz,2000,19.0
+Katholizismus,2000,1.0
+Christliche Kunst,2000,1.0
+Internationale Veranstaltung,2000,24.0
+Etappenrennen,2000,11.0
+Ökumenische Bewegung,2000,4.0
+Kommunismus,2000,3.0
+Malerei,2000,7.0
+Theaterfestspiel,2000,233.0
+Kulturveranstaltung,2000,479.0
+Möbelindustrie,2000,2.0
+Sozialismus,2000,1.0
+Flugsport,2000,6.0
+Zionismus,2000,2.0
+Frauenbewegung,2000,3.0
+Bibliothekarverband,2000,19.0
+Hochschule,2000,1.0
+Fußball,2000,64.0
+Weltkrieg,2000,16.0
+Motorsport,2000,2.0
+Denkmalpflege,2000,3.0
+Automobilsport,2000,96.0
+Großveranstaltung,2000,17.0
+Mission,2000,2.0
+Fotografie,2000,62.0
+Evangelische Kirche,2000,19.0
+Luftfahrt,2000,4.0
+Krieg,2000,1.0
+Physik,2000,1.0
+Festspiel,2000,92.0
+Kultur,2000,29.0
+Wanderausstellung,2000,2.0
+Unabhängigkeitsbewegung,2000,1.0
+Historisches Festspiel,2000,18.0
+Technische Chemie,2000,4.0
+Nationalsozialistisches Verbrechen,2000,1.0
+Plastik,2000,16.0
+Fleischerhandwerk,2000,1.0
+Volkswandern,2000,15.0
+Weltwirtschaft,2000,3.0
+Medizin,2000,5.0
+Radrennsport,2000,8.0
+Orthodoxe Kirche,2000,2.0
+Philatelie,2000,5.0
+Luftfahrttechnik,2000,4.0
+Geschichtswissenschaft,2000,9.0
+Bauwirtschaft,2000,1.0
+Linguistik,2000,5.0
+Gewerkschaft,2000,2.0
+Gipfelkonferenz,2000,8.0
+Musikleben,2000,1.0
+Wasserwirtschaft,2000,2.0
+Gesundheit,2000,1.0
+Volkskunde,2000,2.0
+Brauchtum,2000,10.0
+Technik,2000,2.0
+Literaturveranstaltung,2000,136.0
+Heimatpflege,2000,24.0
+Musikwettbewerb,2000,51.0
+Historische Ausstellung,2000,18.0
+Stadtfest,2000,62.0
+Tennisturnier,2000,22.0
+Archivarverband,2000,19.0
+Mannschaftskampf,2000,1.0
+Schule,2000,2.0
+Archivverband,2000,15.0
+Archäologie,2000,10.0
+Museumskunde,2000,1.0
+Altes Buch,2000,3.0
+Druckgrafik,2000,2.0
+Jubiläum,2000,1.0
+Jagd,2000,3.0
+Schulfest,2000,1.0
+Filmfestspiel,2000,489.0
+Kunstmesse,2000,165.0
+Vertriebenenverband,2000,15.0
+Weinbau,2000,8.0
+Kinderliteratur,2000,28.0
+Jugendliteratur,2000,22.0
+Geschichte,2000,18.0
+Modellbau,2000,20.0
+Computerkunst,2000,30.0
+Spielzeug,2000,20.0
+Gedenkfeier,2000,4.0
+Ballettfestspiel,2000,17.0
+Trachtenfest,2000,10.0
+Medien,2000,8.0
+Regatta,2000,7.0
+Kirchweih,2000,21.0
+Pferdesport,2000,5.0
+Wallfahrt,2000,15.0
+Leichtathletik,2000,15.0
+Segeln,2000,9.0
+Umweltschutz,2000,6.0
+Zahntechnik,2000,7.0
+Papierindustrie,2000,17.0
+Verpackungstechnik,2000,7.0
+Tanzfest,2000,10.0
+Druckgrafiker,2000,2.0
+Parade,2000,9.0
+Manöver,2000,3.0
+Motorradsport,2000,17.0
+Imkerei,2000,2.0
+Flurumgang,2000,1.0
+Jugendtreffen,2000,3.0
+Museum,2000,109.0
+Segelschiff,2000,9.0
+Kabarett,2000,1.0
+Entwicklungspolitik,2000,3.0
+Informationstechnik,2000,10.0
+Projektgruppe,2000,1.0
+Lauf,2000,3.0
+Holzwirtschaft,2000,6.0
+Marktveranstaltung,2000,22.0
+Nordischer Skisport,2000,1.0
+Animationsfilm,2000,24.0
+Medienwirtschaft,2000,5.0
+Skilauf,2000,4.0
+Kirchenmusik,2000,16.0
+Kurs,2000,21.0
+Pferdehandel,2000,2.0
+Kleinplastik,2000,4.0
+Jugend,2000,11.0
+Getränkeindustrie,2000,11.0
+Dachverband,2000,2.0
+Schuhindustrie,2000,11.0
+Marathonlauf,2000,25.0
+Schwimmen,2000,17.0
+Musikerziehung,2000,10.0
+Baumaschine,2000,8.0
+Video,2000,2.0
+Videokunst,2000,9.0
+Golfturnier,2000,1.0
+Karikatur,2000,8.0
+Volkslauf,2000,4.0
+Straßenrennsport,2000,8.0
+Obstbau,2000,6.0
+Illustration,2000,10.0
+Konzertreihe,2000,3.0
+Tourismus,2000,4.0
+Handball,2000,6.0
+Optische Industrie,2000,3.0
+Jagdhornmusik,2000,5.0
+Verfassungstag,2000,1.0
+Schmuckherstellung,2000,7.0
+Esperanto,2000,3.0
+Multimedia,2000,1.0
+Werbung,2000,1.0
+Volleyball,2000,2.0
+Handwerk,2000,3.0
+Geräteturnen,2000,1.0
+Wasserfahrzeug,2000,2.0
+Konziliarer Prozess,2000,2.0
+Lutherische Kirche,2000,1.0
+Elektronik,2000,2.0
+Grafik,2000,11.0
+Langstreckenlauf,2000,12.0
+Wassersport,2000,2.0
+Gesundheitsförderung,2000,3.0
+Literaturausstellung,2000,4.0
+Film,2000,14.0
+Mundarttheater,2000,15.0
+Musik,2000,10.0
+Techno Pop,2000,4.0
+Hafnerkeramik,2000,2.0
+Basketball,2000,6.0
+Automobilausstellung,2000,2.0
+Wissenschaft,2000,3.0
+Keramik,2000,8.0
+Jazz,2000,25.0
+Antiquität,2000,1.0
+Frau,2000,14.0
+Tanzveranstaltung,2000,20.0
+Jugendarbeit,2000,9.0
+Zoofachhandel,2000,2.0
+Betriebssport,2000,1.0
+Wettkampf,2000,6.0
+Behindertensport,2000,6.0
+Umzug,2000,3.0
+Open-air-Festival,2000,8.0
+Truck Race,2000,15.0
+Bairisch,2000,7.0
+Symposion,2000,14.0
+Ernährungswirtschaft,2000,2.0
+Evangelisation,2000,2.0
+Pflegeeinrichtung,2000,2.0
+Pflanzenbau,2000,4.0
+Jugendtheater,2000,1.0
+Zusammenkunft,2000,1.0
+Feuerwehr,2000,4.0
+Figurentheater,2000,7.0
+Regionalwirtschaft,2000,2.0
+Bank,2000,1.0
+Tanz,2000,2.0
+Industriedesign,2000,1.0
+Klassische Musik,2000,3.0
+Freilichtausstellung,2000,1.0
+Biennale,2000,11.0
+Orgel,2000,5.0
+Nachhaltigkeit,2000,10.0
+Verkehrsrecht,2000,1.0
+Töpferware,2000,2.0
+Gesellschaft,2000,1.0
+Volkskultur,2000,2.0
+Datenverarbeitung,2000,3.0
+Klavierspiel,2000,1.0
+Möbelbau,2000,5.0
+Freilichttheater,2000,5.0
+Hochschulsport,2000,1.0
+Klimaschutz,2000,9.0
+Militär,2000,5.0
+Medienkunst,2000,11.0
+Bündische Jugend,2000,1.0
+Albanisch,2000,1.0
+Bekämpfung,2000,1.0
+Automatisierungstechnik,2000,5.0
+Schüler,2000,1.0
+Konditorhandwerk,2000,7.0
+Mineral,2000,1.0
+Elektroniktechnologie,2000,2.0
+Viererzugfahren,2000,1.0
+Kaufmännische Berufsfachschule,2000,2.0
+Ball,2000,5.0
+Bäckerhandwerk,2000,10.0
+Prellball,2000,1.0
+Lehrerfortbildung,2000,1.0
+Entrepreneurship,2000,1.0
+Tiermedizin,2000,2.0
+Steinbearbeitung,2000,2.0
+Klaviermusik,2000,1.0
+Arztpraxis,2000,1.0
+Radwandern,2000,2.0
+Wohnungseinrichtung,2000,1.0
+Klimatechnik,2000,1.0
+Theologie,2000,1.0
+Rugby,2000,1.0
+Slawistik,2000,3.0
+Exkursion,2000,1.0
+Geistliche Musik,2000,3.0
+Kammermusik,2000,8.0
+Homosexuellenbewegung,2000,10.0
+Seifenkistenrennen,2000,2.0
+Drucktechnik,2000,2.0
+Eishockey,2000,4.0
+Zoologie,2000,1.0
+Futsal,2000,4.0
+Arabistik,2000,1.0
+Krankenhaus,2000,1.0
+Kunstwissenschaft,2000,5.0
+Bilderbuch,2000,12.0
+Accessoire,2000,1.0
+Orgelmusik,2000,7.0
+Schmuck,2000,1.0
+Binnenschifffahrt,2000,2.0
+Synchronschwimmen,2000,3.0
+Katholischer Verein,2000,1.0
+Reise,2000,1.0
+Gastgewerbe,2000,1.0
+Militärischer Fünfkampf,2000,1.0
+Snowboarding,2000,4.0
+Numismatik,2000,2.0
+Textilkunst,2000,3.0
+Kricket,2000,2.0
+Skirennsport,2000,4.0
+Ökumene,2000,5.0
+Alte Musik,2000,5.0
+Möbelhandel,2000,1.0
+Gymnastik,2000,1.0
+Pantomime,2000,1.0
+Gesundheitswesen,2000,27.0
+Oldtimer,2000,22.0
+Literatur,2000,21.0
+Pflanzengeografie,2000,15.0
+Neue Musik,2000,14.0
+Hallenfußball,2000,13.0
+Archiv,2000,13.0
+Buchmalerei,2000,12.0
+Illuminierte Handschrift,2000,11.0
+Weihnachtsmarkt,2000,10.0
+Triathlon,2000,10.0
+Energieeinsparung,2000,10.0
+Blues,2000,10.0
+Zauberkunst,2000,10.0
+Krippe,2000,9.0
+Juden,2000,9.0
+Event-Marketing,2000,9.0
+Werkzeugbau,2000,8.0
+Formenbau,2000,8.0
+Naturfilm,2000,7.0
+Lackindustrie,2000,7.0
+Berufsausbildung,2000,7.0
+Serbisch,2000,7.0
+Umwelt,2000,7.0
+Tierfilm,2000,7.0
+Schwingen,2000,7.0
+Kraftfahrzeug,2000,7.0
+Kirche,2000,7.0
+Kirchengeschichte,2000,7.0
+Informationsveranstaltung,2000,6.0
+Freiballon,2000,6.0
+Unterrichtstechnologie,2000,6.0
+Universität,2000,6.0
+Menschenrecht,2000,5.0
+Gewerbeimmobilien,2000,5.0
+Wein,2000,5.0
+Klangkunst,2000,5.0
+Computerfilm,2000,5.0
+Bergsteigen,2000,5.0
+Kurzfilm,2000,5.0
+Studium,2000,5.0
+Ultralangstrecke,2000,5.0
+Innenausbau,2000,5.0
+Freiwillige Vereinigung,2000,5.0
+Nutztiere,2000,4.0
+Performance,2000,4.0
+Serben,2000,4.0
+Lichtkunst,2000,4.0
+Popmusik,2000,4.0
+Freies Theater,2000,4.0
+Fotowettbewerb,2000,4.0
+Kriminalliteratur,2000,4.0
+Berglauf,2000,4.0
+Geflügelzucht,2000,4.0
+Multikulturelle Gesellschaft,2000,3.0
+Außerschulische Bildung,2000,3.0
+Weinhandel,2000,3.0
+Comic,2000,3.0
+Video-Installation,2000,3.0
+Sicherungstechnik,2000,3.0
+Wirtschaft,2000,3.0
+Kind,2000,3.0
+Demokratie,2000,3.0
+Heimatkunde,2000,3.0
+Direktmarketing,2000,3.0
+Umweltverträgliches Produkt,2000,3.0
+Landesgeschichte,2000,3.0
+Informationsgesellschaft,2000,3.0
+Körperschaft,2000,3.0
+Oper,2000,3.0
+Berg,2000,3.0
+Flechtarbeit,2000,3.0
+Gespräch,2000,3.0
+Lexikologie,2000,3.0
+Bildungswesen,2000,3.0
+Biodiversität,2000,3.0
+Kurzgeschichte,2000,3.0
+Lyrik,2000,3.0
+Landtechnik,2000,3.0
+Beachsoccer,2000,3.0
+Kochen,2000,2.0
+Sommerkurs,2000,2.0
+Regisseurin,2000,2.0
+Kollektives Gedächtnis,2000,2.0
+Berufliche Fortbildung,2000,2.0
+Bibliothek,2000,2.0
+Hut,2000,2.0
+Rodelsport,2000,2.0
+Regionalkultur,2000,2.0
+Dokumentarfilm,2000,2.0
+Handschrift,2000,2.0
+Kinderfilm,2000,2.0
+Skilanglauf,2000,2.0
+Geologie,2000,2.0
+Recycling,2000,2.0
+Callcenter,2000,2.0
+Literaturwissenschaft,2000,2.0
+Das Eine,2000,2.0
+Gebäudereinigung,2000,2.0
+Vortragsreihe,2000,2.0
+Stegreifspiel,2000,2.0
+Jugendsport,2000,2.0
+Großprojekt,2000,2.0
+Römerzeit,2000,2.0
+Sonderveranstaltung,2000,2.0
+Judentum,2000,2.0
+Familienseelsorge,2000,2.0
+Einheit,2000,2.0
+Filmmusik,2000,2.0
+Luftwaffe,2000,2.0
+Fernsehfilm,2000,2.0
+Feminismus,2000,2.0
+Holzplastik,2000,2.0
+Kinderfest,2000,2.0
+Klimaänderung,2000,2.0
+Wintersport,2000,2.0
+Direct Mailing,2000,2.0
+Schultheater,2000,2.0
+Chormusik,2000,2.0
+Ordensleben,2000,2.0
+Archivierung,2000,2.0
+Schwein,2000,2.0
+Kinderbuch,2000,2.0
+Biathlon,2000,2.0
+Internationale Finanzpolitik,2000,2.0
+Schülerwettbewerb,2000,2.0
+Modellflugsport,2000,2.0
+Behinderung,2000,2.0
+Konsumgut,2000,2.0
+Öffentliche Bibliothek,2000,2.0
+Entsorgungswirtschaft,2000,2.0
+Ethnologischer Film,2000,2.0
+Lebensmittelhandel,2000,2.0
+Balkanologie,2000,2.0
+Musiktheater,2000,2.0
+Militärmusik,2000,2.0
+Skibergsteigen,2000,2.0
+Meisterkurs,2000,2.0
+Generation,2000,2.0
+Süßware,2000,2.0
+Denkmalschutz,2000,2.0
+Mountainbiking,2000,2.0
+Landschaftsgestaltung,2000,2.0
+Regionalförderung,2000,2.0
+Zeitbewertetes Petri-Netz,2000,2.0
+Solidarität,2000,2.0
+Mathematische Modellierung,2000,2.0
+Automat,2000,2.0
+Filmproduktion,2000,2.0
+Einheitlichkeit,2000,2.0
+Turniersport,2000,2.0
+Interreligiöser Dialog,2000,2.0
+Monismus,2000,2.0
+Kaninchenzucht,2000,2.0
+Öffentlichkeitsarbeit,2000,2.0
+Lexikografie,2000,2.0
+Pferd,2000,2.0
+Elektronikhandel,2000,2.0
+Kanurennsport,2000,2.0
+Bautechnik,2000,2.0
+Ethnolinguistik,2000,2.0
+Computerspiel,2000,2.0
+Kommunale Zusammenarbeit,2000,1.0
+Bukarest,2000,1.0
+Fotovoltaik,2000,1.0
+Katholischer Verband,2000,1.0
+Musikschule,2000,1.0
+Kindersport,2000,1.0
+Empfang,2000,1.0
+Radikaler Konstruktivismus,2000,1.0
+Silberschmiedekunst,2000,1.0
+Berufsanfänger,2000,1.0
+Rechtssprache,2000,1.0
+Round-Table-Konferenz,2000,1.0
+Gerichtsbarkeit,2000,1.0
+Hindernislauf,2000,1.0
+Anglistik,2000,1.0
+Medienpädagogik,2000,1.0
+Alltag,2000,1.0
+Geschichtsschreibung,2000,1.0
+Bier,2000,1.0
+Weibliche Jugend,2000,1.0
+Wiener Klassik,2000,1.0
+Gegenkultur,2000,1.0
+Transport,2000,1.0
+Musikbibliothek,2000,1.0
+Insolvenz,2000,1.0
+Orchestermusik,2000,1.0
+Anthropozän,2000,1.0
+Architekturwettbewerb,2000,1.0
+Macht,2000,1.0
+Bergbau,2000,1.0
+Leseförderung,2000,1.0
+Energiepolitik,2000,1.0
+Biotechnologie,2000,1.0
+Unternehmensgründung,2000,1.0
+Wiener Fürstentag,2000,1.0
+Porzellan,2000,1.0
+Kochkurs,2000,1.0
+Kunstwissenschaftliches Studium,2000,1.0
+Edelsteinindustrie,2000,1.0
+Aufklärung,2000,1.0
+Indigenes Volk,2000,1.0
+Fachsprache,2000,1.0
+Papierkunst,2000,1.0
+Bioenergie,2000,1.0
+Fremdenfeindlichkeit,2000,1.0
+Gebäude,2000,1.0
+Konkrete Kunst,2000,1.0
+Erde,2000,1.0
+Fourier-Integraloperator,2000,1.0
+Wissenschaftliche Kooperation,2000,1.0
+Skeletonfahren,2000,1.0
+Antike,2000,1.0
+Islam,2000,1.0
+Bulgarienbild,2000,1.0
+Hinterglasmalerei,2000,1.0
+Popularisierung,2000,1.0
+E-Learning,2000,1.0
+Informationsvermittlung,2000,1.0
+Ballonfahrt,2000,1.0
+Buchhandel,2000,1.0
+Bauhaus,2000,1.0
+Lizenz,2000,1.0
+Landkreis,2000,1.0
+Islamische Kunst,2000,1.0
+Patriotismus,2000,1.0
+Verwaltungsrecht,2000,1.0
+Sammeln,2000,1.0
+Flugzeug,2000,1.0
+Entenzucht,2000,1.0
+Messtechnik,2000,1.0
+Energieverbrauch,2000,1.0
+Dokumentarfotografie,2000,1.0
+Bowling,2000,1.0
+Volkstanz,2000,1.0
+Raumordnung,2000,1.0
+Religion,2000,1.0
+Wanderbühne,2000,1.0
+Selbsthilfegruppe,2000,1.0
+Kirchenschatz,2000,1.0
+Kitesurfen,2000,1.0
+Frauenkloster,2000,1.0
+Bobsport,2000,1.0
+International Day of Commemoration to honour the victims of the Holocaust,2000,1.0
+Nibelungensage,2000,1.0
+Friedensfest,2000,1.0
+Geigenbau,2000,1.0
+Logistik,2000,1.0
+Nationale Minderheit,2000,1.0
+Simulation,2000,1.0
+Triosonate,2000,1.0
+Ontologie,2000,1.0
+Renaissance,2000,1.0
+Familie,2000,1.0
+Kulturvermittlung,2000,1.0
+Politische Bildung,2000,1.0
+Alternativbewegung,2000,1.0
+Bühnentechnik,2000,1.0
+Nationalbibliografie,2000,1.0
+Filmförderung,2000,1.0
+Buchdruck,2000,1.0
+Kraftwagen,2000,1.0
+Architekturpreis,2000,1.0
+Bildungspolitik,2000,1.0
+Karriereplanung,2000,1.0
+Haustechnik,2000,1.0
+Straßentheater,2000,1.0
+Mehrwertige Logik,2000,1.0
+Abwassertechnologie,2000,1.0
+Erneuerbare Energien,2000,1.0
+Biometeorologie,2000,1.0
+Spieltherapie,2000,1.0
+Software,2000,1.0
+Siedlungsarchäologie,2000,1.0
+Textilien,2000,1.0
+Hethiter,2000,1.0
+Serbien,2000,1.0
+Elektrofahrzeug,2000,1.0
+Wasser,2000,1.0
+Denkmal,2000,1.0
+Stummfilm,2000,1.0
+Motorsportveranstaltung,2000,1.0
+Organischer Abfall,2000,1.0
+Tiroler Freiheitskampf,2000,1.0
+Produktionsregelsystem,2000,1.0
+Robotik,2000,1.0
+Interkonfessionelles Gespräch,2000,1.0
+Regionalverwaltung,2000,1.0
+Pferdezucht,2000,1.0
+Neuapostolische Gemeinde,2000,1.0
+Umweltüberwachung,2000,1.0
+Algorithmus,2000,1.0
+Einwanderung,2000,1.0
+Kulturbeziehungen,2000,1.0
+Mittelalterliche Archäologie,2000,1.0
+Viehschau,2000,1.0
+Politisches Theater,2000,1.0
+Tennis,2000,1.0
+Erwachsener,2000,1.0
+Realschule,2000,1.0
+Otto Breicha-Preis für Fotokunst,2000,1.0
+Tee,2000,1.0
+Reichspogromnacht,2000,1.0
+Naturdenkmal,2000,1.0
+Deutschland,2000,1.0
+Makedonisch,2000,1.0
+Zwischenbuchhandel,2000,1.0
+Internationale Migration,2000,1.0
+Mitgliederversammlung,2000,1.0
+Reaktionstechnik,2000,1.0
+Gruppentheorie,2000,1.0
+Hydrologie,2000,1.0
+Autobiografie,2000,1.0
+Biotechnologische Industrie,2000,1.0
+Kraftfahrzeugtechnik,2000,1.0
+Gesangswettbewerb,2000,1.0
+Filmwirtschaft,2000,1.0
+Immobilienmarkt,2000,1.0
+Religionsgemeinschaft,2000,1.0
+Literaturunterricht,2000,1.0
+Problemschach,2000,1.0
+Bauen,2000,1.0
+Betriebsfest,2000,1.0
+Kraftfahrzeugzubehör,2000,1.0
+Kundenmanagement,2000,1.0
+Rassendiskriminierung,2000,1.0
+Kunstradfahren,2000,1.0
+Forstmaschine,2000,1.0
+Eisstockschießen,2000,1.0
+Weiterbildungskurs,2000,1.0
+Mittelalter,2000,1.0
+Türkisch,2000,1.0
+Experimentalfilm,2000,1.0
+Finanzdienstleistung,2000,1.0
+Wasserverschmutzung,2000,1.0
+Lebensmitteltechnologie,2000,1.0
+Frauenuniversität,2000,1.0
+Infanterieregiment,2000,1.0
+Scheinwerfer,2000,1.0
+Außenpolitik,2000,1.0
+Einradfahren,2000,1.0
+Kulturelle Kooperation,2000,1.0
+Posaunenspiel,2000,1.0
+Ethnologie,2000,1.0
+Friedensarbeit,2000,1.0
+Domschatz,2000,1.0
+Berufsorientierung,2000,1.0
+Marketing,2000,1.0
+Armbrustschießen,2000,1.0
+Bebauungsdichte,2000,1.0
+Laienmusik,2000,1.0
+Modell,2000,1.0
+Jahresgedächtnis,2000,1.0
+Ess- und Trinksitte,2000,1.0
+Gebäudeleittechnik,2000,1.0
+Steuerrecht,2000,1.0
+Schlacht,2000,1.0
+Internationales Privatrecht,2000,1.0
+Care,2000,1.0
+Uhrmacherhandwerk,2000,1.0
+Kurden,2000,1.0
+Hausrathandel,2000,1.0
+Angewandte Linguistik,2000,1.0
+Delikatesse,2000,1.0
+Seminar,2000,1.0
+Zeitarbeit,2000,1.0
+Telemedizin,2000,1.0
+Musical,2000,1.0
+Maschinenbau,2000,1.0
+Ökologie,2000,1.0
+Zensur,2000,1.0
+Heimatfront,2000,1.0
+Vereinsfest,2000,1.0
+Kutsche,2000,1.0
+Kaltblut,2000,1.0
+Vernissage,2000,1.0
+Bulgaren,2000,1.0
+Künste,2000,1.0
+Schlittenhundesport,2000,1.0
+Beleuchtungstechnik,2000,1.0
+Nahrungsaufnahme,2000,1.0
+Fairer Handel,2000,1.0
+Bauphysik,2000,1.0
+Juristenausbildung,2000,1.0
+Anglikanische Kirche,2000,1.0
+Altenplan,2000,1.0
+Social Media,2000,1.0
+Handhabungstechnik,2000,1.0
+Kochbuch,2000,1.0
+Dekade zur Überwindung von Gewalt,2000,1.0
+Funde,2000,1.0
+Sinologie,2000,1.0
+Altern,2000,1.0
+Kloster,2000,1.0
+Experimentelle Musik,2000,1.0
+Rechtgläubigkeit,2000,1.0
+Astronomie,2000,1.0
+Textilpflege,2000,1.0
+Luftverteidigung,2000,1.0
+Roboter,2000,1.0
+Büromöbelhandel,2000,1.0
+Künstlervereinigung,2000,1.0
+Metallbearbeitung,2000,1.0
+Körperbemalung,2000,1.0
+Go,2000,1.0
+Verbotene Kunst,2000,1.0
+Papierherstellung,2000,1.0
+Kulturpädagogik,2000,1.0
+Sonnenenergie,2000,1.0
+Politische Bewegung,2000,1.0
+Kreativität,2000,1.0
+Bulgarisch,2000,1.0
+Christliche Literatur,2000,1.0
+Rock 'n' Roll,2000,1.0
+Alter,2000,1.0
+Sprechkunst,2000,1.0
+Balkankriege,2000,1.0
+Einweihung,2000,1.0
+Wiederbegegnung,2000,1.0
+Kulturdenkmal,2000,1.0
+Elektronische Musik,2000,1.0
+Länderspiel,2000,1.0
+Volksmusik,2000,1.0
+Semantic Web,2000,1.0
+Priesterseminar,2000,1.0
+Vergleichende Erziehungswissenschaft,2000,1.0
+Hominisation,2000,1.0
+Jugendfeuerwehr,2000,1.0
+Attentat,2000,1.0
+Naturwissenschaften,2000,1.0
+Klassische Archäologie,2000,1.0
+Forsttechnik,2000,1.0
+Kritik,2000,1.0
+Mensch-Maschine-Kommunikation,2000,1.0
+Ausbildung,2000,1.0
+Schulreform,2000,1.0
+Baumpflege,2000,1.0
+Abfallbehandlung,2000,1.0
+Jugendseelsorge,2000,1.0
+Fischerstechen,2000,1.0
+Turkologie,2000,1.0
+Gebet,2000,1.0
+Reformationsjubiläum,2000,1.0
+Wasserversorgung,2000,1.0
+Kulturkontakt,2000,1.0
+Musikinstrumentenbau,2000,1.0
+Radsport,2000,1.0
+Straßenfest,2000,1.0
+Naturschutz,2000,1.0
+Kleintiere,2000,1.0
+Besamung,2000,1.0
+Schulbuch,2000,1.0
+Konstantin,2000,1.0
+Stimme,2000,1.0
+Homosexualität,2000,1.0
+Dialektologie,2000,1.0
+Showtanz,2000,1.0
+Leichtmetallbau,2000,1.0
+Evangelische Allianz,2000,1.0
+Kulturwissenschaften,2000,1.0
+Handel,2000,1.0
+Open Access,2000,1.0
+Lebensmittelchemie,2000,1.0
+Historische Geografie,2000,1.0
+Glas,2000,1.0
+Pornografie,2000,1.0
+Versicherung,2000,1.0
+Kunsterziehung,2000,1.0
+Montage,2000,1.0
+Handarbeiten,2000,1.0
+Kirchliche Erneuerung,2000,1.0
+LINUX,2000,1.0
+Internationaler Wettbewerb,2000,1.0
+Schweißen,2000,1.0
+Countrymusic,2000,1.0
+New Age,2000,1.0
+Klöppeln,2000,1.0
+Geografieunterricht,2000,1.0
+Kalender,2000,1.0
+Osterspiel,2000,1.0
+Diskussion,2000,1.0
+Integration,2000,1.0
+Musikfilm,2000,1.0
+Christliche Jugendbewegung,2000,1.0
+Zeitungswissenschaft,2000,1.0
+Rutschung,2000,1.0
+Netzkunst,2000,1.0
+Internet,2000,1.0
+Atomphysik,2000,1.0
+Jugendverband,2000,1.0
+Park,2000,1.0

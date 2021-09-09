@@ -4,27 +4,44 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>SonAR Overview</title>
+  <title>SoNAR (IDH)</title>
   <meta name="description" content="SoNAR Overview">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <script src="https://d3js.org/d3.v5.min.js" charset="utf-8"></script>
   <script src="https://rawcdn.githack.com/Kcnarf/d3-weighted-voronoi/v1.0.0/build/d3-weighted-voronoi.js"></script>
   <script src="https://raw.githack.com/Kcnarf/d3-voronoi-map/master/build/d3-voronoi-map.js"></script>
+  <script src="https://code.jquery.com/jquery-2.1.3.js"></script>
   <style>
+    :root {
+      --main-bg-color: rgb(250, 250, 250);
+      --sec-color: rgba(250, 250, 250, 0.95);
+      --KPE: #494b9a;
+      --GND: #ea635e;
+      --SBB: #e8ce4b;
+      --DNB: #44b78d;
+      --ZDB: #e5994c;
+      --Comp: rgb(56, 56, 56);
+    }
+
+
     body {
-      background-color: rgb(250, 250, 250);
+      background-color: var(--main-bg-color);
       font-family: 'Open Sans', sans-serif;
-      margin:0;
+      margin: 0;
       overflow-y: hidden;
       overflow-x: hidden;
     }
 
-
+    ::-webkit-scrollbar {
+      width: 0px;
+      /* Remove scrollbar space */
+      background: transparent;
+      /* Optional: just make scrollbar invisible */
+    }
 
     .cell {
       stroke: white;
@@ -39,7 +56,7 @@
       stroke-width: 6px;
       stroke: #fafafa;
       stroke-linecap: round;
-      text-transform:uppercase;
+      text-transform: uppercase;
     }
 
 
@@ -48,7 +65,7 @@
       text-anchor: middle;
       font-size: 12px;
       font-weight: 600;
-      text-transform:uppercase;
+      text-transform: uppercase;
     }
 
 
@@ -87,9 +104,44 @@
       height: 25%;
       position: fixed;
       bottom: 0px;
-      left:0;
+      left: 0;
       text-align: right;
     }
+
+
+#timelinetitle {
+  padding-left: 12px;
+  padding-top: 0;
+  padding-bottom:0;
+  vertical-align: middle;
+  font-size: 12px;
+  font-weight: normal;
+  width: 260px;
+  height: 25px;
+  bottom: 25%;
+  position: absolute;
+  background: #d9d9d9;
+}
+
+#timelinetitle:after {
+  content: "";
+  position: absolute;
+  right: -45px;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-left: 45px solid #d9d9d9;
+  border-top: 25px solid transparent;
+}
+
+#timelinetitle p{
+  margin:0;
+  margin-top: 4px;
+}
+
+#timelineselectedyear{
+font-weight: bold;
+}
 
     #yearSlider {
       position: absolute;
@@ -101,308 +153,2866 @@
     }
 
     input[type="range"] {
-      width:100%;
+      width: 100%;
       direction: ltr;
     }
-.range-value{
-  margin:0;
-}
 
-    #svg{
+    .range-value {
       margin: 0;
     }
 
-.tick line{
-  display:none;
-}
+    #svg {
+      margin: 0;
+    }
 
-.timelineRect{
-  fill: #fafafa;
-  stroke: #d9d9d9;
-  stroke-width:3;
-  cursor: pointer;
-}
+    .tick line {
+      display: none;
+    }
 
-.timelineRect.timelineRecthover{
-  fill: #d9d9d9;
-}
+    .timelineRect {
+      fill: var(--sec-color);
+      stroke: #d9d9d9;
+      stroke-width: 3;
+      cursor: pointer;
+    }
 
-.timelineRect.timelineRectSelected{
-  fill: #d9d9d9;
-}
+    .timelineRect.timelineRecthover {
+      fill: #d9d9d9;
+    }
 
-
-.info{
-  font-size: 12px;
-  padding: 12px;
-  width: 250px;
-  height: 70%;
-  position: fixed;
-  top: 0px;
-  left:0px;
-  color: black;
-  background-color: rgba(250, 250, 250, 0.75);
-}
-
-h1{
-  margin-top: 0;
-  font-size: 22px;
-}
-
-.info p{
-  font-size: 12px;
-}
-
-.infohighlight{
-}
-
-.gnd-highlight{
-  font-weight: bold;
-  color: #ea635e;
-  text-decoration: underline;
-}
-
-.kpe-highlight{
-  font-weight: bold;
-  color: #494b9a;
-  text-decoration: underline;
-}
-
-.dnb-highlight{
-  font-weight: bold;
-  color: #44b78d;
-  text-decoration: underline;
-}
-
-.sbb-highlight{
-  font-weight: bold;
-  color: #e8ce4b;
-  text-decoration: underline;
-}
-
-.zdb-highlight{
-  font-weight: bold;
-  color: #e5994c;
-  text-decoration: underline;
-}
-
-.comp-highlight{
-  font-weight: bold;
-  color: rgb(56, 56, 56);
-  text-decoration: underline;
-}
-
-/* unvisited link */
-a:link {
-  color: black;
-}
-
-/* visited link */
-a:visited {
-  color: black;
-}
-
-/* mouse over link */
-a:hover {
-  color: black;
-}
-
-/* selected link */
-a:active {
-  color: black;
-}
-
-.searchbar{
-  font-size: 12px;
-  font-weight: bold;
-  margin: 12px;
-   width: 100%;
-  height: 44px;
-  position: absolute;
-  top: 0px;
-  margin: auto;
-  color: black;
-  text-align: center;
-  vertical-align: middle;
-  text-transform: uppercase;
-  display: flex;
-  justify-content: center;
-}
-
-#searchfield {
-  padding:0;
-  margin:0;
-  padding-top: 5px;
-  position: relative;
-  width: 310px;
-  height: 25px;
-  text-align: center;
-  vertical-align: middle;
-  background-color: white;
-  border: solid #bdbdbd;
-  border-width: 0px;
-  border-radius: 8px;
-}
-
-.searchbuttons{
-  padding:0;
-font-size: 18px;
-height: 22px;
-width: 22px;
-text-align: center;
-vertical-align: middle;
-border: 0;
-background-color: white;
-}
-
-#suche{
-  width: 250px;
-  border: 0;
-  font-weight: bold;
-  text-align: center;
-}
-
-.search-border-wrap {
-  padding: 1px;
-  margin-top: 12px;
-  position: relative;
-  width: 310px;
-  height: 30px;
-  text-align: center;
-  vertical-align: middle;
-  background-color: white;
-  border: solid #bdbdbd;
-  border-width: 0px;
-  border-radius: 8px;
-  position: relative;
-  background: linear-gradient(to right, #ea635e, #494b9a, #e5994c, #44b78d, #e8ce4b);
-}
+    .timelineRect.timelineRectSelected {
+      fill: #d9d9d9;
+    }
 
 
-.toplistDiv{
-  position: fixed;
-  height: 75%;
-  width: 300px;
-  background-color: rgba(255, 255, 255, 0.92);
-  color: black;
-  border: solid #bdbdbd;
-  border-width: 1px;
-  border-radius: 8px;
-  top: 12.5%;
-  left: calc((100% - 300px)/2);
-  padding: 10px;
-}
+    .info {
+      font-size: 12px;
+      padding: 12px;
+      width: 250px;
+      height: 70%;
+      position: fixed;
+      top: 0px;
+      left: 0px;
+      color: black;
+      background-color: rgba(250, 250, 250, 0.75);
+    }
 
-.toplisttext{
-  position: relative;
-  width: 100%;
-  height: calc(100% - 1.5em);
-  overflow: auto;
-}
+    h1 {
+      margin-top: 0;
+      font-size: 22px;
+    }
 
-.toplistentries{
-  font-size: 12px;
-  margin: 0;
-}
+    .info p {
+      font-size: 12px;
+    }
 
-.toplistCross{
-  font-size: 20px;
-  position: absolute;
-  top:5px;
-  right: 10px;
-  margin:0;
-  cursor: pointer;
-}
+    .infohighlight {}
 
-.toplistsearch{
-  background-color: none;
-  width: 90%;
-  margin-bottom: 5px;
-}
+    .gnd-highlight {
+      font-weight: bold;
+      color: var(--GND);
+      text-decoration: underline;
+    }
+
+    .kpe-highlight {
+      font-weight: bold;
+      color: var(--KPE);
+      text-decoration: underline;
+    }
+
+    .dnb-highlight {
+      font-weight: bold;
+      color: var(--DNB);
+      text-decoration: underline;
+    }
+
+    .sbb-highlight {
+      font-weight: bold;
+      color: var(--SBB);
+      text-decoration: underline;
+    }
+
+    .zdb-highlight {
+      font-weight: bold;
+      color: var(--ZDB);
+      text-decoration: underline;
+    }
+
+    .comp-highlight {
+      font-weight: bold;
+      color: var(--Comp);
+      text-decoration: underline;
+    }
+
+    /* unvisited link */
+    a:link {
+      color: black;
+    }
+
+    /* visited link */
+    a:visited {
+      color: black;
+    }
+
+    /* mouse over link */
+    a:hover {
+      color: black;
+    }
+
+    /* selected link */
+    a:active {
+      color: black;
+    }
+
+    .searchbar {
+      font-size: 12px;
+      font-weight: bold;
+      margin: 12px;
+      width: 100%;
+      height: 44px;
+      position: absolute;
+      top: 0px;
+      margin: auto;
+      color: black;
+      text-align: center;
+      vertical-align: middle;
+      text-transform: uppercase;
+      display: flex;
+      justify-content: center;
+    }
+
+    #searchfield {
+      padding: 0;
+      margin: 0;
+      padding-top: 0px;
+      position: relative;
+      display: inline-block;
+      width: 280px;
+      height: 30px;
+      text-align: center;
+      vertical-align: middle;
+      background-color: white;
+      border: solid #bdbdbd;
+      border-width: 0px;
+      border-radius: 8px;
+    }
+
+    .searchbuttons {
+      padding: 0;
+      font-size: 18px;
+      height: 22px;
+      width: 22px;
+      text-align: center;
+      vertical-align: middle;
+      border: 0;
+      background-color: white;
+    }
+
+    #suche {
+      width: 160px;
+      border: 0;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    #search_category_select{
+      display: inline-block;
+      position: relative;
+      height: 32px;
+      padding:0;
+      background-color: var(--main-color);
+      border-width: 0px;
+      border-color: #b3b3b3;
+      border-radius: 8px 0 0 8px;
+      font-size: 11px;
+      font-weight: bold;
+      vertical-align: middle;
+      text-align: center;
+    }
+
+    .search-border-wrap {
+      padding: 1px;
+      margin-top: 12px;
+      position: relative;
+      width: 280px;
+      height: 30px;
+      text-align: center;
+      vertical-align: middle;
+      background-color: white;
+      border: solid #bdbdbd;
+      border-width: 0px;
+      border-radius: 8px;
+      position: relative;
+      background: linear-gradient(to right, var(--GND), var(--KPE), var(--ZDB), var(--DNB), var(--SBB));
+    }
+
+
+    .toplistDiv {
+      position: fixed;
+      height: 75%;
+      width: 300px;
+      background-color: rgba(255, 255, 255, 0.92);
+      color: black;
+      border: solid #bdbdbd;
+      border-width: 1px;
+      border-radius: 8px;
+      top: 12.5%;
+      left: calc((100% - 300px)/2);
+      padding: 10px;
+    }
+
+    .toplisttext {
+      position: relative;
+      width: 100%;
+      height: calc(100% - 1.5em);
+      overflow: auto;
+    }
+
+    .toplistentries {
+      font-size: 12px;
+      margin: 0;
+    }
+
+    .toplistCross {
+      font-size: 20px;
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    .toplistsearch {
+      background-color: none;
+      width: 90%;
+      margin-bottom: 5px;
+    }
+
+    /*
+     * === LOADING ICON===
+     */
+    #loadbg {
+      z-index: 700;
+      position: absolute;
+      background-color: var(--main-bg-color);
+      width: 100%;
+      height: 100%;
+      opacity: 0.6;
+      top: 0;
+      display: none;
+    }
+
+    #load {
+      position: absolute;
+      z-index: 700;
+      left: calc(50% - 30px);
+      top: calc(50% - 50px);
+      display: none;
+    }
+
+    .loader {
+      border: 20px solid var(--sec-color);
+      border-top: 20px solid black;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 2s linear 15;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /*
+     * === LOADING ICON END===
+     */
+
+
+
+     #details {
+       background-color: white;
+       margin: 0px;
+       font-size: 0.8em;
+       position: fixed;
+       overflow-y: auto;
+       top: 0;
+       left: 0;
+       width: 250px;
+       height: 100%;
+       display: none;
+       text-align: left;
+       padding: 20px;
+       box-shadow: 3px 3px 5px rgba(0,0,0,0.26);
+     }
+
+     #graph {
+       position: fixed;
+       left: 0;
+       top: 0;
+       height: 100%;
+       width: 100%;
+       cursor: move;
+       display:none;
+     }
+
+     #overlay {
+       position: fixed;
+       left: 0;
+       top: 0;
+       height: 100%;
+       width: 100%;
+       display:none;
+     }
+
+     #closedetails {
+       position: fixed;
+       left: 250px;
+       top: 0;
+       font-size: 30;
+       color: black;
+       cursor: pointer;
+       display: none;
+     }
+
+     .nodes {
+       cursor: pointer;
+     }
+
+     .detail_key {
+       font-weight: normal;
+       color: grey;
+       margin-bottom: 0;
+     }
+
+     .detail_value {
+       margin-top: 0;
+       font-weight: bold;
+       color: black;
+     }
+
+     .relations_value {
+       margin-top: 0;
+       margin-bottom: 5;
+       font-weight: bold;
+       font-size: 1em;
+       color: black;
+     }
+
+     .domain {
+       visibility: visible;
+     }
+
+     .filteredOut {
+       opacity: 0;
+       pointer-events: none;
+     }
+
+     .filteredIn {
+       opacity: 1;
+     }
+
+     .timefilteredOut {
+       display: none;
+       pointer-events: none;
+     }
+
+     #graph-metrics p{
+       margin: 0;
+     }
+
+     #graph-info{
+       display:none;
+     }
+
+     #graph-metrics{
+       display:none;
+     }
 
   </style>
 </head>
 
 <body>
+  <svg id="overlay"></svg>
+  <svg id="graph"></svg>
+  <div id="statsDiv" style="display:none"></div>
+
   <svg id="svg">
     <g id="allvisg">
-    <g id="relationsvis"></g>
-    <g id="vis"></g>
-    <g id="visgeo"></g>
-    <g id="visres"></g>
-    <g id="vismeet"></g>
-    <g id="visuni"></g>
-    <g id="viscorp"></g>
-  </g>
+      <g id="relationsvis"></g>
+      <g id="vis"></g>
+      <g id="visgeo"></g>
+      <g id="visres"></g>
+      <g id="vismeet"></g>
+      <g id="visuni"></g>
+      <g id="viscorp"></g>
+    </g>
   </svg>
 
-  <div id="timelineDiv"><svg id="timelineSVG">
-    <defs>
-  <pattern id="diagonalHatch" width="16" height="16" patternTransform="rotate(-45 0 0)" patternUnits="userSpaceOnUse">
-  <line x1="2" y1="0" x2="2" y2="16" style="stroke:#494b9a; stroke-width:2" />
-  <line x1="6" y1="0" x2="6" y2="16" style="stroke:#44b78d; stroke-width:2" />
-  <line x1="10" y1="0" x2="10" y2="16" style="stroke:#e8ce4b; stroke-width:2" />
-  <line x1="14" y1="0" x2="14" y2="16" style="stroke:orange; stroke-width:2" />
-  </pattern>
 
-    </defs>
-  </svg></div>
 
 
   <div class="info">
-  <h1>SoNAR (IDH)…</h1>
-  <p>beziehungsweise Interfaces to Data for Social Historical Network Analysis and Research, ist eine prototypische Erpopung einer Forschungsinfrastruktur zur systematisch forschungsorientierten Aufbereitung von Massendaten zur Nutzung in der historischen Netzwerkanalyse (HNA). Dabei basiert die Technologie zunächst auf der Zusammenführung der heterogenen Daten (~52 Mio. Knoten, ~185 Mio. Kanten) aus <span class="gnd-highlight">GND</span>, <span class="kpe-highlight">Kalliope</span>, <span class="dnb-highlight">DNB</span>, <span class="zdb-highlight">ZDB</span> und <span class="sbb-highlight">SBB</span>, sowie maschinell <span class="comp-highlight">abgeleiteten Relationen</span> aus diesen Beständen.</p>
-  <p><span class="infohighlight">Kurzanleitung:</span><br>
-  1. Überblick verschaffen<br>
-  2. Suche nutzen und Netzwerke generieren<br>
-  3. Netzwerke explorieren<br>
-  4. Daten herunterladen
-</p>
-<p><span class="infohighlight">Weitere Infos & API:</span><br>
-- <a href="https://github.com/sonar-idh/jupyter-curriculum">API & Jupyter Notebook HNA Curriculum</a><br>
-- <a href="https://github.com/sonar-idhm">Projektdokmentation & Sourcecode</a><br>
-- <a href="https://">Impressum, Disclaimer & Datenschutz</a><br>
-- <a href="https://sonar.fh-potsdam.de">Projektwebsite & Team</a>
-</p>
-</div>
+    <h1>SoNAR (IDH)</h1>
+    <section id="intro-text">
+    <p>SoNAR (IDH) oder Interfaces to Data for Social Historical Network Analysis and Research, ist eine prototypische Erpopung einer Forschungsinfrastruktur zur systematisch forschungsorientierten Aufbereitung von Massendaten zur Nutzung in der
+      historischen Netzwerkanalyse (HNA). Dabei basiert die Technologie zunächst auf der Zusammenführung der heterogenen Daten (~52 Mio. Knoten, ~185 Mio. Kanten) aus <span class="gnd-highlight">GND</span>, <span
+        class="kpe-highlight">Kalliope</span>, <span class="dnb-highlight">DNB</span>, <span class="zdb-highlight">ZDB</span> und <span class="sbb-highlight">SBB</span>, sowie maschinell <span class="comp-highlight">abgeleiteten Relationen</span> aus
+      diesen Beständen.</p>
+    <p><span class="infohighlight">Kurzanleitung:</span><br>
+      1. Überblick verschaffen<br>
+      2. Suche nutzen und Netzwerke generieren<br>
+      3. Netzwerke explorieren<br>
+      4. Daten herunterladen
+    </p>
+    <p><span class="infohighlight">Weitere Infos & API:</span><br>
+      - <a href="https://github.com/sonar-idh/jupyter-curriculum">API & Jupyter Notebook HNA Curriculum</a><br>
+      - <a href="https://github.com/sonar-idhm">Projektdokmentation & Sourcecode</a><br>
+      - <a href="https://">Impressum, Disclaimer & Datenschutz</a><br>
+      - <a href="https://sonar.fh-potsdam.de">Projektwebsite & Team</a>
+    </p>
+  </section>
 
-
-
-<div class="searchbar">
-  <div class="search-border-wrap">
-  <div id="searchfield">
-
-    <input type="text" id="suche" class="cypher-in" name="suche" value="" placeholder="Generiere ein Netzwerk mit SoNAR">
-    <button name="post cypher" id="searchbutton" class="searchbuttons" onclick="post_cypherquery('execute');">
- <i class = "material-icons" style="font-size: 18px">search</i></button>
-     <button name="post cypher" id="searchoptions" class="searchbuttons" onclick=""> <i style="font-size: 18px" class = "material-icons">settings</i></button>
-    <button name="post cypher" class="searchbuttons" onclick="post_cypherquery('addByQuery');" style="display:none;">Hinzufügen</button>
+<section id="graph-info">
+  <p>Zurück zur Gesamtübersicht <i style="font-size: 11px" class="material-icons">
+arrow_back_ios
+</i></p>
+  <p>Graphmetriken</p>
+</section>
+  <section id="graph-metrics">
+</section>
   </div>
-</div>
-</div>
 
-  <!-- <div id="timelineDiv"><svg id="timelineSVG" width="200"> </svg></div> -->
-  <!-- <div id="yearSlider">
-    <div class="range-slider">
-      <input class="input-range" type="range" step="50" value="1900" min="1300" max="2000">
-      <p class="range-value"></p>
+
+
+
+
+
+  <div id="timelinetitle"><p>▼ Zeit-Filter (Beziehungen): <span id="timelineselectedyear">1850—1900</span></p></div>
+  <div id="timelineDiv"><svg id="timelineSVG"> </svg></div>
+
+
+
+  <div id="perNameListDiv" style="display:none">
+    <form>
+      <select name="listDropdown" id="listDropdown" onchange="listDropdownChange()">
+        <option value="PerName">Personen</option>
+        <option value="CorpName">Körperschaften</option>
+        <option value="TopicTerm">Sachbegriffe</option>
+        <option value="MeetName">Konferenzen</option>
+        <option value="Resource">Ressourcen</option>
+        <option value="UniTitle">Werke</option>
+        <option value="GeoName">Geografika</option>
+        <option value="SourceType">Beziehungstypen</option>
+        <option value="TypeAddInfo">Beziehungs-Zusatzangaben</option>
+        <!-- <option value="TempValidity">Beziehungs-Zeitangaben</option> -->
+      </select>
+    </form>
+  </div>
+
+
+
+  <div class="searchbar">
+
+    <div class="search-border-wrap">
+      <div id="searchfield">
+        <select name="search_category" id="search_category_select">
+          <option value="GND-ID">P</option>
+          <option value="Schlagwort">S</option>
+        </select>
+        <input type="text" id="suche" class="cypher-in" name="suche" value="" placeholder="Generiere ein Netzwerk">
+        <button name="post cypher" id="searchbutton" class="searchbuttons" onclick="post_cypherquery('execute');">
+          <i class="material-icons" style="font-size: 18px">search</i></button>
+        <button name="post cypher" id="add_search" class="searchbuttons" style="opacity:0.5;" onclick="post_cypherquery('addByQuery')"> <i style="font-size: 18px" class="material-icons">add_circle_outline</i></button>
+        <button name="post cypher" id="searchoptions" class="searchbuttons" onclick=""> <i style="font-size: 18px" class="material-icons">settings</i></button>
+
+
+        <select style="display:none" name="search_type" id="search_type_select">
+          <option value="simple">Einfach</option>
+          <option value="complex">Komplex</option>
+        </select>
+
+
+      </div>
+
     </div>
-  </div> -->
+  </div>
+
+  <div id="details"></div>
+  <p id="closedetails">✕</p>
+
+  <div id="loadbg"></div>
+  <div id="load" class="loader"></div>
+
 
   <script>
-    // let range = d3.select(".input-range")
-    // let value = d3.select(".range-value")
-    //
-    // value.html(range.attr('value'));
-
-
-
-
     var div = d3.select("body").append("div")
       .attr("class", "tooltip")
       .style("opacity", 0);
 
     div.append("p")
+
+
+    ////////////////////////////////////
+    ////////////////////////////////////setup Network vis
+    const margin = 0;
+    let windowWidth = window.innerWidth - 2 * margin
+    let windowHeight = window.innerHeight - 2 * margin
+    let timelineHeight = 0.25 * windowHeight
+
+    let timelineInterval = [1300, 2000]
+    console.log(timelineInterval)
+
+
+    const neo4jLogin = 'sonar';
+    const neo4jPassword = 'sonar2021';
+
+    function setupNeo4jLoginForAjax(login, passwd) {
+      $.ajaxSetup({
+        contentType: 'application/json',
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('Authorization', 'Basic ' + btoa(login + ':' + passwd));
+        }
+      });
+    }
+
+    $(function() {
+      setupNeo4jLoginForAjax(neo4jLogin, neo4jPassword);
+
+    });
+
+    let maxValueinLinks = 1
+    let maxValueinNodes = 1
+
+    let nodes = [],
+      links = [];
+    let graph = {
+      nodes: nodes,
+      links: links
+    };
+
+    let linksClean = []
+
+    let timeline = []
+    let newNode = false
+    let queryCollection = []
+
+    if (window.location.hash) {
+      console.log(window.location.hash.split("#"))
+      let hashId = window.location.hash.split("#")[1]
+      d3.select(".cypher-in").attr("value", hashId)
+      post_cypherquery('execute')
+    }
+
+
+    function post_cypherquery(type, id) {
+      d3.select("#svg").style("display", "none")
+      d3.select("#add_search").style("opacity", 1)
+      d3.select("#intro-text").style("display", "none")
+      d3.select("#graph-info").style("display", "block")
+      d3.select("#graph-metrics").style("display", "block")
+      d3.select("#graph").style("display", "block")
+      d3.select("#overlay").style("display", "block")
+
+      let cypherStatement
+      let cypherStatement2
+      let cypherStatement3
+      let cypherStatement4
+
+      let searchquery = $('#suche').val()
+
+      if (type == "execute" || type == "addByQuery") {
+        d3.select("#load").style("display", "block");
+        d3.select("#loadbg").style("display", "block");
+
+        queryCollection.push(searchquery)
+
+
+        if ($('#search_category_select').val() == "GND-ID") {
+
+          if (type == "execute") {
+            window.location.hash = "#" + searchquery
+          }
+          // cypherStatement = `MATCH (p:PerName {Id:'${searchquery}'}) WITH p
+          //                   MATCH (p)--(friends:PerName)-[r2]-(n:PerName)--(p)
+          //                   WHERE (ID(friends) > ID(n))
+          //                   RETURN DISTINCT*`
+          // `MATCH (p:PerName {Id:'${searchquery}'}) WITH p
+          //                   MATCH (p)-[rel:RelationToPerName|SocialRelation]-(friends:PerName)-[rel2:RelationToPerName|SocialRelation]-(n:PerName)-[rel3:RelationToPerName|SocialRelation]-(p)
+          //                   WHERE (ID(friends) > ID(n))
+          //                   RETURN DISTINCT* LIMIT 150000`
+          //
+
+          cypherStatement =
+            `MATCH (p:PerName) - [rel:RelationToPerName | RelationToCorpName | SocialRelation] - (friends) - [rel2:RelationToTopicTerm | RelationToGeoName | RelationToMeetName | RelationToUniTitle | RelationToCorpName ] - (friendsfriends)
+                            WHERE (p.Id = "${searchquery}" AND friends:PerName)
+                            RETURN DISTINCT*`
+
+          cypherStatement2 =
+            `MATCH (p:PerName) - [rel:RelationToTopicTerm | RelationToGeoName | RelationToCorpName | RelationToMeetName | RelationToUniTitle | SocialRelation | RelationToResource | RelationToPerName] - (friends)
+                                              WHERE (p.Id = "${searchquery}")
+                                              RETURN DISTINCT*`
+
+          cypherStatement3 =
+            `MATCH (p:PerName) - [rel:RelationToResource | RelationToPerName] - (friends)
+          - [rel2:RelationToPerName | RelationToResource] - (friendsfriends)
+                                                                WHERE (p.Id = "${searchquery}" )
+                                                                RETURN DISTINCT*`
+
+          if ($('#search_type_select').val() == "complex") {
+            cypherStatement4 =
+              `MATCH (p:PerName {Id:'${searchquery}'}) WITH p
+                             MATCH (p)--(friends:PerName)-[r2]-(n:PerName)--(p)
+                             WHERE (ID(friends) > ID(n))
+                             RETURN DISTINCT r2`
+          } else {
+            cypherStatement4 = ``
+          }
+        } else if ($('#search_category_select').val() == "Schlagwort") {
+
+
+
+          cypherStatement = `MATCH (t:TopicTerm) - [rel:RelationToPerName|RelationToResource|RelationToGeoName|RelationToTopicTerm|SocialRelation] - (friends) -  [rel2:RelationToTopicTerm | RelationToGeoName | RelationToCorpName | RelationToMeetName | RelationToUniTitle] - (friendsfriends)
+  WHERE (t.Name CONTAINS "${searchquery}" AND friends:PerName )
+  RETURN * `
+          //
+          // cypherStatement2 = `MATCH (t:TopicTerm) -- (r:Resource ) - [rel:RelationToPerName] - (p:PerName) - [rel2:RelationToPerName] - (p2:PerName) -- (t:TopicTerm)
+          //   WHERE (t.Name CONTAINS "${searchquery}")
+          //   RETURN * `
+          //
+
+          cypherStatement2 = `MATCH (t:TopicTerm)-[rel1]-(p:PerName)-[rel2]-(p2:PerName)--(t:TopicTerm)
+      WHERE (t.Name CONTAINS '${searchquery}') AND ID(p) > ID(p2)
+      RETURN *`
+
+          cypherStatement3 = `MATCH (t:TopicTerm)-[rel1]-(r:Resource)-[rel3:RelationToPerName]-(p:PerName)-[rel2]-(p2:PerName)--(r:Resource)
+        WHERE (t.Name CONTAINS '${searchquery}') AND ID(p) > ID(p2)
+        RETURN *`
+
+
+
+        }
+
+      } else if (type == "addByNode") {
+        queryCollection.push(id)
+
+        cypherStatement =
+          `MATCH (p:PerName) - [rel:RelationToPerName | RelationToCorpName | SocialRelation] - (friends) - [rel2:RelationToTopicTerm | RelationToGeoName | RelationToMeetName | RelationToUniTitle | RelationToCorpName] - (friendsfriends)
+                          WHERE (p.Id = "${id}" AND friends:PerName)
+                          RETURN DISTINCT* LIMIT 10000`
+
+        cypherStatement2 =
+          `MATCH (p:PerName) - [rel:RelationToTopicTerm | RelationToGeoName | RelationToCorpName | RelationToMeetName | RelationToUniTitle | SocialRelation | RelationToResource | RelationToPerName] - (friends)
+                                            WHERE (p.Id = "${id}")
+                                            RETURN DISTINCT* LIMIT 10000`
+
+        cypherStatement3 =
+          `MATCH (p:PerName) - [rel:RelationToResource | RelationToPerName] - (friends) - [rel2:RelationToPerName | RelationToResource] - (friendsfriends)
+                                                              WHERE (p.Id = "${id}" )
+                                                              RETURN DISTINCT* LIMIT 10000`
+
+        if ($('#search_type_select').val() == "complex") {
+          cypherStatement4 =
+            `MATCH (p:PerName {Id:'${searchquery}'}) WITH p
+                           MATCH (p)--(friends:PerName)-[r2]-(n:PerName)--(p)
+                           WHERE (ID(friends) > ID(n))
+                           RETURN DISTINCT r2`
+        } else {
+          cypherStatement4 = ``
+        }
+
+      }
+
+
+
+
+
+      $.ajax({
+          url: "https://h2918680.stratoserver.net:7473/db/data/transaction/commit",
+          type: 'POST',
+          data: JSON.stringify({
+            "statements": [{
+                "statement": cypherStatement,
+                "resultDataContents": ["graph"]
+              }, {
+                "statement": cypherStatement2,
+                "resultDataContents": ["graph"]
+              },
+              {
+                "statement": cypherStatement3,
+                "resultDataContents": ["graph"]
+              },
+              {
+                "statement": cypherStatement4,
+                "resultDataContents": ["graph"]
+              }
+            ],
+          }),
+          contentType: 'application/json',
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('Authorization', 'Basic ' + btoa(neo4jLogin + ':' + neo4jPassword));
+          },
+          accept: 'application/json; charset=UTF-8'
+        }).done(function(data) {
+
+          console.log(data)
+
+
+          if (type == "execute") {
+            nodes = []
+            links = []
+            linksClean = []
+            graph = {
+              nodes: nodes,
+              links: links
+            };
+            timeline = []
+            newNode = false
+
+
+          } else {
+            newNode = true
+          }
+
+
+
+
+          data.results.forEach(function(statement) {
+            statement.data.forEach(function(row) {
+              row.graph.nodes.forEach(function(n) {
+                if (idIndex(nodes, n.id) == null) {
+
+                  if (n.labels[0] == "ChronTerm") {
+                    nodes.push({
+                      id: n.id,
+                      Id: n.properties.Id,
+                      Label: n.labels[0],
+                      Name: n.properties.Name,
+                      //EntityGenType:n.properties.EntityGenType,
+                      //EntitySpecType:n.properties.EntitySpecType,
+                      VariantName: n.properties.VariantName,
+                      connectivity: 0,
+                      connectivityPerCorp: 0,
+                      newState: newNode
+
+                    })
+                  } else if (n.labels[0] == "PerName" || n.labels[0] == "TopicTerm" || n.labels[0] == "CorpName" || n.labels[0] == "GeoName" || n.labels[0] == "MeetName" || n.labels[0] == "UniTitle") {
+
+                    nodes.push({
+                      Name: n.properties.Name,
+                      Title: n.properties.Title,
+                      VariantName: n.properties.VariantName,
+                      id: n.id,
+                      Id: n.properties.Id,
+                      n4jID: n.properties.id,
+                      Label: n.labels[0],
+                      GenType: n.properties.GenType,
+                      GenSubdiv: n.properties.GenSubdiv,
+                      SpecType: n.properties.SpecType,
+                      Genre: n.properties.Genre,
+                      SourcePath: n.properties.SourcePath,
+                      Medium: n.properties.Medium,
+                      SubUnit: n.properties.SubUnit,
+                      Gender: n.properties.Gender,
+                      Place: n.properties.Place,
+                      GeoArea: n.properties.GeoArea,
+                      Coordinates: n.properties.Coordinates,
+                      IdGeonames: n.properties.IdGeonames,
+                      Info: n.properties.Info,
+                      DateOriginal: n.properties.DateOriginal,
+                      DateApproxOriginal: n.properties.DateApproxOriginal,
+                      DateApproxBegin: n.properties.DateApproxBegin,
+                      DateApproxEnd: n.properties.DateApproxEnd,
+                      DateStrictBegin: n.properties.DateStrictBegin,
+                      DateStrictEnd: n.properties.DateStrictEnd,
+                      Uri: n.properties.Uri,
+                      connectivity: 0,
+                      connectivityPerCorp: 0,
+                      connectivityClean: 0,
+                      newState: newNode
+
+                    })
+
+                    let dateStart = n.properties.DateApproxBegin
+                    let dateEnd = n.properties.DateApproxEnd
+
+                    if (dateStart != null && dateEnd != null && n.labels[0] == "PerName") {
+                      for (x = Number(new Date(dateStart).getFullYear()); x <= Number(new Date(dateEnd).getFullYear()); x++) {
+                        if (timeline[x]) {
+                          timeline[x]["countPerson"]++
+                        } else {
+                          timeline[x] = {},
+                            timeline[x]["date"] = x,
+                            timeline[x]["countPerson"] = 1,
+                            timeline[x]["countResource"] = 0,
+                            timeline[x]["countEdge"] = 0
+
+                        }
+                      }
+                    }
+
+
+
+                  } else if (n.labels[0] == "Resource") {
+
+                    let dateStart = n.properties.DateApproxBegin
+                    let dateEnd = n.properties.DateApproxEnd
+                    let dateStartYear
+                    let dateEndYear
+
+                    //console.log(n.properties.Uri)
+
+                    if (dateStart !== undefined) {
+                      if (dateStart.length == 4) {
+                        dateStartYear = dateStart
+                      } else if (dateStart.indexOf("-") != -1) {
+                        dateStartYear = dateStart.split("-")[0]
+                      } else if (dateStart.length == 8) {
+                        dateStartYear = dateStart.slice(0, 4)
+                      } else if (dateStart.indexOf("[") != -1) {
+                        dateStartYear = dateStart.slice(1, 5)
+                      } else {
+                        dateStartYear = undefined
+                      }
+                    }
+
+                    if (dateEnd && dateEnd !== null) {
+                      if (dateEnd.length == 4) {
+                        dateEndYear = dateEnd
+                      } else if (dateEnd.indexOf("-") != -1) {
+                        dateEndYear = dateEnd.split("-")[0]
+                      } else if (dateEnd.length == 8) {
+                        dateEndYear = dateEnd.slice(0, 4)
+                      } else if (dateEnd.indexOf("[") != -1) {
+                        dateEndYear = dateEnd.slice(1, 5)
+                      } else {
+                        dateEndYear = undefined
+                      }
+                    }
+
+                    nodes.push({
+                      id: n.id,
+                      Id: n.properties.Id,
+                      n4jID: n.properties.id,
+                      Label: n.labels[0],
+                      Name: (n.properties.Title != null) ? n.properties.Title : n.properties.Name,
+                      VariantName: n.properties.VariantName,
+                      Genre: n.properties.Genre,
+                      Creator: n.properties.Creator,
+                      Lang: n.properties.Lang,
+                      GenType: n.properties.GenType,
+                      GenSubdiv: n.properties.GenSubdiv,
+                      SpecType: n.properties.SpecType,
+                      Genre: n.properties.Genre,
+                      SourcePath: n.properties.SourcePath,
+                      Medium: n.properties.Medium,
+                      SubUnit: n.properties.SubUnit,
+                      Gender: n.properties.Gender,
+                      Place: n.properties.Place,
+                      GeoArea: n.properties.GeoArea,
+                      Coordinates: n.properties.Coordinates,
+                      IdGeonames: n.properties.IdGeonames,
+                      Info: n.properties.Info,
+                      DateOriginal: n.properties.DateOriginal,
+                      DateApproxOriginal: n.properties.DateApproxOriginal,
+                      DateApproxBegin: n.properties.DateApproxBegin,
+                      DateApproxEnd: n.properties.DateApproxEnd,
+                      DateStrictBegin: n.properties.DateStrictBegin,
+                      DateStrictEnd: n.properties.DateStrictEnd,
+                      DateApproxBegin2: dateStartYear,
+                      DateApproxEnd2: dateEndYear,
+                      ResourcePublPlace: n.properties.ResourcePublPlace,
+                      Uri: n.properties.Uri,
+                      connectivity: 0,
+                      connectivityPerCorp: 0,
+                      newState: newNode
+                    })
+
+                    ////////////////////////
+
+
+
+
+
+
+                    if (dateStartYear != null && dateStartYear != undefined && dateEndYear != null && dateEndYear != undefined) {
+                      for (x = Number(new Date(dateStartYear).getFullYear()); x <= Number(new Date(dateEndYear).getFullYear()); x++) {
+                        if (timeline[x]) {
+                          timeline[x]["countResource"]++
+                        } else {
+                          timeline[x] = {},
+                            timeline[x]["date"] = x,
+                            timeline[x]["countPerson"] = 0,
+                            timeline[x]["countResource"] = 1,
+                            timeline[x]["countEdge"] = 0
+                        }
+                      }
+                    }
+                    //  console.log(timeline)
+
+                    ////////////////////////
+
+                  }
+
+
+                }
+
+
+              });
+              (row.graph.relationships.map(function(r) {
+                //wenn der Link noch nicht vorkommt, füge ihn hinzu
+                if ((links.filter(links => links.id === r.id)).length == 0) {
+                  //console.log(r.startNode)
+                  //console.log(r.properties.TempValidity)
+                  // console.log(idIndex(nodes, r.startNode))
+                  links.push({
+                    id: r.id,
+                    source: idIndex(nodes, r.startNode),
+                    target: idIndex(nodes, r.endNode),
+                    source_copy: idIndex(nodes, r.startNode),
+                    target_copy: idIndex(nodes, r.endNode),
+                    _source: nodes[idIndex(nodes, r.startNode)],
+                    _target: nodes[idIndex(nodes, r.endNode)],
+                    type: r.type,
+                    Source: r.properties.Source,
+                    SourceType: r.properties.SourceType,
+                    TempValidity: r.properties.TempValidity,
+                    TypeAddInfo: r.properties.TypeAddInfo,
+                    value: 1,
+                    newState: newNode
+                  })
+
+                  nodes.filter(function(q, p) {
+                    return q.id == r.startNode
+                  })[0].connectivity++
+                  nodes.filter(function(q, p) {
+                    return q.id == r.endNode
+                  })[0].connectivity++
+
+                }
+              }));
+            });
+          })
+
+
+          ///connectivity for Person/Corp only
+          graph.links.forEach(function(d, i) {
+            //console.log(nodes.filter(function(q, p) {return p == d._source.id}))
+
+            //  console.log(graph.nodes)
+            //  console.log(nodes.filter(function(q, p) {return p == d.source})[0].Label)
+            if (nodes.filter(function(q, p) {
+                return p == d.source_copy
+              })[0].Label != "GeoName" && nodes.filter(function(q, p) {
+                return p == d.target_copy
+              })[0].Label != "GeoName" &&
+              nodes.filter(function(q, p) {
+                return p == d.source_copy
+              })[0].Label != "TopicTerm" && nodes.filter(function(q, p) {
+                return p == d.target_copy
+              })[0].Label != "TopicTerm" &&
+              nodes.filter(function(q, p) {
+                return p == d.source_copy
+              })[0].Label != "IsilTerm" && nodes.filter(function(q, p) {
+                return p == d.target_copy
+              })[0].Label != "IsilTerm" &&
+              nodes.filter(function(q, p) {
+                return p == d.source_copy
+              })[0].Label != "Resource" && nodes.filter(function(q, p) {
+                return p == d.target_copy
+              })[0].Label != "Resource" &&
+              nodes.filter(function(q, p) {
+                return p == d.source_copy
+              })[0].Label != "ChronTerm" && nodes.filter(function(q, p) {
+                return p == d.target_copy
+              })[0].Label != "ChronTerm") {
+
+
+              ///connectivityclean (rechnet beidseitige Kanten doppelt)
+              nodes.filter(function(q, p) {
+                return p == d.source_copy
+              })[0].connectivityPerCorp++
+              nodes.filter(function(q, p) {
+                return p == d.target_copy
+              })[0].connectivityPerCorp++
+
+            }
+          })
+
+          //start linksclean
+          ///connectivity for Person/Corp only
+          graph.links.forEach(function(d, i) {
+
+            //  console.log(graph.nodes)
+            //  console.log(nodes.filter(function(q, p) {return p == d.source})[0].Label)
+            if (nodes.filter(function(q, p) {
+                return p == d.source
+              })[0].Label != "GeoName" && nodes.filter(function(q, p) {
+                return p == d.target
+              })[0].Label != "GeoName" &&
+              nodes.filter(function(q, p) {
+                return p == d.source
+              })[0].Label != "TopicTerm" && nodes.filter(function(q, p) {
+                return p == d.target
+              })[0].Label != "TopicTerm" &&
+              nodes.filter(function(q, p) {
+                return p == d.source
+              })[0].Label != "IsilTerm" && nodes.filter(function(q, p) {
+                return p == d.target
+              })[0].Label != "IsilTerm" &&
+              nodes.filter(function(q, p) {
+                return p == d.source
+              })[0].Label != "Resource" && nodes.filter(function(q, p) {
+                return p == d.target
+              })[0].Label != "Resource" &&
+              nodes.filter(function(q, p) {
+                return p == d.source
+              })[0].Label != "Resource" && nodes.filter(function(q, p) {
+                return p == d.target
+              })[0].Label != "MeetName" &&
+              nodes.filter(function(q, p) {
+                return p == d.source
+              })[0].Label != "Resource" && nodes.filter(function(q, p) {
+                return p == d.target
+              })[0].Label != "UniTitle" &&
+              nodes.filter(function(q, p) {
+                return p == d.source
+              })[0].Label != "ChronTerm" && nodes.filter(function(q, p) {
+                return p == d.target
+              })[0].Label != "ChronTerm") {
+
+              nodes.filter(function(q, p) {
+                return p == d.source
+              })[0].connectivityPerCorp++
+              nodes.filter(function(q, p) {
+                return p == d.target
+              })[0].connectivityPerCorp++
+
+            }
+          })
+
+          //console.log(graph.nodes)
+
+          let personNodes = []
+
+          graph.links.forEach(function(d, i) {
+            if (d._source.Label == "PerName" && d._target.Label == "PerName" ||
+              d._source.Label == "PerName" && d._target.Label == "CorpName" ||
+              d._source.Label == "CoprName" && d._target.Label == "PerName" ||
+              d._source.Label == "CoprName" && d._target.Label == "CorpName"
+            ) {
+              if (linksClean.filter(function(D) {
+                  return D.source_copy == d.source_copy && D.target_copy == d.target_copy || D.source_copy == d.target_copy && D.target_copy == d.source_copy
+                }).length == 0) {
+
+                linksClean.push({
+                  source: d.source,
+                  target: d.target,
+                  _source: d._source,
+                  _target: d._target,
+                  source_copy: d.source_copy,
+                  target_copy: d.target_copy,
+                  // Source:  d.Source,
+                  //  SourceType: d.SourceType,
+                  // TempValidity: d.TempValidity,
+                  // TypeAddInfo: d.TypeAddInfo,
+                  value: 1
+                })
+
+
+
+                linksClean.filter(function(D) {
+                  return D.source_copy == d.source_copy && D.target_copy == d.target_copy || D.source_copy == d.target_copy && D.target_copy == d.source_copy
+                })[0]["children"] = []
+
+                let originDateApproxBegin = (graph.nodes.filter(function(x) {
+                  return x.n4jID == d.Source
+                })[0] != undefined) ? graph.nodes.filter(function(x) {
+                  return x.n4jID == d.Source
+                })[0].DateApproxBegin2 : undefined
+                let originDateApproxEnd = (graph.nodes.filter(function(x) {
+                  return x.n4jID == d.Source
+                })[0] != undefined) ? graph.nodes.filter(function(x) {
+                  return x.n4jID == d.Source
+                })[0].DateApproxEnd2 : undefined
+                let TempValidityBegin = undefined
+                let TempValidityEnd = undefined
+
+                if (d.TempValidity != undefined && d.TempValidity.length == 4) {
+                  TempValidityBegin = d.TempValidity
+                } else if (d.TempValidity != undefined && d.TempValidity.indexOf("-") != -1 && d.TempValidity.length == 9) {
+                  TempValidityBegin = d.TempValidity.split("-")[0]
+                  TempValidityEnd = d.TempValidity.split("-")[1]
+                }
+
+                let linkDateDateApproxBegin = (TempValidityBegin != undefined) ? TempValidityBegin : originDateApproxBegin
+                let linkDateDateApproxEnd = (TempValidityBegin != undefined) ? TempValidityEnd : originDateApproxEnd
+
+
+                //timeline stuff start
+                if (linkDateDateApproxBegin != undefined && linkDateDateApproxEnd != undefined) {
+                  for (x = Number(new Date(linkDateDateApproxBegin).getFullYear()); x <= Number(new Date(linkDateDateApproxEnd).getFullYear()); x++) {
+                    if (timeline[x]) {
+                      timeline[x]["countEdge"]++
+                    } else {
+                      timeline[x] = {},
+                        timeline[x]["date"] = x,
+                        timeline[x]["countPerson"] = 0,
+                        timeline[x]["countResource"] = 0,
+                        timeline[x]["countEdge"] = 1
+                    }
+                  }
+                } else if (linkDateDateApproxBegin != undefined) {
+                  x = Number(new Date(linkDateDateApproxBegin).getFullYear())
+                  if (timeline[x]) {
+                    timeline[x]["countEdge"]++
+                  } else {
+                    timeline[x] = {},
+                      timeline[x]["date"] = x,
+                      timeline[x]["countPerson"] = 0,
+                      timeline[x]["countResource"] = 0,
+                      timeline[x]["countEdge"] = 1
+                  }
+                }
+                //timeline stuff ende
+
+
+                linksClean.filter(function(D) {
+                  return D.source_copy == d.source_copy && D.target_copy == d.target_copy || D.source_copy == d.target_copy && D.target_copy == d.source_copy
+                })[0]["children"].push({
+                  source: d.source,
+                  target: d.target,
+                  _source: d._source,
+                  _target: d._target,
+                  source_copy: d.source_copy,
+                  target_copy: d.target_copy,
+                  Source: d.Source,
+                  SourceType: d.SourceType,
+                  TempValidity: d.TempValidity,
+                  TypeAddInfo: d.TypeAddInfo,
+                  origin: (graph.nodes.filter(function(x) {
+                    return x.n4jID == d.Source
+                  })[0] != undefined) ? graph.nodes.filter(function(x) {
+                    return x.n4jID == d.Source
+                  })[0].Name : undefined,
+                  originUri: (graph.nodes.filter(function(x) {
+                    return x.n4jID == d.Source
+                  })[0] != undefined) ? graph.nodes.filter(function(x) {
+                    return x.n4jID == d.Source
+                  })[0].Uri : undefined,
+                  originId: (graph.nodes.filter(function(x) {
+                    return x.n4jID == d.Source
+                  })[0] != undefined) ? graph.nodes.filter(function(x) {
+                    return x.n4jID == d.Source
+                  })[0].Id : undefined,
+                  originType: originType((graph.nodes.filter(function(x) {
+                      return x.n4jID == d.Source
+                    })[0] != undefined) ? graph.nodes.filter(function(x) {
+                      return x.n4jID == d.Source
+                    })[0].Uri : undefined,
+                    (graph.nodes.filter(function(x) {
+                      return x.n4jID == d.Source
+                    })[0] != undefined) ? graph.nodes.filter(function(x) {
+                      return x.n4jID == d.Source
+                    })[0].Id : undefined),
+                  //        originDateApproxBegin: (graph.nodes.filter(function(x){return x.n4jID == d.Source})[0] != undefined) ? graph.nodes.filter(function(x){return x.n4jID == d.Source})[0].DateApproxBegin2 : undefined,
+                  //          originDateApproxEnd: (graph.nodes.filter(function(x){return x.n4jID == d.Source})[0] != undefined) ? graph.nodes.filter(function(x){return x.n4jID == d.Source})[0].DateApproxEnd2 : undefined,
+                  linkDateDateApproxBegin: linkDateDateApproxBegin,
+                  linkDateDateApproxEnd: linkDateDateApproxEnd,
+
+                  //      origin_DateApprox
+                  value: 1
+                })
+
+
+
+
+                function originType(uri, id) {
+                  if (id != undefined) {
+                    if (id.includes("(DE-101)") || id.includes("DE_101")) {
+                      return "DNB"
+                    } else if (id.includes("DE-599") || id.includes("DE_599")) {
+                      return "SBB"
+                    } else if (id.includes("DE-611") || id.includes("DE_611")) {
+                      return "KPE"
+                    }
+
+                  } else if (uri != undefined && uri.includes("kall")) {
+                    return "KPE"
+                  } else {
+                    return "GND"
+                  }
+                }
+
+
+
+
+
+
+
+                //  console.log( (graph.nodes.filter(function(x){return x.n4jID == d.Source})[0] != undefined) ? graph.nodes.filter(function(x){return x.n4jID == d.Source})[0].Uri : undefined).includes()
+
+
+                nodes.filter(function(q, p) {
+                  return p == d.source_copy
+                })[0].connectivityClean++
+                nodes.filter(function(q, p) {
+                  return p == d.target_copy
+                })[0].connectivityClean++
+
+
+              } else {
+                if (linksClean.filter(function(D) {
+                    return D.source_copy == d.source_copy && D.target_copy == d.target_copy || D.source_copy == d.target_copy && D.target_copy == d.source_copy
+                  })[0]["children"]
+                  .filter(function(x, y) {
+                    return x.Source == d.Source && x.SourceType == d.SourceType && x.TypeAddInfo == d.TypeAddInfo && x.TempValidity == d.TempValidity
+                  }).length == 0) {
+
+                  linksClean.filter(function(D) {
+                    return D.source_copy == d.source_copy && D.target_copy == d.target_copy || D.source_copy == d.target_copy && D.target_copy == d.source_copy
+                  })[0].value++
+
+
+                  let originDateApproxBegin = (graph.nodes.filter(function(x) {
+                    return x.n4jID == d.Source
+                  })[0] != undefined) ? graph.nodes.filter(function(x) {
+                    return x.n4jID == d.Source
+                  })[0].DateApproxBegin2 : undefined
+                  let originDateApproxEnd = (graph.nodes.filter(function(x) {
+                    return x.n4jID == d.Source
+                  })[0] != undefined) ? graph.nodes.filter(function(x) {
+                    return x.n4jID == d.Source
+                  })[0].DateApproxEnd2 : undefined
+                  let TempValidityBegin = undefined
+                  let TempValidityEnd = undefined
+
+                  if (d.TempValidity != undefined && d.TempValidity.length == 4) {
+                    TempValidityBegin = d.TempValidity
+                  } else if (d.TempValidity != undefined && d.TempValidity.indexOf("-") != -1 && d.TempValidity.length == 9) {
+                    TempValidityBegin = d.TempValidity.split("-")[0]
+                    TempValidityEnd = d.TempValidity.split("-")[1]
+                  }
+
+                  let linkDateDateApproxBegin = (TempValidityBegin != undefined) ? TempValidityBegin : originDateApproxBegin
+                  let linkDateDateApproxEnd = (TempValidityBegin != undefined) ? TempValidityEnd : originDateApproxEnd
+
+                  //timeline stuff start
+                  if (linkDateDateApproxBegin != undefined && linkDateDateApproxEnd != undefined) {
+                    for (x = Number(new Date(linkDateDateApproxBegin).getFullYear()); x <= Number(new Date(linkDateDateApproxEnd).getFullYear()); x++) {
+                      if (timeline[x]) {
+                        timeline[x]["countEdge"]++
+                      } else {
+                        timeline[x] = {},
+                          timeline[x]["date"] = x,
+                          timeline[x]["countPerson"] = 0,
+                          timeline[x]["countResource"] = 0,
+                          timeline[x]["countEdge"] = 1
+                      }
+                    }
+                  } else if (linkDateDateApproxBegin != undefined) {
+                    x = Number(new Date(linkDateDateApproxBegin).getFullYear())
+                    if (timeline[x]) {
+                      timeline[x]["countEdge"]++
+                    } else {
+                      timeline[x] = {},
+                        timeline[x]["date"] = x,
+                        timeline[x]["countPerson"] = 0,
+                        timeline[x]["countResource"] = 0,
+                        timeline[x]["countEdge"] = 1
+                    }
+                  }
+                  //timeline stuff ende
+
+                  linksClean.filter(function(D) {
+                    return D.source_copy == d.source_copy && D.target_copy == d.target_copy || D.source_copy == d.target_copy && D.target_copy == d.source_copy
+                  })[0]["children"].push({
+                    source: d.source,
+                    target: d.target,
+                    _source: d._source,
+                    _target: d._target,
+                    source_copy: d.source_copy,
+                    target_copy: d.target_copy,
+                    Source: d.Source,
+                    SourceType: d.SourceType,
+                    TempValidity: d.TempValidity,
+                    TypeAddInfo: d.TypeAddInfo,
+                    origin: (graph.nodes.filter(function(x) {
+                      return x.n4jID == d.Source
+                    })[0] != undefined) ? graph.nodes.filter(function(x) {
+                      return x.n4jID == d.Source
+                    })[0].Name : undefined,
+                    originUri: (graph.nodes.filter(function(x) {
+                      return x.n4jID == d.Source
+                    })[0] != undefined) ? graph.nodes.filter(function(x) {
+                      return x.n4jID == d.Source
+                    })[0].Uri : undefined,
+                    originId: (graph.nodes.filter(function(x) {
+                      return x.n4jID == d.Source
+                    })[0] != undefined) ? graph.nodes.filter(function(x) {
+                      return x.n4jID == d.Source
+                    })[0].Id : undefined,
+                    originType: originType((graph.nodes.filter(function(x) {
+                        return x.n4jID == d.Source
+                      })[0] != undefined) ? graph.nodes.filter(function(x) {
+                        return x.n4jID == d.Source
+                      })[0].Uri : undefined,
+                      (graph.nodes.filter(function(x) {
+                        return x.n4jID == d.Source
+                      })[0] != undefined) ? graph.nodes.filter(function(x) {
+                        return x.n4jID == d.Source
+                      })[0].Id : undefined),
+                    //      originDateApproxBegin: (graph.nodes.filter(function(x){return x.n4jID == d.Source})[0] != undefined) ? graph.nodes.filter(function(x){return x.n4jID == d.Source})[0].DateApproxBegin2 : undefined,
+                    //        originDateApproxEnd: (graph.nodes.filter(function(x){return x.n4jID == d.Source})[0] != undefined) ? graph.nodes.filter(function(x){return x.n4jID == d.Source})[0].DateApproxEnd2 : undefined,
+                    linkDateDateApproxBegin: linkDateDateApproxBegin,
+                    linkDateDateApproxEnd: linkDateDateApproxEnd,
+                    value: 1
+                  })
+                }
+
+
+
+
+                function originType(uri, id) {
+                  if (id != undefined) {
+                    if (id.includes("(DE-101)") || id.includes("DE_101")) {
+                      return "DNB"
+                    } else if (id.includes("DE-599") || id.includes("DE_599")) {
+                      return "SBB"
+                    } else if (id.includes("DE-611") || id.includes("DE_611")) {
+                      return "KPE"
+                    }
+
+                  } else if (uri != undefined && uri.includes("kall")) {
+                    return "KPE"
+                  } else {
+                    return "GND"
+                  }
+                }
+
+              }
+
+
+
+
+
+            }
+
+          })
+
+          //ende linksclean
+
+          console.log(linksClean)
+
+          console.log(graph.nodes)
+
+          console.log(graph.links)
+          if (type == "execute") {
+            renderNetwork()
+          } else {
+            //updateNetwork()
+            renderNetwork()
+          }
+
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+          $('#messageArea').html('<h3>' + textStatus + ' : ' + errorThrown + '</h3>')
+        });
+    };
+
+
+    maxValueinNodes = Math.max(...graph.nodes.filter(function(d){return d.Label =="PerName" || d.Label =="CorpName"}).map(o => o.connectivityClean), 0)//Math.max
+
+
+    let nodeSize = d3.scaleSqrt()
+      .domain([0, maxValueinNodes])
+      .range([3, 15]);
+
+    const edgeColors = d3.scaleOrdinal()
+      .domain(["KPE", "GND", "SBB", "DNB", "computed"])
+      .range(["var(--KPE)", "var(--GND)", "var(--SBB)", "var(--DNB)", "grey"])
+
+
+
+
+    let edgeNoScale = d3.scaleLinear()
+      .domain([1, maxValueinLinks])
+      .range(["rgb(199, 197, 197)", "rgb(199, 197, 197)"])
+    //  .range(["rgb(199, 197, 197)", "rgb(135, 135, 135)"])
+
+
+    let edgeNoScaleWidth = d3.scaleLinear()
+      .domain([1, maxValueinLinks])
+      .range([1, 6])
+
+
+    let detailview = false;
+
+
+
+
+    const color = d3.scaleOrdinal()
+      .domain(["Selection", "PerName", "CorpName", "MeetName", "UniTitle", "TopicTerm", "GeoName", "Resource", "ChronTerm"])
+      .range(["black", "rgb(78, 78, 78)", "black", "black", "black", "black", "black", "black"]);
+
+    const temporalColor = d3.scaleLinear()
+      .domain([1780, 2000])
+      .range(["blue", "white"])
+
+    const overlay = d3.select("#overlay")
+
+    let zoom = d3.zoom()
+      .scaleExtent([1 / 3, 8])
+      .on("zoom", zoomed)
+
+    const svg = d3.select("#graph")
+      .attr("preserveAspectRatio", "xMidYMid")
+      .attr("viewBox", "0 0 " + windowWidth + " " + windowHeight)
+      .call(zoom)
+      .on("dblclick.zoom", null);
+
+    let svgG = svg.append("g").attr("class", "svgG")
+
+
+
+    let zoomlevel = 1
+
+    function zoomed() {
+      zoomlevel = d3.event.transform.k
+      console.log(zoomlevel)
+      console.log(d3.event.transform.k)
+
+      svgG.attr("transform", d3.event.transform);
+
+  // just apply transform for zoom in, not zoom out
+  node.selectAll("ellipse")
+  .filter(function(d,i){return d3.select(this).attr("class") != "notedgerelevant"})
+  .attr("rx", function(d, i) {
+  return (d3.event.transform.k > 1) ? (nodeSize(d.connectivityClean)/d3.event.transform.k) : nodeSize(d.connectivityClean)
+  })
+  .attr("ry", function(d, i) {
+  return (d3.event.transform.k > 1) ? (nodeSize(d.connectivityClean)/d3.event.transform.k) : nodeSize(d.connectivityClean)
+  })
+  .style("stroke-width", function(d, i) {
+  return (d3.event.transform.k > 1) ? 0.5/d3.event.transform.k : 0.5
+  })
+
+  node.selectAll("ellipse")
+  .filter(".notedgerelevant")
+  .attr("rx", function(d, i) {
+  return 1.5/zoomlevel
+  })
+  .attr("ry", function(d, i) {
+  return 1.5/zoomlevel
+  })
+  .style("stroke-width", function(d, i) {
+  return (d3.event.transform.k > 1) ? 0.5/d3.event.transform.k : 0.5
+  })
+
+  d3.selectAll(".nodesOnTop")
+  .attr("rx", function(d, i) {
+  return (d3.event.transform.k > 1) ? (nodeSize(d3.select(this).attr("connectivityClean"))/d3.event.transform.k) : nodeSize(d3.select(this).attr("connectivityClean"))
+  })
+  .attr("ry", function(d, i) {
+  return (d3.event.transform.k > 1) ? (nodeSize(d3.select(this).attr("connectivityClean"))/d3.event.transform.k) : nodeSize(d3.select(this).attr("connectivityClean"))
+  })
+  .style("stroke-width", function(d, i) {
+  return (d3.event.transform.k > 1) ? 0.5/d3.event.transform.k : 0.5
+  })
+
+  link.selectAll(".link")
+  .style("stroke-width", function(d, i) {
+  edgeNoScaleWidth = d3.scaleLinear()
+    .domain([1, maxValueinLinks])
+    .range([0.75, 7])
+  return (d3.event.transform.k > 1) ?  (edgeNoScaleWidth(d.value)/d3.event.transform.k) : edgeNoScaleWidth(d.value)
+  })
+
+  linkChildren.selectAll(".linkChild")
+  .style("stroke-width", function(d, i) {
+  return (d3.event.transform.k > 1) ? 1.5/d3.event.transform.k : 1.5
+  })
+
+
+
+    }
+
+
+    function listDropdownChange() {
+      let type = $('#listDropdown').val()
+
+      if (type != "SourceType" && type != "TypeAddInfo" && type != "TempValidity") {
+
+
+        d3.select("#perNameListDiv")
+          .selectAll("p")
+          .data(graph.nodes.filter(function(d, i) {
+            return d.Label == type
+          }).sort(function(a, b) {
+            return d3.descending(a.connectivityClean ? a.connectivityClean : a.connectivity, b.connectivityClean ? b.connectivityClean : b.connectivity)
+          }))
+          .join("p")
+          .classed("filterListItem", true)
+          .text(function(d, i) {
+            if (d.Label == "PerName" || d.Label == "CorpName") {
+              return d.Name + " (" + d.connectivityClean + ")"
+            } else {
+              return d.Name + " (" + d.connectivity + ")"
+            }
+          })
+          .on("click", function(d, i) {
+            d3.select("#details").style("display", "none").selectAll("p").remove()
+            d3.selectAll(".filterCross").remove()
+
+            detailview = true;
+
+            d3.select(this).append("span").text("✕").attr("class", "filterCross").on("click", function(d, i) {
+              d3.event.stopPropagation()
+              d3.select("#details").style("display", "none").selectAll("p").remove()
+              detailview = false;
+              mouseOut(d, i)
+            })
+
+            mouseClick(d, i)
+          })
+      } else if (type == "SourceType") {
+
+        let linkSourceTypeCount = d3.nest()
+          .key(function(d) {
+            return d.SourceType;
+          })
+          .rollup(function(v) {
+            return v.length;
+          })
+          .entries(links.filter(function(d) {
+            return d._source.Label == "PerName" && d._target.Label == "PerName" || d.type == "SocialRelation" ||
+              d._source.Label == "PerName" && d._target.Label == "CorpName" ||
+              d._source.Label == "CorpName" && d._target.Label == "PerName" ||
+              d._source.Label == "CorpName" && d._target.Label == "CorpName"
+          }));
+
+
+        d3.select("#perNameListDiv")
+          .selectAll("p")
+          .data(linkSourceTypeCount.sort((a, b) => d3.descending(a.value, b.value)).filter(function(d) {
+            return d.key != "undefined"
+          }))
+          .join("p")
+          .classed("filterListItem", true)
+          .classed("linklistentry", true)
+          .text(function(d, i) {
+            return d.key + " (" + d.value + ")"
+          })
+          .on("click", function(d, i) {
+            d3.select("#details").style("display", "none").selectAll("p").remove()
+            d3.selectAll(".filterCross").remove()
+            detailview = false;
+
+            mouseOut()
+
+            d3.selectAll(".link").filter(function(D, I) {
+                return D.children.filter(function(x) {
+                  return x.SourceType === d.key
+                }).length < 1
+              })
+              .style("opacity", 0)
+
+            d3.select(this).append("span").text("✕").attr("class", "filterCross").on("click", function(d, i) {
+              d3.event.stopPropagation()
+              d3.select("#details").style("display", "none").selectAll("p").remove()
+              detailview = false;
+              mouseOut(d, i)
+            })
+
+            let connectedNodes = []
+
+            d3.selectAll(".link").filter(function(D, I) {
+                return D.children.filter(function(x) {
+                  return x.SourceType === d.key
+                }).length > 0
+              })
+              .style("opacity", 1)
+              .each(function(D, I) {
+                if (connectedNodes.filter(function(x) {
+                    return x == D._source.id
+                  }).length == 0) {
+                  connectedNodes.push(
+                    D._source.id
+                  )
+                }
+                if (connectedNodes.filter(function(x) {
+                    return x == D._target.id
+                  }).length == 0) {
+                  connectedNodes.push(
+                    D._target.id
+                  )
+                }
+              })
+
+            d3.selectAll(".nodes").classed("filteredIn", false).classed("filteredOut", true)
+
+            d3.selectAll(".nodes")
+              .filter(function(E, G) {
+                return connectedNodes.filter(function(d) {
+                  return d == E.id
+                }).length > 0
+              }).classed("filteredIn", true).classed("filteredOut", false)
+
+          })
+
+        ///ende mausclick
+
+      } else if (type == "TypeAddInfo") {
+        let linkTypeAddInfoCount = d3.nest()
+          .key(function(d) {
+            return d.TypeAddInfo;
+          })
+          .rollup(function(v) {
+            return v.length;
+          })
+          .entries(links.filter(function(d) {
+            return d._source.Label == "PerName" && d._target.Label == "PerName" || d.type == "SocialRelation" ||
+              d._source.Label == "PerName" && d._target.Label == "CorpName" ||
+              d._source.Label == "CorpName" && d._target.Label == "PerName" ||
+              d._source.Label == "CorpName" && d._target.Label == "CorpName"
+          }));
+
+
+        d3.select("#perNameListDiv")
+          .selectAll("p")
+          .data(linkTypeAddInfoCount.sort((a, b) => d3.descending(a.value, b.value)).filter(function(d) {
+            return d.key != "undefined"
+          }))
+          .join("p")
+          .classed("filterListItem", true)
+          .classed("linklistentry", true)
+          .text(function(d, i) {
+            return d.key + " (" + d.value + ")"
+          })
+          .on("click", function(d, i) {
+            d3.select("#details").style("display", "none").selectAll("p").remove()
+            d3.selectAll(".filterCross").remove()
+            detailview = false;
+
+            mouseOut()
+
+
+            d3.selectAll(".link").filter(function(D, I) {
+                return D.children.filter(function(x) {
+                  return x.TypeAddInfo === d.key
+                }).length < 1
+              })
+              .style("opacity", 0)
+
+            d3.select(this).append("span").text("✕").attr("class", "filterCross").on("click", function(d, i) {
+              d3.event.stopPropagation()
+              d3.select("#details").style("display", "none").selectAll("p").remove()
+              detailview = false;
+              mouseOut(d, i)
+            })
+
+            let connectedNodes = []
+
+            d3.selectAll(".link").filter(function(D, I) {
+                return D.children.filter(function(x) {
+                  return x.TypeAddInfo === d.key
+                }).length > 0
+              })
+              .style("opacity", 1)
+              .each(function(D, I) {
+                if (connectedNodes.filter(function(x) {
+                    return x == D._source.id
+                  }).length == 0) {
+                  connectedNodes.push(
+                    D._source.id
+                  )
+                }
+                if (connectedNodes.filter(function(x) {
+                    return x == D._target.id
+                  }).length == 0) {
+                  connectedNodes.push(
+                    D._target.id
+                  )
+                }
+              })
+
+            d3.selectAll(".nodes").classed("filteredIn", false).classed("filteredOut", true)
+
+            d3.selectAll(".nodes")
+              .filter(function(E, G) {
+                return connectedNodes.filter(function(d) {
+                  return d == E.id
+                }).length > 0
+              }).classed("filteredIn", true).classed("filteredOut", false)
+
+          })
+
+        ///ende mausclick
+
+      } else {
+
+        let linkTempValidityCount = d3.nest()
+          .key(function(d) {
+            return d.TempValidity;
+          })
+          .rollup(function(v) {
+            return v.length;
+          })
+          .entries(links);
+
+
+        d3.select("#perNameListDiv")
+          .selectAll("p")
+          .data(linkTempValidityCount.sort((a, b) => d3.descending(a.value, b.value)))
+          .join("p")
+          .classed("filterListItem", true)
+          .classed("linklistentry", true)
+          .text(function(d, i) {
+            return d.key + " (" + d.value + ")"
+          })
+          .on("click", function(d, i) {
+            d3.select("#details").style("display", "none").selectAll("p").remove()
+            d3.selectAll(".filterCross").remove()
+            detailview = false;
+
+            mouseOut()
+
+
+            d3.selectAll(".link").filter(function(D, I) {
+                return D.children.filter(function(x) {
+                  return x.TempValidity === d.key
+                }).length < 1
+              })
+              .style("opacity", 0)
+
+            d3.select(this).append("span").text("✕").attr("class", "filterCross").on("click", function(d, i) {
+              d3.event.stopPropagation()
+              d3.select("#details").style("display", "none").selectAll("p").remove()
+              detailview = false;
+              mouseOut(d, i)
+            })
+
+            let connectedNodes = []
+
+            d3.selectAll(".link").filter(function(D, I) {
+                return D.children.filter(function(x) {
+                  return x.TempValidity === d.key
+                }).length > 0
+              })
+              .style("opacity", 1)
+              .each(function(D, I) {
+                if (connectedNodes.filter(function(x) {
+                    return x == D._source.id
+                  }).length == 0) {
+                  connectedNodes.push(
+                    D._source.id
+                  )
+                }
+                if (connectedNodes.filter(function(x) {
+                    return x == D._target.id
+                  }).length == 0) {
+                  connectedNodes.push(
+                    D._target.id
+                  )
+                }
+              })
+
+            d3.selectAll(".nodes").classed("filteredIn", false).classed("filteredOut", true)
+
+            d3.selectAll(".nodes")
+              .filter(function(E, G) {
+                return connectedNodes.filter(function(d) {
+                  return d == E.id
+                }).length > 0
+              }).classed("filteredIn", true).classed("filteredOut", false)
+
+          })
+
+        ///ende mausclick
+
+
+
+      }
+
+
+
+    }
+    function statsUpdate() {
+      ///statistics start
+      d3.select("#graph-metrics").selectAll("p").remove()
+
+      d3.select("#graph-metrics")
+        .append("p")
+        .text(function() {
+          return "Personen: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "PerName"
+          }).length + "(+)"
+        })
+        .style("font-weight", "bold")
+        .style("color", color("PerName"))
+        .classed("topicterm", true)
+
+      // d3.select("#graph-metrics")
+      //   .append("p")
+      //   .text(function() {
+      //     return "männlich " + graph.nodes.filter(function(d, i) {
+      //       return d.Label == "PerName" && d.Gender == "1"
+      //     }).length
+      //   })
+      //   .style("color", color("PerName"))
+      //   .classed("topicterm", true)
+      //
+      // d3.select("#graph-metrics")
+      //   .append("p")
+      //   .text(function() {
+      //     return "weiblich: " + graph.nodes.filter(function(d, i) {
+      //       return d.Label == "PerName" && d.Gender == "2"
+      //     }).length
+      //   })
+      //   .style("color", color("PerName"))
+      //   .classed("topicterm", true)
+      //
+      //
+      // d3.select("#graph-metrics")
+      //   .append("p")
+      //   .text(function() {
+      //     return "n/a: " + graph.nodes.filter(function(d, i) {
+      //       return d.Label == "PerName" && d.Gender != "1" && d.Gender != "2" && d.Gender != "3"
+      //     }).length
+      //   })
+      //   .style("color", color("PerName"))
+      //   .classed("topicterm", true)
+
+
+
+
+
+      d3.select("#graph-metrics")
+        .append("p")
+        .text(function() {
+          return "Körperschaften: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "CorpName"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", color("CorpName"))
+        .classed("topicterm", true)
+
+      d3.select("#graph-metrics")
+        .append("p")
+        .text(function() {
+          return "Konferenzen: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "MeetName"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", color("MeetName"))
+        .classed("topicterm", true)
+
+      d3.select("#graph-metrics")
+        .append("p")
+        .text(function() {
+          return "Werke: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "UniTitle"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", color("UniTitle"))
+        .classed("topicterm", true)
+
+      d3.select("#graph-metrics")
+        .append("p")
+        .text(function() {
+          return "Sachbegriffe: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "TopicTerm"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", color("TopicTerm"))
+        .classed("topicterm", true)
+
+      d3.select("#graph-metrics")
+        .append("p")
+        .text(function() {
+          return "Geografika: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "GeoName"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", color("GeoName"))
+        .classed("topicterm", true)
+
+      d3.select("#graph-metrics")
+        .append("p")
+        .text(function() {
+          return "Ressourcen: " + graph.nodes.filter(function(d, i) {
+            return d.Label == "Resource"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", color("Resource"))
+        .classed("topicterm", true)
+
+      d3.select("#graph-metrics")
+        .append("p")
+        .text(function() {
+          return "GND Relationen: " + graph.links.filter(function(d, i) {
+            return d.Source == "GND"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", edgeColors("GND"))
+        .classed("topicterm", true)
+
+      d3.select("#graph-metrics")
+        .append("p")
+        .text(function() {
+          return "Kalliope Relationen: " + graph.links.filter(function(d, i) {
+            return d.Source == "KPE"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", edgeColors("KPE"))
+        .classed("topicterm", true)
+
+      d3.select("#graph-metrics")
+        .append("p")
+        .text(function() {
+          return "DNB Relationen: " + graph.links.filter(function(d, i) {
+            return d.Source == "DNB"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", edgeColors("DNB"))
+        .classed("topicterm", true)
+
+      d3.select("#graph-metrics")
+        .append("p")
+        .text(function() {
+          return "SBB Relationen: " + graph.links.filter(function(d, i) {
+            return d.Source == "SBB"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", edgeColors("SBB"))
+
+
+      d3.select("#graph-metrics")
+        .append("p")
+        .text(function() {
+          return "Abgeleitete Relationen: " + graph.links.filter(function(d, i) {
+            return d.type == "SocialRelation"
+          }).length
+        })
+        .style("font-weight", "bold")
+        .style("color", edgeColors("computed"))
+        .classed("topicterm", true)
+
+        d3.select("#graph-metrics")
+          .append("p")
+          .text(function() {
+            return "Dichte: " + "[...]"
+          })
+          .style("font-weight", "bold")
+          .style("color", edgeColors("computed"))
+          .classed("topicterm", true)
+    }
+
+
+    let simulation = d3.forceSimulation()
+      .force("link", d3.forceLink().id(function(d, i) {
+          return i;
+        })
+        //    .strength(function(d,i){return 1/ Math.min(d.source.connectivityPerCorp,d.target.connectivityPerCorp)})
+        // .strength(function(d, i) {
+        //   if (d.source.connectivityPerCorp && d.target.connectivityPerCorp) {
+        //     return 1/ Math.min(d.source.connectivityPerCorp,d.target.connectivityPerCorp)
+        //   } else {
+        //     return 0
+        //   }
+        // })
+        //  .strength(function(d,i){return d.value})
+      )
+      .force("charge", d3.forceManyBody().strength(function(d, i) {
+        if (d.Label == "GeoName" || d.Label == "TopicTerm" || d.Label == "IsilTerm" || d.Label == "Resource") {
+          return 0
+        } else {
+          return -30
+        }
+      }))
+      .force('collision', d3.forceCollide().radius(function(d, i) {
+        if (d.Label == "GeoName" || d.Label == "TopicTerm" || d.Label == "IsilTerm" || d.Label == "Resource") {
+          return 0
+        } else {
+          return nodeSize(d.connectivityClean) + 2
+        }
+      }))
+      .force("center", d3.forceCenter(windowWidth / 2, -50+windowHeight / 2));
+
+
+    let link = svgG.append("g").attr("class", "linkG")
+    let node = svgG.append("g").attr("class", "nodeG")
+    let linkChildren = svgG.append("g").attr("class", "linkChildrenG")
+    let nodesOnTop = svgG.append("g").attr("class", "nodesOnTopG")
+    // let labels = svgG.append("g").attr("class", "labelG")
+
+
+    function renderNetwork() {
+
+      let nodeLabelCount = d3.nest()
+        .key(function(d) {
+          return d.Label;
+        })
+        .rollup(function(v) {
+          return v.length;
+        })
+        .entries(nodes);
+
+      let linkSourceCount = d3.nest()
+        .key(function(d) {
+          return d.Source;
+        })
+        .rollup(function(v) {
+          return v.length;
+        })
+        .entries(links);
+
+
+
+      let linkTypeAddInfoCount = d3.nest()
+        .key(function(d) {
+          return d.TypeAddInfo;
+        })
+        .rollup(function(v) {
+          return v.length;
+        })
+        .entries(links);
+
+
+      // console.log(nodeLabelCount)
+      // console.log(linkSourceCount)
+      // console.log(linkSourceTypeCount)
+      // console.log(linkTypeAddInfoCount)
+
+
+      detailview = false;
+
+
+      maxValueinNodes = Math.max(...graph.nodes.filter(function(d){return d.Label =="PerName" || d.Label =="CorpName"}).map(o => o.connectivityClean), 0)//Math.max
+
+
+      nodeSize = d3.scaleSqrt()
+        .domain([0, maxValueinNodes])
+        .range([3, 15]);
+
+      //  d3.selectAll("svg").selectAll("g").remove()
+
+      // d3.select("#keywordListDiv").selectAll("p").remove()
+      // d3.select("#geoListDiv").selectAll("p").remove()
+      // d3.select("#perNameListDiv").selectAll("p").remove()
+      d3.select("#timelineSVGNeu").selectAll("g").remove()
+
+
+      listDropdownChange()
+      statsUpdate()
+
+      simulation.alpha(1).restart();
+
+
+
+      simulation
+        .nodes(graph.nodes)
+        .on("tick", ticked);
+
+      simulation
+        .force("link")
+        .links(linksClean);
+
+
+
+
+
+
+      maxValueinLinks = Math.max(...linksClean.map(o => o.value), 0)
+      //console.log(maxValueinLinks)
+
+      let edgeNoScale = d3.scaleLinear()
+        .domain([1, maxValueinLinks])
+        .range(["rgb(199, 197, 197)", "rgb(199, 197, 197)"])
+      //  .range(["rgb(199, 197, 197)", "rgb(135, 135, 135)"])
+
+console.log(maxValueinNodes)
+
+      let edgeNoScaleWidth = d3.scaleLinear()
+        .domain([1, maxValueinLinks])
+        .range([1, 6])
+
+
+
+      link.selectAll(".link")
+        .data(linksClean)
+        .join("path")
+        .style("fill", "none")
+        .attr("class", "link")
+        .style("stroke", function(d, i) {
+          return edgeNoScale(d.value)
+        })
+        .style("stroke-width", function(d, i) {
+          return edgeNoScaleWidth(d.value)
+        })
+        .style("opacity", 1)
+        .style("cursor", "pointer")
+        .on("mousemove", function(d, i) {
+          d3.select(this).style("stroke","black")
+          d3.select(".tooltip").select("p")
+            .text(function() {
+              return d._source.Name + " – " + d._target.Name + " ("+d.value +")"
+            })
+            .style("font-weight", "bold")
+
+          d3.select(".tooltip")
+            .style("opacity", .9)
+            .style("left", (d3.event.pageX + 5) + "px")
+            .style("top", (d3.event.pageY - 5) + "px");
+        })
+        .on("mouseout", function(d, i) {
+          d3.select(this)
+          .style("stroke", function(d, i) {
+                    return edgeNoScale(d.value)
+                  })
+
+          d3.select(".tooltip").select("p")
+            .text(null)
+
+          d3.select(".tooltip")
+            .style("opacity", 0)
+            .style("left", (d3.event.pageX + 5) + "px")
+            .style("top", (d3.event.pageY - 5) + "px");
+        })
+        .on("click", function(d, i) {
+          edgeClick(d, i)
+          d3.selectAll(".link").transition().style("stroke", "#E3E3E2").style("opacity", 1)
+          d3.select(this).transition().style("opacity", 0)
+
+
+          let x1 = d.source.x //x Punkt A
+          let y1 = d.source.y //y Punkt A
+          let x2 = d.target.x //x Punkt B
+          let y2 = d.target.y //y Punkt B
+          let mx = (x1 + x2) / 2 // Mittelpunkt x zwischen x1 und x2
+          let my = (y1 + y2) / 2 // Mittelpunkt y zwischen y1 und y2
+
+          //zoom.scaleBy(svg, 20)
+          zoom.translateTo(svg.transition().duration(500), mx, my)
+          setTimeout(function () {
+            zoom.scaleTo(svg.transition().duration(500), 3)
+          }, 750);
+
+
+
+          d3.selectAll(".nodes")
+          .classed("notedgerelevant", false)
+          .filter(function(D) {
+            return D.id != d._source.id || D.id != d._target.id
+          })
+          .classed("notedgerelevant", true)
+          .transition().style("fill", "#D3D3D3").attr("rx", function(d, i) {
+            return 1.5/zoomlevel
+          })
+          .attr("ry", function(d, i) {
+            return 1.5/zoomlevel
+          })
+
+
+          d3.selectAll(".nodesOnTop").remove()
+
+          d3.selectAll(".nodes").filter(function(D) {
+            return D.id == d._source.id || D.id == d._target.id
+          }).classed("notedgerelevant", false)
+          .each(function(T){
+
+            nodesOnTop.append("ellipse")
+            .classed("nodesOnTop", true)
+            .style("fill", function() {
+                  return color("Selection")
+              })
+              .attr("rx", function() {
+                return (zoomlevel>= 1) ? (nodeSize(T.connectivityClean)/zoomlevel) : nodeSize(T.connectivityClean)
+              })
+              .attr("ry", function() {
+                return (zoomlevel>= 1) ? (nodeSize(T.connectivityClean)/zoomlevel) : nodeSize(T.connectivityClean)
+              })
+              .attr("cx", function() {
+                return T.x;
+              })
+              .attr("cy", function() {
+                return T.y;
+              })
+              .attr("connectivity", T.connectivityClean);
+
+
+          }
+
+          )
+
+
+
+
+          d3.selectAll(".nodes").filter(function(D) {
+            return D.id == d._source.id || D.id == d._target.id
+          }).transition().style("fill", "black").style("opacity", 1)
+
+          d3.select(".linkChildrenG").selectAll(".linkChild")
+            .data(d.children)
+            .join("path")
+            .style("fill", "none")
+            .attr("stroke-width", function(){return (zoomlevel> 1) ? 1.5/zoomlevel : 1.5})
+            .attr("class", "linkChild")
+            .style("stroke-dasharray", function(D, I) {
+              if (D.originType == "GND") {
+                return null
+              } else {
+                return null//"4 1"
+              }
+            })
+            .style("stroke", function(D, I) {
+              return edgeColors(D.originType)
+
+            })
+            .attr("d", function(D, I) {
+              //  console.log(I)
+              let x1 = d.source.x //x Punkt A
+              let y1 = d.source.y //y Punkt A
+              let A = [x1, y1]
+              let x2 = d.target.x //x Punkt B
+              let y2 = d.target.y //y Punkt B
+              let B = [x2, y2]
+              let mx = (x1 + x2) / 2 // Mittelpunkt x zwischen x1 und x2
+              let my = (y1 + y2) / 2 // Mittelpunkt y zwischen y1 und y2
+              let M = [mx, my] // Mittelpunkt zwischen A und B (hier verläuft das Lot hoehe)
+
+              return "M" + d.source.x + " " + d.source.y +
+                " C " + mx + " " + my + " " +
+                mx + " " + my + " " +
+                d.target.x + " " + d.target.y
+            })
+            .transition()
+            .duration(800)
+            .attr("d", function(D, I) {
+              //  console.log(I)
+
+              let x1 = d.source.x //x Punkt A
+              let y1 = d.source.y //y Punkt A
+              let A = [x1, y1]
+              let x2 = d.target.x //x Punkt B
+              let y2 = d.target.y //y Punkt B
+              let B = [x2, y2]
+              let mx = (x1 + x2) / 2 // Mittelpunkt x zwischen x1 und x2
+              let my = (y1 + y2) / 2 // Mittelpunkt y zwischen y1 und y2
+              let M = [mx, my] // Mittelpunkt zwischen A und B (hier verläuft das Lot hoehe)
+
+              let hoehe // höhe des Ausschlags basierend auf I
+              if (I % 2) { //gerade Zahl oder ungerade Zahl damit abwechselnd oben und unten die Kante ausschlägt
+                hoehe = (I) * 3
+              } else {
+                hoehe = 3 + (I * 3)
+              }
+
+
+
+              let AM = Math.hypot(mx - x1, my -
+                y1) //Funktion gibt die Quadratwurzel von der Summe der quadrierten Argumente zurück. Hier Berechnung der Kante von PunktA(x1y1) zu Mittelpunkt zwischen A und B (x2y2), weil dort die Höhe rechtwinklig zur Kante läuft
+              let AP = Math.hypot(AM, hoehe) //Funktion gibt die Quadratwurzel von der Summe der quadrierten Argumente zurück: Kante A zu gesuchten Punkt
+              let P = Intersect2Circles(A, AP, M, hoehe) //gesuchter Punkt
+
+              let x3 //P[1][0] //x von P
+              let y3 //= P[1][1] //y von OP
+
+              if (I % 2) {
+                x3 = P[0][0]
+                y3 = P[0][1]
+              } else {
+                x3 = P[1][0]
+                y3 = P[1][1]
+              }
+
+              //Pfad unter Nutzung von allen drei Punkten
+              return "M" + d.source.x + " " + d.source.y +
+                " C " + x3 + " " + y3 + " " +
+                x3 + " " + y3 + " " +
+                d.target.x + " " + d.target.y
+            })
+
+        })
+
+      //http://walter.bislins.ch/blog/index.asp?page=Schnittpunkte+zweier+Kreise+berechnen+%28JavaScript%29
+      //finde den gesuchten Punkt mit Hilfe von 2 Punkten und 2 Seitenlängen
+      function Intersect2Circles(A, a, B, b) {
+        // A, B = [ x, y ]
+        // return = [ Q1, Q2 ] or [ Q ] or [] where Q = [ x, y ]
+        var AB0 = B[0] - A[0];
+        var AB1 = B[1] - A[1];
+        var c = Math.sqrt(AB0 * AB0 + AB1 * AB1);
+        if (c == 0) {
+          // no distance between centers
+          return [];
+        }
+        var x = (a * a + c * c - b * b) / (2 * c);
+        var y = a * a - x * x;
+        if (y < 0) {
+          // no intersection
+          return [];
+        }
+        if (y > 0) y = Math.sqrt(y);
+        // compute unit vectors ex and ey
+        var ex0 = AB0 / c;
+        var ex1 = AB1 / c;
+        var ey0 = -ex1;
+        var ey1 = ex0;
+        var Q1x = A[0] + x * ex0;
+        var Q1y = A[1] + x * ex1;
+        if (y == 0) {
+          // one touch point
+          return [
+            [Q1x, Q1y]
+          ];
+        }
+        // two intersections
+        var Q2x = Q1x - y * ey0;
+        var Q2y = Q1y - y * ey1;
+        Q1x += y * ey0;
+        Q1y += y * ey1;
+        return [
+          [Q1x, Q1y],
+          [Q2x, Q2y]
+        ];
+      }
+
+      node.selectAll("ellipse")
+        .data(graph.nodes.filter(function(d) {
+          return d.Label != "GeoName" && d.Label != "TopicTerm" &&
+            d.Label != "IsilTerm" && d.Label != "Resource" && d.Label != "ChronTerm" &&
+            d.Label != "UniTitle" && d.Label != "MeetName"
+          //& d.connectivity > 1
+        }))
+        .join("ellipse")
+        .attr("class", "nodes")
+        .style("fill", function(d, i) {
+          if (($('#search_category_select').val() == "GND-ID") && d.Id == $('#suche').val()) {
+            return color("Selection")
+          } else if (d.Label == "PerName") {
+            return color(d.Label)
+          } else {
+            return color(d.Label)
+          }
+        })
+        .style("stroke", function(d, i) {
+          if (d.newState == true) {
+            return "var(--main-bg-color)"
+          } else {
+            return "var(--main-bg-color)"
+          }
+        })
+        .style("stroke-width", function(d, i) {
+          if (d.newState == true) {
+            return 0.5
+          } else {
+            return 0.5
+          }
+        })
+        .attr("rx", function(d, i) {
+          return nodeSize(d.connectivityClean)
+        })
+        .attr("ry", function(d, i) {
+          return nodeSize(d.connectivityClean)
+        })
+        // .style("filter", function(d, i) {
+        //   if (queryCollection.filter(function(D){return D == d.Id}).length > 0) {
+        //     return "url(#glow)"
+        //   } else {
+        //     return null
+        //   }
+        // })
+        //
+        // .on("mouseover", function(d, i) {
+        //   if (detailview == false) {
+        //     mouseClick(d, i)
+        //   }
+        // })
+        .on("click", function(d, i) {
+
+          detailview = true;
+          mouseClick(d, i)
+        })
+        // .on("mouseout", function(d, i) {
+        //   mouseOut(d, i)
+        // })
+        .on("mousemove", function(d, i) {
+          d3.select(".tooltip").select("p")
+            .text(function() {
+              return d.Name + " (" + d.DateApproxBegin + "–" + d.DateApproxEnd + ")"
+            })
+            .style("font-weight", "bold")
+
+          d3.select(".tooltip")
+            .style("opacity", .9)
+            .style("left", (d3.event.pageX + 5) + "px")
+            .style("top", (d3.event.pageY - 5) + "px");
+        })
+        .on("mouseout", function(d, i) {
+          d3.select(".tooltip").select("p")
+            .text(null)
+
+          d3.select(".tooltip")
+            .style("opacity", 0)
+            .style("left", (d3.event.pageX + 5) + "px")
+            .style("top", (d3.event.pageY - 5) + "px");
+        })
+        .filter(function(d,i){
+          return d.Label =="PerName"
+        })
+        .on("dblclick", function(d, i) {
+          d3.select("#load").style("display", "block");
+          d3.select("#loadbg").style("display", "block");
+          d3.select("#details").style("display", "none").selectAll("p").remove()
+          detailview = false;
+          mouseOut(d, i)
+
+          post_cypherquery("addByNode", d.Id)
+        })
+
+
+
+
+
+      d3.selectAll("#closedetails")
+        .on("click", function(d, i) {
+          d3.select("#details").style("display", "none").selectAll("p").remove()
+          detailview = false;
+          mouseOut(d, i)
+        })
+
+
+
+
+      ////////////timeline start
+
+      //get all keys (years) of timeline array and transform the strings to numbers. use that for a flexible scale
+    //  console.log(timeline.filter(function(d){return d.countPerson != 0 || d.countEdge != 0})[0].date)
+     let timelinelengthHelper = timeline.filter(function(d){return d.countPerson != 0 || d.countEdge != 0}).length
+      let timelineStartEndWithoutRessources = [timeline.filter(function(d){return d.countPerson != 0 || d.countEdge != 0})[0].date, timeline.filter(function(d){return d.countPerson != 0 || d.countEdge != 0})[timelinelengthHelper-1].date]
+      //console.log(timelineStartEndWithoutRessources)
+
+
+      let timelineYears = Object.keys(timeline).map(Number)
+      let timelineCountArray = []
+      let timelineCountResourceArray = []
+      let timelineCountEdgeseArray = []
+      timelineInterval = d3.extent(timelineStartEndWithoutRessources)
+      console.log(timelineInterval)
+
+
+
+
+
+
+
+
+
+
+
+
+
+      //create array of all count-numbers of the years to use that for the max year count for a flexible scale
+      timeline.forEach(function(d, i) {
+        timelineCountArray.push(d.countPerson)
+        timelineCountResourceArray.push(d.countResource)
+        timelineCountEdgeseArray.push(d.countEdge)
+      })
+
+      let timelineMaxCount = d3.max(timelineCountArray)
+      let timelineMaxResourceCount = d3.max(timelineCountResourceArray)
+        let timelineMaxEdgesCount = d3.max(timelineCountEdgeseArray)
+
+
+
+
+      let timelineMarginTop = 145
+
+      // let timelineScale = d3.scaleLinear()
+      //   .domain(d3.extent(timelineStartEndWithoutRessources))
+      //   .range([0, windowHeight - timelineMarginTop]);
+      timelineScale = d3.scaleLinear()
+        .domain(timelineInterval)
+        .range([0, windowWidth]);
+
+
+
+      let timelineXScale = d3.scaleLinear()
+        .domain([0, timelineMaxCount])
+        .range([0, 75])
+
+
+
+
+        ////////////
+        //////new timeline update
+        d3.selectAll(".timelineRect").style("pointer-events", "none").classed("timelineRectSelected", false)
+        d3.select("#timelineselectedyear").text(timelineInterval[0] + "—" +timelineInterval[1])
+
+        d3.selectAll(".axisRectangles").selectAll(".timelineRect")
+          .transition()
+          .attr("width", timelineScale(timelineInterval[0]+50) - timelineScale(timelineInterval[0])) //breite für 50 Jahre
+          .attr("x", function(d){return timelineScale(d)})
+
+          d3.selectAll(".axisRectangles").selectAll("text")
+            .transition()
+            .attr("x", function(d){return timelineScale(d)})
+
+          d3.selectAll(".areachartGroup").selectAll("path").remove()
+
+          timelineYScale = d3.scaleLinear()
+            .domain([0, timelineMaxCount+20])
+            .range([timelineHeight, 0])
+
+          let areaGraphRelationAll = d3.area()
+            .x(function(d, i) {
+              return timelineScale(d.date);
+            })
+            .y0(function(d) {
+              return timelineYScale(0)
+            })
+            .y1(function(d) {
+              return timelineYScale(d.countPerson)
+            })
+            .curve(d3.curveBasis);
+
+            d3.selectAll(".areachartGroup").append("path")
+              .datum(timeline.filter(function(d) {
+                return d != undefined
+              }))
+              .attr("d", areaGraphRelationAll)
+              .style("fill", colorScaleEdges("Comp"))
+              .style("opacity", 1)
+              .style("stroke", "white")
+              .style("stroke-width", 1)
+
+          ////////////
+          //////new timeline update Ende
+
+
+
+
+      ////////////timeline end
+
+
+
+
+
+    }
+
+
+
+    function ticked() {
+      if (simulation.alpha() < 0.05) {
+        simulation.stop()
+
+        d3.select("#load").style("display", "none");
+        d3.select("#loadbg").style("display", "none");
+
+
+        d3.selectAll(".link")
+          .attr("d", function(d) {
+            var dr = 10000 /// d.linknum;
+            return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+          })
+
+
+        d3.selectAll(".nodes")
+          .attr("cx", function(d) {
+            return d.x;
+          })
+          .attr("cy", function(d) {
+            return d.y;
+          });
+
+      }
+    }
+
+
+    function edgeClick(D, I) {
+      d3.select("#details").style("display", "none").selectAll("p").remove()
+      d3.select("#details").style("display", "none").selectAll("a").remove()
+      d3.select("#closedetails").style("display", "block")
+      d3.select("#details").style("display", "block")
+
+      d3.select("#details").append("p").attr("class", "detail_key").text("Beziehung:")
+      d3.select("#details").append("p").attr("class", "detail_value").style("margin-bottom", 0).text(D._source.Name).on("click", function() {
+
+        detailview = true;
+        mouseClick(D._source)
+      })
+      d3.select("#details").append("p").attr("class", "detail_value").text(D._target.Name).on("click", function() {
+
+        detailview = true;
+        mouseClick(D._target)
+      })
+
+      d3.select("#details").append("p").attr("class", "relationsheadline, detail_key").text("Beziehungsquellen" + " (" + D.children.length + ")")
+
+      D.children.sort(function(a, b) {
+          return d3.ascending(a.linkDateDateApproxBegin, b.linkDateDateApproxBegin || d3.ascending(a.originType, b.originType))
+        })
+        .forEach(function(connection, i) {
+          d3.select("#details").append("a").attr("href", connection.originUri).attr("target", "_blank").attr("class", "detail_value, relations_value").append("p")
+            .style("color", edgeColors(connection.originType))
+            .text(function() {
+              console.log(connection)
+              return nodes.filter(function(n) {
+                return n.Id == connection.originId
+              })[0] ? nodes.filter(function(n) {
+                return n.Id == connection.originId
+              })[0].Name : "GND Relation: " + connection._source.Name + " → " + connection._target.Name
+
+            })
+            .append("span")
+            .style("margin-left", "4px")
+            .style("color", "black")
+            .style("font-weight", "300")
+            .text(function() {
+              return "(" + connection.originType + ", " + connection.SourceType +
+                ", " + connection.TypeAddInfo
+                //+ ", " + connection.TempValidity
+                +  (connection.linkDateDateApproxBegin != undefined ? (", "+connection.linkDateDateApproxBegin) : "") +
+                ((connection.linkDateDateApproxEnd != undefined )? ("–"+connection.linkDateDateApproxEnd + ")") : ")")
+            })
+
+        })
+
+    }
+
+
+
+    function mouseClick(D, I) {
+      d3.select("#details").style("display", "none").selectAll("p").remove()
+      d3.select("#details").style("display", "none").selectAll("a").remove()
+      d3.select("#closedetails").style("display", "block")
+      d3.selectAll(".nodes").classed("filteredIn", false).classed("filteredOut", true)
+      d3.selectAll(".linkChild").remove()
+      d3.selectAll(".link").style("opacity", null)
+      d3.selectAll(".nodes").style("opacity", null)
+
+
+      let connections = linksClean.filter(function(E, G) {
+        return E._source.id == D.id ||
+          E._target.id == D.id
+      })
+
+
+      let allConnections = links.filter(function(E, G) {
+        return E._source.id == D.id ||
+          E._target.id == D.id
+      })
+
+
+      let connectedNodes = []
+
+
+
+      allConnections.forEach(function(E, G) {
+        d3.selectAll(".nodes").filter(function(X, Y) {
+            return X.id == E._source.id || X.id == E._target.id
+          }).classed("filteredIn", true).classed("filteredOut", false)
+          .each(function(X, Y) {
+            connectedNodes.push(
+              X.id
+            )
+          })
+
+
+        d3.selectAll(".nodes")
+          .filter(function(d, i) {
+            return D.id == d.id
+          }).classed("filteredIn", true).classed("filteredOut", false)
+
+
+      })
+
+
+
+
+      d3.selectAll(".link").style("opacity", 0)
+
+      d3.selectAll(".link")
+
+        .filter(function(E, G) {
+          return connectedNodes.filter(function(d) {
+            return d == E._source.id
+          }).length > 0 && connectedNodes.filter(function(d) {
+            return d == E._target.id
+          }).length > 0
+        })
+        .style("opacity", 1)
+
+
+
+      d3.select("#details").style("display", "block")
+
+      Object.entries(D).forEach(entry => {
+        let key = entry[0];
+        let value = entry[1];
+
+        if (value != "" && value != null && key != "x" && key != "y" && key != "vx" && key != "vy" && key != "index" && key != "connectivity" && key != "connectivityPerCorp") {
+          if (key != "Uri") {
+            d3.select("#details").append("p").attr("class", "detail_key").text(key)
+            d3.select("#details").append("p").attr("class", "detail_value").text(value)
+
+            //        d3.select("#details").append("p").attr("class", "detail_value").text(value.replace(/;;;/g, "; "))
+          } else {
+            d3.select("#details").append("p").attr("class", "detail_key").text(key)
+            d3.select("#details").append("a").attr("href", value).attr("target", "_blank").attr("class", "detail_value").text(value.replace(/;;;/g, "; "))
+          }
+
+        }
+
+
+      });
+
+      d3.select("#details").append("p").attr("class", "relationsheadline, detail_key").text("Verbundene Orte")
+
+      allConnections.filter(function(x, y) {
+        return x.type == "RelationToGeoName"
+      }).forEach(function(connection, i) {
+        d3.select("#details").append("p").attr("class", "detail_value, relations_value").style("color", "black")
+          .text(function() {
+            return connection._target.Name + " (" + connection.SourceType + ")"
+          })
+      })
+
+
+      d3.select("#details").append("p").attr("class", "relationsheadline, detail_key").text("Verbundene Sachbegriffe")
+      allConnections.filter(function(x, y) {
+        return x.type == "RelationToTopicTerm"
+      }).forEach(function(connection, i) {
+        d3.select("#details").append("p").attr("class", "detail_value, relations_value").style("color", "black")
+          .text(function() {
+            return connection._target.Name + " (" + connection.SourceType + ")"
+          })
+      })
+
+      d3.select("#details").append("p").attr("class", "relationsheadline, detail_key").text("Verbundene Ressourcen")
+      allConnections.filter(function(x, y) {
+        return x._source.Label == "Resource" || x._target.Label == "Resource"
+      }).forEach(function(connection, i) {
+        d3.select("#details").append("p").attr("class", "detail_value, relations_value").style("color", "black")
+          .text(function() {
+            return connection._source.Name + " (" + connection.SourceType + ", " + connection.Source +
+              ", " + connection.TypeAddInfo + ", " + connection.TempValidity + ")"
+          })
+      })
+
+      d3.select("#details").append("p").attr("class", "relationsheadline, detail_key").text("Verbundene Personen")
+
+      connections.filter(function(x, y) {
+          return x._source.Label == "PerName" && x._target.Label == "PerName"
+        })
+        .sort((a, b) => d3.descending(a.children.length, b.children.length))
+        .forEach(function(connection, i) {
+          d3.select("#details").append("p").attr("class", "detail_value, relations_value")
+            .text(function() {
+              if (D.Id == connection._source.Id) {
+                return connection._target.Name + " (" + connection.children.length + ")"
+              } else {
+                return connection._source.Name
+              }
+
+            })
+          //  .on("click", edgeClick(connection))
+
+        })
+
+      d3.select("#details").append("p").attr("class", "relationsheadline, detail_key").text("Verbundene Körperschaften")
+
+      connections.filter(function(x, y) {
+        return x._source.Label == "CorpName" || x._target.Label == "CorpName"
+      }).forEach(function(connection, i) {
+        d3.select("#details").append("p").attr("class", "detail_value, relations_value").style("color", function() {
+          if (connection.type == "SocialRelation") {
+            return "black" //edgeColors("computed")
+          } else {
+            return "black" //edgeColors(connection.Source)
+          }
+        }).text(function() {
+          if (D.Id == connection._source.Id) {
+            return connection._target.Name
+          } else {
+            return connection._source.Name
+          }
+
+        })
+      })
+
+
+    }
+
+
+    function mouseOut(D, I) {
+      if (detailview != true) {
+         d3.select("#graph").transition().duration(750).call(zoom.transform, d3.zoomIdentity)
+        // d3.selectAll(".topicterm,.geoname").classed("topicGeoNotDisplayed", false)
+        d3.select("#closedetails").style("display", "none")
+        d3.selectAll(".filterCross").remove()
+        d3.selectAll(".nodes").classed("filteredIn", true).classed("filteredOut", false).classed("notedgerelevant", false)
+        //  d3.selectAll(".label").style("font-size", "4px").style("display", function(d,i){if(d.connectivity <20 || d.Label != "PerName" && d.Label != "CorpName"){return "none"}})
+
+        d3.selectAll(".link").style("opacity", 1)
+        d3.selectAll(".nodesOnTop").remove()
+        d3.selectAll(".linkChild").remove()
+        d3.selectAll(".link").style("opacity", null)
+        d3.selectAll(".nodes").style("opacity", null)
+        .attr("rx", function(d, i) {
+          return (zoomlevel>= 1) ? (nodeSize(d.connectivityClean)/zoomlevel) : nodeSize(d.connectivityClean)
+        })
+        .attr("ry", function(d, i) {
+          return (zoomlevel>= 1) ? (nodeSize(d.connectivityClean)/zoomlevel) : nodeSize(d.connectivityClean)
+        })
+        .style("fill", function(d, i) {
+                  if (($('#search_category_select').val() == "GND-ID") && d.Id == $('#suche').val()) {
+                    return color("Selection")
+                  } else if (d.Label == "PerName") {
+                    return color(d.Label)
+                  } else {
+                    return color(d.Label)
+                  }
+                })
+
+
+
+
+
+
+        d3.select("#details").style("display", "none").selectAll("p").remove()
+      }
+    }
+
+    function idIndex(a, id) {
+      for (let i = 0; i < a.length; i++) {
+        if (a[i].id == id) {
+          return i
+        }
+      }
+      return null;
+    }
+
+    ///setupNetwork vis end
+    ////////////////////////////////////
+
+
 
     //begin: constants
     const _2PI = 2 * Math.PI;
@@ -419,176 +3029,176 @@ background-color: white;
 
     var svgWidth = window.innerWidth,
       svgHeight = window.innerHeight,
-      margin = {
+      marginOverview = {
         top: 0,
         right: 0,
         bottom: 0,
         left: 0
       },
-      height = svgHeight - margin.top - margin.bottom,
-      width = svgWidth - margin.left - margin.right,
+      height = svgHeight - marginOverview.top - marginOverview.bottom,
+      width = svgWidth - marginOverview.left - marginOverview.right,
       halfWidth = width / 2,
       halfHeight = height / 2,
       quarterWidth = width / 4,
       quarterHeight = height / 4,
       titleY = 20,
       PerNameCenter = [halfWidth, halfHeight]
-      GeoNameCenter = [3/4*width, halfHeight]
-      ResourcesCenter = [quarterWidth, halfHeight]
-      MeetNameCenter = [0.35*width, 0.25*height]
-      UniTitleCenter = [halfWidth, 0.2*height]
-      CorpNameCenter = [0.65*width, 0.25*height]
+    GeoNameCenter = [3 / 4 * width, halfHeight]
+    ResourcesCenter = [quarterWidth, halfHeight]
+    MeetNameCenter = [0.35 * width, 0.25 * height]
+    UniTitleCenter = [halfWidth, 0.2 * height]
+    CorpNameCenter = [0.65 * width, 0.25 * height]
     //end: layout conf.
 
 
 
 
-    let windowWidth = window.innerWidth - 2 * margin.left
-    let windowHeight = window.innerHeight - 2 * margin.top
+    let windowWidthOverview = window.innerWidth - 2 * marginOverview.left
+    let windowHeightOverview = window.innerHeight - 2 * marginOverview.top
 
-    let zoom = d3.zoom()
+    let zoomOverview = d3.zoom()
       .scaleExtent([1 / 3, 8])
-      .on("zoom", zoomed)
+      .on("zoom", zoomedOverview)
 
-    function zoomed() {
+    function zoomedOverview() {
+      console.log("testzoom")
+      d3.select("#allvisg").attr("transform", d3.event.transform);
+    }
 
-    d3.select("#allvisg").attr("transform", d3.event.transform);
-}
-
-    const svg = d3.select("#svg")
-    .attr("width", "100%")
-    .attr("height", "100%")
-    .attr("preserveAspectRatio", "xMidYMid")
-    .attr("viewBox", "0 0 " + windowWidth + " " + windowHeight)
-    .call(zoom)
-
-
-
-
-      const timelineVis = d3.select("#timelineSVG")
-          .attr("width", "100%")
-          .attr("height", "100%")
+    const svgOverview = d3.select("#svg")
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("preserveAspectRatio", "xMidYMid")
+      .attr("viewBox", "0 0 " + windowWidthOverview + " " + windowHeightOverview)
+      .call(zoomOverview)
 
 
 
 
-// function voronoiAll(dataset, svgselector){
-
-      //begin: raw data global def
-      let totalCount = 0
-      let totalCountGeo = 0
-      let totalCountRes = 0
-      let totalCountMeet = 0
-      let totalCountUni = 0
-      let totalCountCorp = 0
-      //end: raw data global def
-
-
-
-      //begin: treemap conf.
-      //let baseRadius = 100
-      let Radius
-      let RadiusGeo
-      let RadiusRes
-      let RadiusMeet
-      let RadiusUni
-      let RadiusCorp
-      let CirclingPolygon
-      let CirclingPolygonGeo
-      let CirclingPolygonRes
-      let CirclingPolygonMeet
-      let CirclingPolygonUni
-      let CirclingPolygonCorp
-      let Polygons
-      let PolygonsGeo
-      let PolygonsRes
-      let PolygonsMeet
-      let PolygonsUni
-      let PolygonsCorp
-      //end: treemap conf.
-
-      let top100Value = 0
-      let top100ValueGeo = 0
-      let top100ValueRes = 0
-      let top100ValueMeet = 0
-      let top100ValueUni = 0
-      let top100ValueCorp = 0
-      let otherValue = 0
-      let otherValueGeo = 0
-      let otherValueRes = 0
-      let otherValueMeet = 0
-      let otherValueUni = 0
-      let otherValueCorp = 0
-      let totalValue = 0
-      let totalValueGeo = 0
-      let totalValueRes = 0
-      let totalValueMeet = 0
-      let totalValueUni = 0
-      let totalValueCorp = 0
-
-
-
-      //
-      // const formatComma = d3.format(",")
-
-      const radiusScale = d3.scaleSqrt()
-        .domain([0, 8000000])
-        .range([50, 250])
-
-      const colorScale = d3.scaleOrdinal()
-      .range(['#f0f0f0','#d9d9d9','#bdbdbd','#969696','#737373','#525252','#252525'])
-        //.range(["rgb(241, 250, 250)","rgb(208, 217, 217)","rgb(175, 184, 184)","rgb(156, 166, 166)","rgb(125, 134, 134)", "rgb(75, 82, 82)"])
+    const timelineVis = d3.select("#timelineSVG")
+      .attr("width", "100%")
+      .attr("height", "100%")
 
 
 
 
-const colorScaleEdges = d3.scaleOrdinal()
-.domain(["GND", "KPE", "DNB", "SBB", "ZDB", "Comp"])
-.range(["#ea635e", "#494b9a", "#44b78d", "#e8ce4b", "#e5994c", "rgb(56, 56, 56)"])
+    // function voronoiAll(dataset, svgselector){
 
-const edgesSizeScale = d3.scaleLinear()
-.domain([0, 1, 8000000])
-.range([0, 4, 50])
+    //begin: raw data global def
+    let totalCount = 0
+    let totalCountGeo = 0
+    let totalCountRes = 0
+    let totalCountMeet = 0
+    let totalCountUni = 0
+    let totalCountCorp = 0
+    //end: raw data global def
 
-let yearSelected = 1850
-let selectionData
-let selectionDataState
 
-let selectionDataGeo
-let selectionDataStateGeo
 
-let selectionDataRes
-let selectionDataStateRes
+    //begin: treemap conf.
+    //let baseRadius = 100
+    let Radius
+    let RadiusGeo
+    let RadiusRes
+    let RadiusMeet
+    let RadiusUni
+    let RadiusCorp
+    let CirclingPolygon
+    let CirclingPolygonGeo
+    let CirclingPolygonRes
+    let CirclingPolygonMeet
+    let CirclingPolygonUni
+    let CirclingPolygonCorp
+    let Polygons
+    let PolygonsGeo
+    let PolygonsRes
+    let PolygonsMeet
+    let PolygonsUni
+    let PolygonsCorp
+    //end: treemap conf.
 
-let selectionDataMeet
-let selectionDataStateMeet
+    let top100Value = 0
+    let top100ValueGeo = 0
+    let top100ValueRes = 0
+    let top100ValueMeet = 0
+    let top100ValueUni = 0
+    let top100ValueCorp = 0
+    let otherValue = 0
+    let otherValueGeo = 0
+    let otherValueRes = 0
+    let otherValueMeet = 0
+    let otherValueUni = 0
+    let otherValueCorp = 0
+    let totalValue = 0
+    let totalValueGeo = 0
+    let totalValueRes = 0
+    let totalValueMeet = 0
+    let totalValueUni = 0
+    let totalValueCorp = 0
 
-let selectionDataUni
-let selectionDataStateUni
 
-let selectionDataCorp
-let selectionDataStateCorp
 
-      // //begin: reusable d3Selection
-      // var drawingArea;
-      // var categoryContainer;
+    //
+    // const formatComma = d3.format(",")
 
-      //end: reusable d3Selection
+    const radiusScale = d3.scaleSqrt()
+      .domain([0, 8000000])
+      .range([50, 250])
 
-      Promise.all([
-  				d3.csv("data/persontopicterms_50er_long-komp.csv"), //data
-  				d3.csv("data/persongeonames_50er_long_komp.csv"), //geodata
-          d3.csv("data/resourcetopic_50er_long_komp.csv"), //ressources
-          d3.csv("data/meetnametopic_50er_long_komp.csv"), //meetname
-          d3.csv("data/unititletopic_50er_long_komp.csv"), //unititle
-          d3.csv("data/corpname_50er_long_komp.csv"), //corpname
-          d3.csv("data/all-relations160821_final.csv"),
-          d3.csv("data/all-timeline-relations.csv"),
-           //timeline
-  			])
-  			.then(([data, geodata, resdata, meetdata, unidata, corpdata, relationdata, timelinerelations]) => {
+    const colorScale = d3.scaleOrdinal()
+      .range(['#f0f0f0', '#d9d9d9', '#bdbdbd', '#969696', '#737373', '#525252', '#252525'])
+    //.range(["rgb(241, 250, 250)","rgb(208, 217, 217)","rgb(175, 184, 184)","rgb(156, 166, 166)","rgb(125, 134, 134)", "rgb(75, 82, 82)"])
 
-      // d3.csv("persongeonames_50er_long.csv").then(function(data) {
+
+
+
+    const colorScaleEdges = d3.scaleOrdinal()
+      .domain(["GND", "KPE", "DNB", "SBB", "ZDB", "Comp"])
+      .range(["var(--GND)", "var(--KPE)", "var(--DNB)", "var(--SBB)", "var(--ZDB)", "var(--Comp)"])
+
+    const edgesSizeScale = d3.scaleLinear()
+      .domain([0, 1, 8000000])
+      .range([0, 4, 50])
+
+    let yearSelected = 1850
+    let selectionData
+    let selectionDataState
+
+    let selectionDataGeo
+    let selectionDataStateGeo
+
+    let selectionDataRes
+    let selectionDataStateRes
+
+    let selectionDataMeet
+    let selectionDataStateMeet
+
+    let selectionDataUni
+    let selectionDataStateUni
+
+    let selectionDataCorp
+    let selectionDataStateCorp
+
+    // //begin: reusable d3Selection
+    // var drawingArea;
+    // var categoryContainer;
+
+    //end: reusable d3Selection
+
+    Promise.all([
+        d3.csv("data/persontopicterms_50er_long-komp.csv"), //data
+        d3.csv("data/persongeonames_50er_long_komp.csv"), //geodata
+        d3.csv("data/resourcetopic_50er_long_komp.csv"), //ressources
+        d3.csv("data/meetnametopic_50er_long_komp.csv"), //meetname
+        d3.csv("data/unititletopic_50er_long_komp.csv"), //unititle
+        d3.csv("data/corpname_50er_long_komp.csv"), //corpname
+        d3.csv("data/all-relations160821_final.csv"),
+        d3.csv("data/all-timeline-relations.csv"),
+        //timeline
+      ])
+      .then(([data, geodata, resdata, meetdata, unidata, corpdata, relationdata, timelinerelations]) => {
+
+        // d3.csv("persongeonames_50er_long.csv").then(function(data) {
 
 
 
@@ -680,69 +3290,69 @@ let selectionDataStateCorp
 
 
 
-let timelineHeight = 0.25*windowHeight
-
-/////timelineStart
-let timelineScale = d3.scaleLinear()
-  .domain([1300, 2000])
-  .range([0, windowWidth]);
-
-let timelineYScale = d3.scaleLinear()
-    .domain([0, 13000000])
-    .range([timelineHeight, 0])
-
-    let timelineYScaledown = d3.scaleLinear()
-        .domain([0, 10000000])
-        .range([timelineHeight/2, timelineHeight])
 
 
-let areaGND = d3.area()
-  .x(function(d, i) {
-    return timelineScale(d.year);
-  })
-  .y0(function(d) {
-    return timelineYScale(0)
-  })
-  .y1(function(d) {
-    return timelineYScale(d.PerPer_GND+d.CorpPer_GND+d.GeoPer_GND+d.MeetPer_GND+d.UniPer_GND)
-  })
-  .curve(d3.curveBasis);
+        /////timelineStart
+        let timelineScale = d3.scaleLinear()
+          .domain(timelineInterval)
+          .range([0, windowWidth]);
 
-  let areaKPE = d3.area()
-    .x(function(d, i) {
-      return timelineScale(d.year);
-    })
-    .y0(function(d) {
-      return timelineYScale(d.PerPer_GND+d.CorpPer_GND+d.GeoPer_GND+d.MeetPer_GND+d.UniPer_GND)
-    })
-    .y1(function(d) {
-      return timelineYScale(d.ResPer_KPE+d.PerPer_GND+d.CorpPer_GND+d.GeoPer_GND+d.MeetPer_GND+d.UniPer_GND)
-    })
-    .curve(d3.curveBasis);
+        let timelineYScale = d3.scaleLinear()
+          .domain([0, 13000000])
+          .range([timelineHeight, 0])
 
-    let areaDNB = d3.area()
-      .x(function(d, i) {
-        return timelineScale(d.year);
-      })
-      .y0(function(d) {
-        return timelineYScale(d.ResPer_KPE+d.PerPer_GND+d.CorpPer_GND+d.GeoPer_GND+d.MeetPer_GND+d.UniPer_GND)
-      })
-      .y1(function(d) {
-        return timelineYScale(d.ResPer_DNB+d.ResPer_KPE+d.PerPer_GND+d.CorpPer_GND+d.GeoPer_GND+d.MeetPer_GND+d.UniPer_GND)
-      })
-      .curve(d3.curveBasis);
+        let timelineYScaledown = d3.scaleLinear()
+          .domain([0, 10000000])
+          .range([timelineHeight / 2, timelineHeight])
 
-      let areaSBB = d3.area()
-        .x(function(d, i) {
-          return timelineScale(d.year);
-        })
-        .y0(function(d) {
-          return timelineYScale(d.ResPer_KPE+d.ResPer_DNB+d.PerPer_GND+d.CorpPer_GND+d.GeoPer_GND+d.MeetPer_GND+d.UniPer_GND)
-        })
-        .y1(function(d) {
-          return timelineYScale(d.ResPer_SBB+d.ResPer_KPE+d.ResPer_DNB+d.PerPer_GND+d.CorpPer_GND+d.GeoPer_GND+d.MeetPer_GND+d.UniPer_GND)
-        })
-        .curve(d3.curveBasis);
+
+        let areaGND = d3.area()
+          .x(function(d, i) {
+            return timelineScale(d.year);
+          })
+          .y0(function(d) {
+            return timelineYScale(0)
+          })
+          .y1(function(d) {
+            return timelineYScale(d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+          })
+          .curve(d3.curveBasis);
+
+        let areaKPE = d3.area()
+          .x(function(d, i) {
+            return timelineScale(d.year);
+          })
+          .y0(function(d) {
+            return timelineYScale(d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+          })
+          .y1(function(d) {
+            return timelineYScale(d.ResPer_KPE + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+          })
+          .curve(d3.curveBasis);
+
+        let areaDNB = d3.area()
+          .x(function(d, i) {
+            return timelineScale(d.year);
+          })
+          .y0(function(d) {
+            return timelineYScale(d.ResPer_KPE + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+          })
+          .y1(function(d) {
+            return timelineYScale(d.ResPer_DNB + d.ResPer_KPE + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+          })
+          .curve(d3.curveBasis);
+
+        let areaSBB = d3.area()
+          .x(function(d, i) {
+            return timelineScale(d.year);
+          })
+          .y0(function(d) {
+            return timelineYScale(d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+          })
+          .y1(function(d) {
+            return timelineYScale(d.ResPer_SBB + d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+          })
+          .curve(d3.curveBasis);
 
 
         let areaZDB = d3.area()
@@ -750,397 +3360,488 @@ let areaGND = d3.area()
             return timelineScale(d.year);
           })
           .y0(function(d) {
-            return timelineYScale(d.ResPer_SBB+d.ResPer_KPE+d.ResPer_DNB+d.PerPer_GND+d.CorpPer_GND+d.GeoPer_GND+d.MeetPer_GND+d.UniPer_GND)
+            return timelineYScale(d.ResPer_SBB + d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
           })
           .y1(function(d) {
-            return timelineYScale(d.ResPer_ZDB+d.ResPer_SBB+d.ResPer_KPE+d.ResPer_DNB+d.PerPer_GND+d.CorpPer_GND+d.GeoPer_GND+d.MeetPer_GND+d.UniPer_GND)
+            return timelineYScale(d.ResPer_ZDB + d.ResPer_SBB + d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
           })
           .curve(d3.curveBasis);
 
-          let areaComp = d3.area()
-            .x(function(d, i) {
-              return timelineScale(d.year);
+        let areaComp = d3.area()
+          .x(function(d, i) {
+            return timelineScale(d.year);
+          })
+          .y0(function(d) {
+            return timelineYScale(d.ResPer_ZDB + d.ResPer_SBB + d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+          })
+          .y1(function(d) {
+            return timelineYScale(d.PerPer_Comp + d.CorpPer_Comp + d.ResPer_ZDB + d.ResPer_SBB + d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+          })
+          .curve(d3.curveBasis);
+
+
+
+
+        let areachartGroup = timelineVis.append("g").attr("class", "areachartGroup") //.attr("transform", "translate(" + 116 + "," + timelineMarginTop + ")")
+
+        let areachart = d3.selectAll(".areachartGroup")
+
+        let areachartRectangles = areachart.append("g").attr("class", "axisRectangles")
+
+
+
+        let rectI = -2000
+        while (rectI <= 2100) {
+
+          areachartRectangles.append("rect")
+            .datum(rectI)
+            .attr("height", timelineHeight)
+            .attr("width", timelineScale(1350) - timelineScale(1300)) //breite für 50 Jahre
+            .attr("x", timelineScale(rectI))
+            .attr("y", 0)
+            .classed("timelineRect", true)
+            .classed("timelineRectSelected", function() {
+              if (rectI == yearSelected) {
+                return true
+              } else {
+                return false
+              }
             })
-            .y0(function(d) {
-              return timelineYScale(d.ResPer_ZDB+d.ResPer_SBB+d.ResPer_KPE+d.ResPer_DNB+d.PerPer_GND+d.CorpPer_GND+d.GeoPer_GND+d.MeetPer_GND+d.UniPer_GND)
+            .attr("data-year", rectI)
+            .on("mouseover", function(d) {
+              d3.select(this) //.attr("fill", "#d9d9d9")
+                .classed("timelineRecthover", true)
             })
-            .y1(function(d) {
-              return timelineYScale(d.PerPer_Comp+d.CorpPer_Comp+d.ResPer_ZDB+d.ResPer_SBB+d.ResPer_KPE+d.ResPer_DNB+d.PerPer_GND+d.CorpPer_GND+d.GeoPer_GND+d.MeetPer_GND+d.UniPer_GND)
+            .on("mouseout", function(d) {
+              d3.select(this) //.attr("fill", "#fafafa")
+                .classed("timelineRecthover", false)
             })
-            .curve(d3.curveBasis);
-
-  // let areaRes = d3.area()
-  //   .x(function(d, i) {
-  //     return timelineScale(d.year);
-  //   })
-  //   .y0(function(d) {
-  //     return timelineYScale(0)
-  //   })
-  //   .y1(function(d) {
-  //     return timelineYScale(0-d.PerName)
-  //   })
-  //   .curve(d3.curveBasis);
+            .on("click", function(d) {
+              d3.selectAll(".timelineRect").classed("timelineRectSelected", false)
+              d3.select(this).classed("timelineRectSelected", true)
+              yearSelected = d3.select(this).attr("data-year")
+              d3.select("#timelineselectedyear").text(yearSelected + "—" +(+yearSelected+50))
+              updateData(data, geodata, resdata, meetdata, unidata, corpdata, yearSelected)
+              updateRelations(relationdata)
+            })
 
 
-  // let area2 = d3.area()
-  //   .y(function(d, i) {
-  //     return timelineScale(d.date);
-  //   })
-  //   .x0(function(d) {
-  //     return timelineXScale(d.countPerson)
-  //   })
-  //   .x1(function(d) {
-  //     return timelineXScale(d.countPerson+d.countEdge)
-  //   })
-  //   .curve(d3.curveBasis);
-  //
-  //   let area3 = d3.area()
-  //     .y(function(d, i) {
-  //       return timelineScale(d.date);
-  //     })
-  //     .x0(function(d) {
-  //       return timelineXScale(d.countPerson+d.countEdge)
-  //     })
-  //     .x1(function(d) {
-  //       return timelineXScale(d.countPerson+d.countEdge+d.countResource)
-  //     })
-  //     .curve(d3.curveBasis);
+          areachartRectangles.append("text")
+            .datum(rectI)
+            .text(rectI)
+            .attr("y", 12)
+            .attr("x", timelineScale(rectI))
+            .style("font-size", 10)
+            .style("font-weight", 500)
+            .style("fill", "black")
+            .style("stroke", "#fafafa")
+            .style("stroke-width", 4)
+            .style("stroke-linecap", "round")
+            .style("text-anchor", "middle")
 
+          areachartRectangles.append("text")
+            .datum(rectI)
+            .text(rectI)
+            .attr("y", 12)
+            .attr("x", timelineScale(rectI))
+            .style("font-size", 10)
+            .style("font-weight", 500)
+            .style("fill", "black")
+            .style("text-anchor", "middle")
 
+          rectI = rectI + 50
+        }
 
-let areachartGroup = timelineVis.append("g").attr("class", "areachartGroup")//.attr("transform", "translate(" + 116 + "," + timelineMarginTop + ")")
-
-let areachart = d3.selectAll(".areachartGroup")
-
-let areachartRectangles = areachart.append("g").attr("class", "axisRectangles")
-
-
-
-let rectI = 1300
-while(rectI<=2000){
-
-  areachartRectangles.append("rect")
-  .attr("height", timelineHeight)
-  .attr("width", timelineScale(1350)-timelineScale(1300)) //breite für 50 Jahre
-  .attr("x", timelineScale(rectI))
-  .attr("y",0)
-  .classed("timelineRect", true)
-  .classed("timelineRectSelected", function(){if(rectI == yearSelected){return true}else{return false}})
-  .attr("data-year", rectI)
-  .on("mouseover", function(d){
-    d3.select(this)//.attr("fill", "#d9d9d9")
-    .classed("timelineRecthover", true)
-  })
-  .on("mouseout", function(d){
-    d3.select(this)//.attr("fill", "#fafafa")
-    .classed("timelineRecthover", false)
-  })
-  .on("click", function(d){
-  d3.selectAll(".timelineRect").classed("timelineRectSelected", false)
-  d3.select(this).classed("timelineRectSelected", true)
-  yearSelected = d3.select(this).attr("data-year")
-  updateData(data, geodata, resdata, meetdata, unidata, corpdata, yearSelected)
-  updateRelations(relationdata)
-  })
-
-
-  areachartRectangles.append("text")
-  .text(rectI)
-  .attr("y", 12)
-  .attr("x", timelineScale(rectI))
-  .style("font-size", 10)
-  .style("font-weight", 500)
-  .style("fill", "black")
-  .style("stroke", "#fafafa")
-  .style("stroke-width", 4)
-  .style("stroke-linecap", "round")
-  .style("text-anchor", "middle")
-
-  areachartRectangles.append("text")
-  .text(rectI)
-  .attr("y", 12)
-  .attr("x", timelineScale(rectI))
-  .style("font-size", 10)
-  .style("font-weight", 500)
-  .style("fill", "black")
-  .style("text-anchor", "middle")
-
-  rectI = rectI+50
-}
-
-areachartRectangles.append("rect")
-.attr("x",0)
-.attr("y",0)
-.attr("height", 1)
-.style("fill", "black")
-.attr("width", "100%")
+        areachartRectangles.append("rect")
+          .attr("x", 0)
+          .attr("y", 0)
+          .attr("height", 1)
+          .attr("width", "100%")
+          .style("fill", "black")
 
 
 
 
 
 
-areachart.append("g").attr("class", "axisTime")//.call(d3.axisBottom(timelineScale).ticks(14).tickFormat(d3.format("d")).tickSize(timelineHeight)).attr("transform", "translate(" + 0 + "," + (0) + ")")
-d3.selectAll(".tick").selectAll("text")
-.attr("transform", "translate(" + [0, -timelineHeight] + ")");
 
-areachart.append("path")
-  .datum(timelinerelations)
-  .attr("d", areaGND)
-  .style("fill", colorScaleEdges("GND"))
-  .style("opacity", 1)
-  .style("stroke", "white")
-  .style("stroke-width", 1)
-
-  areachart.append("path")
-    .datum(timelinerelations)
-    .attr("d", areaKPE)
-    .style("fill", colorScaleEdges("KPE"))
-    .style("opacity", 1)
-    .style("stroke", "white")
-    .style("stroke-width", 1)
-
-    areachart.append("path")
-      .datum(timelinerelations)
-      .attr("d", areaDNB)
-      .style("fill", colorScaleEdges("DNB"))
-      .style("opacity", 1)
-      .style("stroke", "white")
-      .style("stroke-width", 1)
-
-      //
-       areachart.append("path")
-        .datum(timelinerelations)
-        .attr("d", areaSBB)
-        .style("fill", colorScaleEdges("SBB"))
-        .style("opacity", 1)
-        .style("stroke", "white")
-        .style("stroke-width", 1)
+        areachart.append("g").attr("class", "axisTime")
+        d3.selectAll(".tick").selectAll("text")
+          .attr("transform", "translate(" + [0, -timelineHeight] + ")");
 
         areachart.append("path")
-         .datum(timelinerelations)
-         .attr("d", areaZDB)
-         .style("fill", colorScaleEdges("ZDB"))
-         .style("opacity", 1)
-         .style("stroke", "white")
-         .style("stroke-width", 1)
-
-         areachart.append("path")
           .datum(timelinerelations)
-          .attr("d", areaComp)
-          .style("fill", colorScaleEdges("Comp"))//"url(#diagonalHatch)")
+          .attr("d", areaGND)
+          .style("fill", colorScaleEdges("GND"))
           .style("opacity", 1)
           .style("stroke", "white")
           .style("stroke-width", 1)
-//timelineEnd
+
+        areachart.append("path")
+          .datum(timelinerelations)
+          .attr("d", areaKPE)
+          .style("fill", colorScaleEdges("KPE"))
+          .style("opacity", 1)
+          .style("stroke", "white")
+          .style("stroke-width", 1)
+
+        areachart.append("path")
+          .datum(timelinerelations)
+          .attr("d", areaDNB)
+          .style("fill", colorScaleEdges("DNB"))
+          .style("opacity", 1)
+          .style("stroke", "white")
+          .style("stroke-width", 1)
+
+        //
+        areachart.append("path")
+          .datum(timelinerelations)
+          .attr("d", areaSBB)
+          .style("fill", colorScaleEdges("SBB"))
+          .style("opacity", 1)
+          .style("stroke", "white")
+          .style("stroke-width", 1)
+
+        areachart.append("path")
+          .datum(timelinerelations)
+          .attr("d", areaZDB)
+          .style("fill", colorScaleEdges("ZDB"))
+          .style("opacity", 1)
+          .style("stroke", "white")
+          .style("stroke-width", 1)
+
+        areachart.append("path")
+          .datum(timelinerelations)
+          .attr("d", areaComp)
+          .style("fill", colorScaleEdges("Comp")) //"url(#diagonalHatch)")
+          .style("opacity", 1)
+          .style("stroke", "white")
+          .style("stroke-width", 1)
+        //timelineEnd
 
 
 
 
-///relations edges Start
-let relationsYearSelected = yearSelected
+        ///relations edges Start
+        let relationsYearSelected = yearSelected
 
 
-///all edges except PerName -- PerName
-// relationdata.filter(function(d){return d.year == relationsYearSelected && d.target != "PerName"}).forEach((d, i) => {
+        ///all edges except PerName -- PerName
+        // relationdata.filter(function(d){return d.year == relationsYearSelected && d.target != "PerName"}).forEach((d, i) => {
 
 
-let DNBResLineStrength = edgesSizeScale(relationdata.filter(function(d){return d.year == relationsYearSelected && d.target == "Resource" && d.type == "DNB"})[0].value)/2
-let KPEResLineStrength = edgesSizeScale(relationdata.filter(function(d){return d.year == relationsYearSelected && d.target == "Resource" && d.type == "KPE"})[0].value)/2
-let SBBResLineStrength = edgesSizeScale(relationdata.filter(function(d){return d.year == relationsYearSelected && d.target == "Resource" && d.type == "SBB"})[0].value)/2
-let ZDBResLineStrength = edgesSizeScale(relationdata.filter(function(d){return d.year == relationsYearSelected && d.target == "Resource" && d.type == "ZDB"})[0].value)/2
-let lineGap = 2
+        let DNBResLineStrength = edgesSizeScale(relationdata.filter(function(d) {
+          return d.year == relationsYearSelected && d.target == "Resource" && d.type == "DNB"
+        })[0].value) / 2
+        let KPEResLineStrength = edgesSizeScale(relationdata.filter(function(d) {
+          return d.year == relationsYearSelected && d.target == "Resource" && d.type == "KPE"
+        })[0].value) / 2
+        let SBBResLineStrength = edgesSizeScale(relationdata.filter(function(d) {
+          return d.year == relationsYearSelected && d.target == "Resource" && d.type == "SBB"
+        })[0].value) / 2
+        let ZDBResLineStrength = edgesSizeScale(relationdata.filter(function(d) {
+          return d.year == relationsYearSelected && d.target == "Resource" && d.type == "ZDB"
+        })[0].value) / 2
+        let lineGap = 2
 
-let resPerRels = d3.select("#relationsvis").append("g").attr("class", "resPerRels").attr("transform", "translate(0,"+(-((lineGap*3)+DNBResLineStrength+KPEResLineStrength+SBBResLineStrength+ZDBResLineStrength)/2)+")")
+        let resPerRels = d3.select("#relationsvis").append("g").attr("class", "resPerRels").attr("transform", "translate(0," + (-((lineGap * 3) + DNBResLineStrength + KPEResLineStrength + SBBResLineStrength + ZDBResLineStrength) / 2) + ")")
 
-resPerRels.selectAll(".relationLine")
-  .data(relationdata.filter(function(d){return d.year == relationsYearSelected && d.target == "Resource"}))
-  .join("line")
-  .classed("relationLine", true)
-  .attr("x1", d => PerNameCenter[0])
-  .attr("y1", d => PerNameCenter[1])
-  .attr("x2", function(d){return ResourcesCenter[0]})
-  .attr("y2", function(d){return ResourcesCenter[1]})
-  .attr("stroke", function(d){return colorScaleEdges(d.type)})
-  .attr("stroke-width",function(d){return edgesSizeScale(d.value)})
-  .attr("transform", function(d){
-
-      if(d.type == "DNB"){return "translate(0,"+(0)+")"}
-          else if(d.type == "KPE"){return "translate(0,"+(lineGap+DNBResLineStrength+KPEResLineStrength)+")"}
-          else if(d.type == "SBB"){return "translate(0,"+(2*lineGap+DNBResLineStrength+KPEResLineStrength*2+SBBResLineStrength)+")"}
-          else if(d.type == "ZDB"){return "translate(0,"+(3*lineGap+DNBResLineStrength+KPEResLineStrength*2+SBBResLineStrength*2+ZDBResLineStrength)+")"}
-  })
-
-
-  let corpPerRels = d3.select("#relationsvis").append("g").attr("class", "corpPerRels")//.attr("transform", "translate(0,"+(-((lineGap*3)+DNBResLineStrength+KPEResLineStrength+SBBResLineStrength+ZDBResLineStrength)/2)+")")
-  let CompCorpLineStrength = edgesSizeScale(relationdata.filter(function(d){return d.year == relationsYearSelected && d.target == "CorpName" && d.type == "Comp"})[0].value)/2
-  let GNDCorpLineStrength = edgesSizeScale(relationdata.filter(function(d){return d.year == relationsYearSelected && d.target == "CorpName" && d.type == "GND"})[0].value)/2
-
-  corpPerRels.selectAll(".relationLine")
-    .data(relationdata.filter(function(d){return d.year == relationsYearSelected && d.target == "CorpName"}))
-    .join("line")
-    .classed("relationLine", true)
-    .attr("x1", d => PerNameCenter[0])
-    .attr("y1", d => PerNameCenter[1])
-    .attr("x2", function(d){return CorpNameCenter[0]})
-    .attr("y2", function(d){return CorpNameCenter[1]})
-    .attr("stroke", function(d){return colorScaleEdges(d.type)})
-    .attr("stroke-width",function(d){return edgesSizeScale(d.value)})
-    .attr("transform", function(d){
-
-        if(d.type == "Comp"){return "translate(0,"+(CompCorpLineStrength)+")"}
-            else if(d.type == "GND"){return "translate(0,"+(2*lineGap+2*CompCorpLineStrength+GNDCorpLineStrength)+")"}
-    })
-
-
-
-let otherRels = d3.select("#relationsvis").append("g").attr("class", "otherRels")
-
-otherRels.selectAll(".relationLine")
-  .data(relationdata.filter(function(d){return d.year == relationsYearSelected && d.target != "PerName" && d.target !="Resource" && d.target !="CorpName"}))
-  .join("line")
-  .classed("relationLine", true)
-  .attr("x1", d => PerNameCenter[0])
-  .attr("y1", d => PerNameCenter[1])
-  .attr("x2", function(d){
-    if(d.target == "GeoName"){return GeoNameCenter[0]}
-    else if(d.target == "MeetName"){return MeetNameCenter[0]}
-      else if(d.target == "UniTitle"){return UniTitleCenter[0]}
-  })
-  .attr("y2", function(d){
-    if(d.target == "GeoName"){return GeoNameCenter[1]}
-    else if(d.target == "MeetName"){return MeetNameCenter[1]}
-      else if(d.target == "UniTitle"){return UniTitleCenter[1]}
-  })
-  .attr("stroke", function(d){return colorScaleEdges(d.type)})
-  .attr("stroke-width",function(d){return edgesSizeScale(d.value)})
-  .attr("transform", function(d){return "translate(0,"+(edgesSizeScale(d.value))+")"})
-    // .style("stroke-dasharray", function() {
-    //           if (d.type == "Comp_SBB" || d.type == "Comp_KPE" || d.type == "Comp_DNB") {
-    //             return "40 5"
-    //           } else {
-    //             return null
-    //           }
-    //         })
-
-//});
-
-
-
-//PerName -- PerName Arcs
-
-let resPerPer= d3.select("#relationsvis").append("g").attr("class", "resPerPer")//.attr("transform", "translate(0,"+(-((lineGap*3)+DNBResLineStrength+KPEResLineStrength+SBBResLineStrength+ZDBResLineStrength)/2)+")")
-
-resPerPer.selectAll(".relationLine")
-  .data(relationdata.filter(function(d){return d.year == relationsYearSelected && d.target == "PerName"}))
-  .join("path")
-  .classed("relationLine", true)
-  .attr("d", function(d){
-    let y1 = PerNameCenter[1]
-    let x1 = PerNameCenter[0]-30
-    let CompLineStrength = edgesSizeScale(relationdata.filter(function(d){return d.year == relationsYearSelected && d.target == "PerName" && d.type == "Comp"})[0].value)/2
-
-    if(d.type == "Comp"){
-      return `M${x1},${y1} v ${Radius-20} c 0 60 60 60 60 0 v -${Radius-20}`
-    }else if(d.type =="GND"){
-    //  return `M${x1-CompLineStrength-4},${y1} v ${Radius-20+CompLineStrength+2} c 0 ${60+2*CompLineStrength+4} ${60+2*CompLineStrength+8} ${60+2*CompLineStrength+4}  ${60+2*CompLineStrength+8} 0 v -${Radius-20+CompLineStrength+2}`
-      return `M${x1-CompLineStrength-4},${y1} v ${Radius-20} c 0 ${60+2*CompLineStrength+4} ${60+2*CompLineStrength+8} ${60+2*CompLineStrength+4}  ${60+2*CompLineStrength+8} 0 v -${Radius-20}`
-    }
-  })
-  .attr("stroke-width", function(d){return edgesSizeScale(d.value)})
-  .attr("stroke", function(d){return colorScaleEdges(d.type)})
-  .style("fill", "none")
-
-
-///relations edges End
-
-function updateRelations(relationdata){
-relationsYearSelected = yearSelected
-
-  DNBResLineStrength = edgesSizeScale(relationdata.filter(function(d){return d.year == relationsYearSelected && d.target == "Resource" && d.type == "DNB"})[0].value)/2
-  KPEResLineStrength = edgesSizeScale(relationdata.filter(function(d){return d.year == relationsYearSelected && d.target == "Resource" && d.type == "KPE"})[0].value)/2
-  SBBResLineStrength = edgesSizeScale(relationdata.filter(function(d){return d.year == relationsYearSelected && d.target == "Resource" && d.type == "SBB"})[0].value)/2
-  ZDBResLineStrength = edgesSizeScale(relationdata.filter(function(d){return d.year == relationsYearSelected && d.target == "Resource" && d.type == "ZDB"})[0].value)/2
-  lineGap = 2
-  resPerRels = d3.select(".resPerRels").attr("transform", "translate(0,"+(-((lineGap*3)+DNBResLineStrength+KPEResLineStrength+SBBResLineStrength+ZDBResLineStrength)/2)+")")
-
-  resPerRels.selectAll(".relationLine")
-    .data(relationdata.filter(function(d){return d.year == relationsYearSelected && d.target == "Resource"}))
-    .transition()
-    .attr("x1", d => PerNameCenter[0])
-    .attr("y1", d => PerNameCenter[1])
-    .attr("x2", function(d){return ResourcesCenter[0]})
-    .attr("y2", function(d){return ResourcesCenter[1]})
-    .attr("stroke", function(d){return colorScaleEdges(d.type)})
-    .attr("stroke-width",function(d){return edgesSizeScale(d.value)})
-    .attr("transform", function(d){
-
-        if(d.type == "DNB"){return "translate(0,"+(0)+")"}
-            else if(d.type == "KPE"){return "translate(0,"+(lineGap+DNBResLineStrength+KPEResLineStrength)+")"}
-            else if(d.type == "SBB"){return "translate(0,"+(2*lineGap+DNBResLineStrength+KPEResLineStrength*2+SBBResLineStrength)+")"}
-            else if(d.type == "ZDB"){return "translate(0,"+(3*lineGap+DNBResLineStrength+KPEResLineStrength*2+SBBResLineStrength*2+ZDBResLineStrength)+")"}
-    })
-
-
-    resPerPer.selectAll(".relationLine")
-      .data(relationdata.filter(function(d){return d.year == relationsYearSelected && d.target == "PerName"}))
-      .transition()
-      .attr("d", function(d){
-        let y1 = PerNameCenter[1]
-        let x1 = PerNameCenter[0]-30
-        let CompLineStrength = edgesSizeScale(relationdata.filter(function(d){return d.year == relationsYearSelected && d.target == "PerName" && d.type == "Comp"})[0].value)/2
-
-        if(d.type == "Comp"){
-          return `M${x1},${y1} v ${Radius-20} c 0 60 60 60 60 0 v -${Radius-20}`
-        }else if(d.type =="GND"){
-        //  return `M${x1-CompLineStrength-4},${y1} v ${Radius-20+CompLineStrength+2} c 0 ${60+2*CompLineStrength+4} ${60+2*CompLineStrength+8} ${60+2*CompLineStrength+4}  ${60+2*CompLineStrength+8} 0 v -${Radius-20+CompLineStrength+2}`
-          return `M${x1-CompLineStrength-4},${y1} v ${Radius-20} c 0 ${60+2*CompLineStrength+4} ${60+2*CompLineStrength+8} ${60+2*CompLineStrength+4}  ${60+2*CompLineStrength+8} 0 v -${Radius-20}`
-        }
-      })
-      .attr("stroke-width", function(d){return edgesSizeScale(d.value)})
-      .attr("stroke", function(d){return colorScaleEdges(d.type)})
-      .style("fill", "none")
-
-
-      CompCorpLineStrength = edgesSizeScale(relationdata.filter(function(d){return d.year == relationsYearSelected && d.target == "CorpName" && d.type == "Comp"})[0].value)/2
-      GNDCorpLineStrength = edgesSizeScale(relationdata.filter(function(d){return d.year == relationsYearSelected && d.target == "CorpName" && d.type == "GND"})[0].value)/2
-
-      corpPerRels.selectAll(".relationLine")
-        .data(relationdata.filter(function(d){return d.year == relationsYearSelected && d.target == "CorpName"}))
-        .transition()
-        .attr("x1", d => PerNameCenter[0])
-        .attr("y1", d => PerNameCenter[1])
-        .attr("x2", function(d){return CorpNameCenter[0]})
-        .attr("y2", function(d){return CorpNameCenter[1]})
-        .attr("stroke", function(d){return colorScaleEdges(d.type)})
-        .attr("stroke-width",function(d){return edgesSizeScale(d.value)})
-        .attr("transform", function(d){
-
-            if(d.type == "Comp"){return "translate(0,"+(CompCorpLineStrength)+")"}
-                else if(d.type == "GND"){return "translate(0,"+(2*lineGap+2*CompCorpLineStrength+GNDCorpLineStrength)+")"}
-        })
-
-
-        otherRels.selectAll(".relationLine")
-          .data(relationdata.filter(function(d){return d.year == relationsYearSelected && d.target != "PerName" && d.target !="Resource" && d.target !="CorpName"}))
-          .transition()
+        resPerRels.selectAll(".relationLine")
+          .data(relationdata.filter(function(d) {
+            return d.year == relationsYearSelected && d.target == "Resource"
+          }))
+          .join("line")
+          .classed("relationLine", true)
           .attr("x1", d => PerNameCenter[0])
           .attr("y1", d => PerNameCenter[1])
-          .attr("x2", function(d){
-            if(d.target == "GeoName"){return GeoNameCenter[0]}
-            else if(d.target == "MeetName"){return MeetNameCenter[0]}
-              else if(d.target == "UniTitle"){return UniTitleCenter[0]}
+          .attr("x2", function(d) {
+            return ResourcesCenter[0]
           })
-          .attr("y2", function(d){
-            if(d.target == "GeoName"){return GeoNameCenter[1]}
-            else if(d.target == "MeetName"){return MeetNameCenter[1]}
-              else if(d.target == "UniTitle"){return UniTitleCenter[1]}
+          .attr("y2", function(d) {
+            return ResourcesCenter[1]
           })
-          .attr("stroke", function(d){return colorScaleEdges(d.type)})
-          .attr("stroke-width",function(d){return edgesSizeScale(d.value)})
-          .attr("transform", function(d){return "translate(0,"+(edgesSizeScale(d.value))+")"})
+          .attr("stroke", function(d) {
+            return colorScaleEdges(d.type)
+          })
+          .attr("stroke-width", function(d) {
+            return edgesSizeScale(d.value)
+          })
+          .attr("transform", function(d) {
 
-}
+            if (d.type == "DNB") {
+              return "translate(0," + (0) + ")"
+            } else if (d.type == "KPE") {
+              return "translate(0," + (lineGap + DNBResLineStrength + KPEResLineStrength) + ")"
+            } else if (d.type == "SBB") {
+              return "translate(0," + (2 * lineGap + DNBResLineStrength + KPEResLineStrength * 2 + SBBResLineStrength) + ")"
+            } else if (d.type == "ZDB") {
+              return "translate(0," + (3 * lineGap + DNBResLineStrength + KPEResLineStrength * 2 + SBBResLineStrength * 2 + ZDBResLineStrength) + ")"
+            }
+          })
+
+
+        let corpPerRels = d3.select("#relationsvis").append("g").attr("class", "corpPerRels") //.attr("transform", "translate(0,"+(-((lineGap*3)+DNBResLineStrength+KPEResLineStrength+SBBResLineStrength+ZDBResLineStrength)/2)+")")
+        let CompCorpLineStrength = edgesSizeScale(relationdata.filter(function(d) {
+          return d.year == relationsYearSelected && d.target == "CorpName" && d.type == "Comp"
+        })[0].value) / 2
+        let GNDCorpLineStrength = edgesSizeScale(relationdata.filter(function(d) {
+          return d.year == relationsYearSelected && d.target == "CorpName" && d.type == "GND"
+        })[0].value) / 2
+
+        corpPerRels.selectAll(".relationLine")
+          .data(relationdata.filter(function(d) {
+            return d.year == relationsYearSelected && d.target == "CorpName"
+          }))
+          .join("line")
+          .classed("relationLine", true)
+          .attr("x1", d => PerNameCenter[0])
+          .attr("y1", d => PerNameCenter[1])
+          .attr("x2", function(d) {
+            return CorpNameCenter[0]
+          })
+          .attr("y2", function(d) {
+            return CorpNameCenter[1]
+          })
+          .attr("stroke", function(d) {
+            return colorScaleEdges(d.type)
+          })
+          .attr("stroke-width", function(d) {
+            return edgesSizeScale(d.value)
+          })
+          .attr("transform", function(d) {
+
+            if (d.type == "Comp") {
+              return "translate(0," + (CompCorpLineStrength) + ")"
+            } else if (d.type == "GND") {
+              return "translate(0," + (2 * lineGap + 2 * CompCorpLineStrength + GNDCorpLineStrength) + ")"
+            }
+          })
+
+
+
+        let otherRels = d3.select("#relationsvis").append("g").attr("class", "otherRels")
+
+        otherRels.selectAll(".relationLine")
+          .data(relationdata.filter(function(d) {
+            return d.year == relationsYearSelected && d.target != "PerName" && d.target != "Resource" && d.target != "CorpName"
+          }))
+          .join("line")
+          .classed("relationLine", true)
+          .attr("x1", d => PerNameCenter[0])
+          .attr("y1", d => PerNameCenter[1])
+          .attr("x2", function(d) {
+            if (d.target == "GeoName") {
+              return GeoNameCenter[0]
+            } else if (d.target == "MeetName") {
+              return MeetNameCenter[0]
+            } else if (d.target == "UniTitle") {
+              return UniTitleCenter[0]
+            }
+          })
+          .attr("y2", function(d) {
+            if (d.target == "GeoName") {
+              return GeoNameCenter[1]
+            } else if (d.target == "MeetName") {
+              return MeetNameCenter[1]
+            } else if (d.target == "UniTitle") {
+              return UniTitleCenter[1]
+            }
+          })
+          .attr("stroke", function(d) {
+            return colorScaleEdges(d.type)
+          })
+          .attr("stroke-width", function(d) {
+            return edgesSizeScale(d.value)
+          })
+          .attr("transform", function(d) {
+            return "translate(0," + (edgesSizeScale(d.value)) + ")"
+          })
+
+
+        //PerName -- PerName Arcs
+
+        let resPerPer = d3.select("#relationsvis").append("g").attr("class", "resPerPer") //.attr("transform", "translate(0,"+(-((lineGap*3)+DNBResLineStrength+KPEResLineStrength+SBBResLineStrength+ZDBResLineStrength)/2)+")")
+
+        resPerPer.selectAll(".relationLine")
+          .data(relationdata.filter(function(d) {
+            return d.year == relationsYearSelected && d.target == "PerName"
+          }))
+          .join("path")
+          .classed("relationLine", true)
+          .attr("d", function(d) {
+            let y1 = PerNameCenter[1]
+            let x1 = PerNameCenter[0] - 30
+            let CompLineStrength = edgesSizeScale(relationdata.filter(function(d) {
+              return d.year == relationsYearSelected && d.target == "PerName" && d.type == "Comp"
+            })[0].value) / 2
+
+            if (d.type == "Comp") {
+              return `M${x1},${y1} v ${Radius-20} c 0 60 60 60 60 0 v -${Radius-20}`
+            } else if (d.type == "GND") {
+              return `M${x1-CompLineStrength-4},${y1} v ${Radius-20} c 0 ${60+2*CompLineStrength+4} ${60+2*CompLineStrength+8} ${60+2*CompLineStrength+4}  ${60+2*CompLineStrength+8} 0 v -${Radius-20}`
+            }
+          })
+          .attr("stroke-width", function(d) {
+            return edgesSizeScale(d.value)
+          })
+          .attr("stroke", function(d) {
+            return colorScaleEdges(d.type)
+          })
+          .style("fill", "none")
+
+
+        ///relations edges End
+
+        function updateRelations(relationdata) {
+          relationsYearSelected = yearSelected
+
+          DNBResLineStrength = edgesSizeScale(relationdata.filter(function(d) {
+            return d.year == relationsYearSelected && d.target == "Resource" && d.type == "DNB"
+          })[0].value) / 2
+          KPEResLineStrength = edgesSizeScale(relationdata.filter(function(d) {
+            return d.year == relationsYearSelected && d.target == "Resource" && d.type == "KPE"
+          })[0].value) / 2
+          SBBResLineStrength = edgesSizeScale(relationdata.filter(function(d) {
+            return d.year == relationsYearSelected && d.target == "Resource" && d.type == "SBB"
+          })[0].value) / 2
+          ZDBResLineStrength = edgesSizeScale(relationdata.filter(function(d) {
+            return d.year == relationsYearSelected && d.target == "Resource" && d.type == "ZDB"
+          })[0].value) / 2
+          lineGap = 2
+          resPerRels = d3.select(".resPerRels").attr("transform", "translate(0," + (-((lineGap * 3) + DNBResLineStrength + KPEResLineStrength + SBBResLineStrength + ZDBResLineStrength) / 2) + ")")
+
+          resPerRels.selectAll(".relationLine")
+            .data(relationdata.filter(function(d) {
+              return d.year == relationsYearSelected && d.target == "Resource"
+            }))
+            .transition()
+            .attr("x1", d => PerNameCenter[0])
+            .attr("y1", d => PerNameCenter[1])
+            .attr("x2", function(d) {
+              return ResourcesCenter[0]
+            })
+            .attr("y2", function(d) {
+              return ResourcesCenter[1]
+            })
+            .attr("stroke", function(d) {
+              return colorScaleEdges(d.type)
+            })
+            .attr("stroke-width", function(d) {
+              return edgesSizeScale(d.value)
+            })
+            .attr("transform", function(d) {
+
+              if (d.type == "DNB") {
+                return "translate(0," + (0) + ")"
+              } else if (d.type == "KPE") {
+                return "translate(0," + (lineGap + DNBResLineStrength + KPEResLineStrength) + ")"
+              } else if (d.type == "SBB") {
+                return "translate(0," + (2 * lineGap + DNBResLineStrength + KPEResLineStrength * 2 + SBBResLineStrength) + ")"
+              } else if (d.type == "ZDB") {
+                return "translate(0," + (3 * lineGap + DNBResLineStrength + KPEResLineStrength * 2 + SBBResLineStrength * 2 + ZDBResLineStrength) + ")"
+              }
+            })
+
+
+          resPerPer.selectAll(".relationLine")
+            .data(relationdata.filter(function(d) {
+              return d.year == relationsYearSelected && d.target == "PerName"
+            }))
+            .transition()
+            .attr("d", function(d) {
+              let y1 = PerNameCenter[1]
+              let x1 = PerNameCenter[0] - 30
+              let CompLineStrength = edgesSizeScale(relationdata.filter(function(d) {
+                return d.year == relationsYearSelected && d.target == "PerName" && d.type == "Comp"
+              })[0].value) / 2
+
+              if (d.type == "Comp") {
+                return `M${x1},${y1} v ${Radius-20} c 0 60 60 60 60 0 v -${Radius-20}`
+              } else if (d.type == "GND") {
+                return `M${x1-CompLineStrength-4},${y1} v ${Radius-20} c 0 ${60+2*CompLineStrength+4} ${60+2*CompLineStrength+8} ${60+2*CompLineStrength+4}  ${60+2*CompLineStrength+8} 0 v -${Radius-20}`
+              }
+            })
+            .attr("stroke-width", function(d) {
+              return edgesSizeScale(d.value)
+            })
+            .attr("stroke", function(d) {
+              return colorScaleEdges(d.type)
+            })
+            .style("fill", "none")
+
+
+          CompCorpLineStrength = edgesSizeScale(relationdata.filter(function(d) {
+            return d.year == relationsYearSelected && d.target == "CorpName" && d.type == "Comp"
+          })[0].value) / 2
+          GNDCorpLineStrength = edgesSizeScale(relationdata.filter(function(d) {
+            return d.year == relationsYearSelected && d.target == "CorpName" && d.type == "GND"
+          })[0].value) / 2
+
+          corpPerRels.selectAll(".relationLine")
+            .data(relationdata.filter(function(d) {
+              return d.year == relationsYearSelected && d.target == "CorpName"
+            }))
+            .transition()
+            .attr("x1", d => PerNameCenter[0])
+            .attr("y1", d => PerNameCenter[1])
+            .attr("x2", function(d) {
+              return CorpNameCenter[0]
+            })
+            .attr("y2", function(d) {
+              return CorpNameCenter[1]
+            })
+            .attr("stroke", function(d) {
+              return colorScaleEdges(d.type)
+            })
+            .attr("stroke-width", function(d) {
+              return edgesSizeScale(d.value)
+            })
+            .attr("transform", function(d) {
+
+              if (d.type == "Comp") {
+                return "translate(0," + (CompCorpLineStrength) + ")"
+              } else if (d.type == "GND") {
+                return "translate(0," + (2 * lineGap + 2 * CompCorpLineStrength + GNDCorpLineStrength) + ")"
+              }
+            })
+
+
+          otherRels.selectAll(".relationLine")
+            .data(relationdata.filter(function(d) {
+              return d.year == relationsYearSelected && d.target != "PerName" && d.target != "Resource" && d.target != "CorpName"
+            }))
+            .transition()
+            .attr("x1", d => PerNameCenter[0])
+            .attr("y1", d => PerNameCenter[1])
+            .attr("x2", function(d) {
+              if (d.target == "GeoName") {
+                return GeoNameCenter[0]
+              } else if (d.target == "MeetName") {
+                return MeetNameCenter[0]
+              } else if (d.target == "UniTitle") {
+                return UniTitleCenter[0]
+              }
+            })
+            .attr("y2", function(d) {
+              if (d.target == "GeoName") {
+                return GeoNameCenter[1]
+              } else if (d.target == "MeetName") {
+                return MeetNameCenter[1]
+              } else if (d.target == "UniTitle") {
+                return UniTitleCenter[1]
+              }
+            })
+            .attr("stroke", function(d) {
+              return colorScaleEdges(d.type)
+            })
+            .attr("stroke-width", function(d) {
+              return edgesSizeScale(d.value)
+            })
+            .attr("transform", function(d) {
+              return "translate(0," + (edgesSizeScale(d.value)) + ")"
+            })
+
+        }
 
 
 
@@ -1218,7 +3919,7 @@ relationsYearSelected = yearSelected
           selectionDataStateUni = selectionDataUni.sort((a, b) => d3.descending(a.value, b.value)).slice(0)
           selectionDataStateCorp = selectionDataCorp.sort((a, b) => d3.descending(a.value, b.value)).slice(0)
 
-      //    console.log(selectionData)
+          //    console.log(selectionData)
 
           selectionDataState.forEach(function(d, i) {
             totalValue += d.value
@@ -1343,7 +4044,7 @@ relationsYearSelected = yearSelected
           })
 
           initData(data, geodata, resdata, meetdata, unidata, corpdata);
-        //  initData(geodata);
+          //  initData(geodata);
 
 
           //simulation1 start
@@ -1362,7 +4063,7 @@ relationsYearSelected = yearSelected
               }
             })
 
-  if(totalValueGeo > 0){
+          if (totalValueGeo > 0) {
 
             SimulationGeo = d3.voronoiMapSimulation(selectionDataStateGeo.filter(function(d, i) {
                 return d.show == true
@@ -1378,83 +4079,83 @@ relationsYearSelected = yearSelected
                   updateTreemap(svg2id, GeoNameCenter, PolygonsGeo, totalValueGeo, RadiusGeo, "Geographika (")
                 }
               })
-  }
+          }
 
-if(totalValueRes > 0){
+          if (totalValueRes > 0) {
 
-              SimulationRes = d3.voronoiMapSimulation(selectionDataStateRes.filter(function(d, i) {
-                  return d.show == true
-                }))
-                .clip(CirclingPolygonRes)
-                .weight(function(d) {
-                  return d.value
-                })
-                .initialPosition(d3.voronoiMapInitialPositionPie().startAngle(-Math.PI * 3 / 5))
-                .on("tick", function() {
-                  PolygonsRes = SimulationRes.state().polygons;
-                  if (SimulationRes.state().ended == true) {
-                    updateTreemap(svg3id, ResourcesCenter, PolygonsRes, totalValueRes, RadiusRes, "Ressourcen (")
-                  }
-                })
-}
+            SimulationRes = d3.voronoiMapSimulation(selectionDataStateRes.filter(function(d, i) {
+                return d.show == true
+              }))
+              .clip(CirclingPolygonRes)
+              .weight(function(d) {
+                return d.value
+              })
+              .initialPosition(d3.voronoiMapInitialPositionPie().startAngle(-Math.PI * 3 / 5))
+              .on("tick", function() {
+                PolygonsRes = SimulationRes.state().polygons;
+                if (SimulationRes.state().ended == true) {
+                  updateTreemap(svg3id, ResourcesCenter, PolygonsRes, totalValueRes, RadiusRes, "Ressourcen (")
+                }
+              })
+          }
 
-if(totalValueMeet > 0){
+          if (totalValueMeet > 0) {
 
-  SimulationMeet = d3.voronoiMapSimulation(selectionDataStateMeet.filter(function(d, i) {
-      return d.show == true
-    }))
-    .clip(CirclingPolygonMeet)
-    .weight(function(d) {
-      return d.value
-    })
-    .initialPosition(d3.voronoiMapInitialPositionPie().startAngle(-Math.PI * 3 / 5))
-    .on("tick", function() {
-      PolygonsMeet = SimulationMeet.state().polygons;
-      if (SimulationMeet.state().ended == true) {
-        updateTreemap(svg4id, MeetNameCenter, PolygonsMeet, totalValueMeet, RadiusMeet, "Veranstaltungen (")
-      }
-    })
+            SimulationMeet = d3.voronoiMapSimulation(selectionDataStateMeet.filter(function(d, i) {
+                return d.show == true
+              }))
+              .clip(CirclingPolygonMeet)
+              .weight(function(d) {
+                return d.value
+              })
+              .initialPosition(d3.voronoiMapInitialPositionPie().startAngle(-Math.PI * 3 / 5))
+              .on("tick", function() {
+                PolygonsMeet = SimulationMeet.state().polygons;
+                if (SimulationMeet.state().ended == true) {
+                  updateTreemap(svg4id, MeetNameCenter, PolygonsMeet, totalValueMeet, RadiusMeet, "Veranstaltungen (")
+                }
+              })
 
-}
-
-
-if(totalValueUni > 0){
-                  SimulationUni = d3.voronoiMapSimulation(selectionDataStateUni.filter(function(d, i) {
-                      return d.show == true
-                    }))
-                    .clip(CirclingPolygonUni)
-                    .weight(function(d) {
-                      return d.value
-                    })
-                    .initialPosition(d3.voronoiMapInitialPositionPie().startAngle(-Math.PI * 3 / 5))
-                    .on("tick", function() {
-                      PolygonsUni = SimulationUni.state().polygons;
-                      if (SimulationUni.state().ended == true) {
-                        updateTreemap(svg5id, UniTitleCenter, PolygonsUni, totalValueUni, RadiusUni, "Werke (")
-                      }
-                    })
-}
+          }
 
 
+          if (totalValueUni > 0) {
+            SimulationUni = d3.voronoiMapSimulation(selectionDataStateUni.filter(function(d, i) {
+                return d.show == true
+              }))
+              .clip(CirclingPolygonUni)
+              .weight(function(d) {
+                return d.value
+              })
+              .initialPosition(d3.voronoiMapInitialPositionPie().startAngle(-Math.PI * 3 / 5))
+              .on("tick", function() {
+                PolygonsUni = SimulationUni.state().polygons;
+                if (SimulationUni.state().ended == true) {
+                  updateTreemap(svg5id, UniTitleCenter, PolygonsUni, totalValueUni, RadiusUni, "Werke (")
+                }
+              })
+          }
 
-if(totalValueCorp > 0){
-                  SimulationCorp = d3.voronoiMapSimulation(selectionDataStateCorp.filter(function(d, i) {
-                      return d.show == true
-                    }))
-                    .clip(CirclingPolygonCorp)
-                    .weight(function(d) {
-                      return d.value
-                    })
-                    .initialPosition(d3.voronoiMapInitialPositionPie().startAngle(-Math.PI * 3 / 5))
-                    .on("tick", function() {
-                      PolygonsCorp = SimulationCorp.state().polygons;
-                      if (SimulationCorp.state().ended == true) {
-                        updateTreemap(svg6id, CorpNameCenter, PolygonsCorp, totalValueCorp, RadiusCorp, "Körperschaften (")
-                      }
-                    })
-}
 
-            //simulation1 end
+
+          if (totalValueCorp > 0) {
+            SimulationCorp = d3.voronoiMapSimulation(selectionDataStateCorp.filter(function(d, i) {
+                return d.show == true
+              }))
+              .clip(CirclingPolygonCorp)
+              .weight(function(d) {
+                return d.value
+              })
+              .initialPosition(d3.voronoiMapInitialPositionPie().startAngle(-Math.PI * 3 / 5))
+              .on("tick", function() {
+                PolygonsCorp = SimulationCorp.state().polygons;
+                if (SimulationCorp.state().ended == true) {
+                  updateTreemap(svg6id, CorpNameCenter, PolygonsCorp, totalValueCorp, RadiusCorp, "Körperschaften (")
+                }
+              })
+          }
+
+          //simulation1 end
 
 
 
@@ -1473,7 +4174,7 @@ if(totalValueCorp > 0){
 
 
 
-  //simulation1 start
+        //simulation1 start
         Simulation = d3.voronoiMapSimulation(selectionDataState.filter(function(d, i) {
             return d.show == true
           }))
@@ -1489,83 +4190,83 @@ if(totalValueCorp > 0){
             }
           })
 
-          SimulationGeo = d3.voronoiMapSimulation(selectionDataStateGeo.filter(function(d, i) {
-              return d.show == true
-            }))
-            .clip(CirclingPolygonGeo)
-            .weight(function(d) {
-              return d.value
-            })
-            .initialPosition(d3.voronoiMapInitialPositionPie().startAngle(-Math.PI * 3 / 5))
-            .on("tick", function() {
-              PolygonsGeo = SimulationGeo.state().polygons;
-              if (SimulationGeo.state().ended == true) {
-                drawTreemap(svg2id, PolygonsGeo)
-              }
-            })
+        SimulationGeo = d3.voronoiMapSimulation(selectionDataStateGeo.filter(function(d, i) {
+            return d.show == true
+          }))
+          .clip(CirclingPolygonGeo)
+          .weight(function(d) {
+            return d.value
+          })
+          .initialPosition(d3.voronoiMapInitialPositionPie().startAngle(-Math.PI * 3 / 5))
+          .on("tick", function() {
+            PolygonsGeo = SimulationGeo.state().polygons;
+            if (SimulationGeo.state().ended == true) {
+              drawTreemap(svg2id, PolygonsGeo)
+            }
+          })
 
-            SimulationRes = d3.voronoiMapSimulation(selectionDataStateRes.filter(function(d, i) {
-                return d.show == true
-              }))
-              .clip(CirclingPolygonRes)
-              .weight(function(d) {
-                return d.value
-              })
-              .initialPosition(d3.voronoiMapInitialPositionPie().startAngle(-Math.PI * 3 / 5))
-              .on("tick", function() {
-                PolygonsRes = SimulationRes.state().polygons;
-                if (SimulationRes.state().ended == true) {
-                  drawTreemap(svg3id, PolygonsRes)
-                }
-              })
+        SimulationRes = d3.voronoiMapSimulation(selectionDataStateRes.filter(function(d, i) {
+            return d.show == true
+          }))
+          .clip(CirclingPolygonRes)
+          .weight(function(d) {
+            return d.value
+          })
+          .initialPosition(d3.voronoiMapInitialPositionPie().startAngle(-Math.PI * 3 / 5))
+          .on("tick", function() {
+            PolygonsRes = SimulationRes.state().polygons;
+            if (SimulationRes.state().ended == true) {
+              drawTreemap(svg3id, PolygonsRes)
+            }
+          })
 
-              SimulationMeet = d3.voronoiMapSimulation(selectionDataStateMeet.filter(function(d, i) {
-                  return d.show == true
-                }))
-                .clip(CirclingPolygonMeet)
-                .weight(function(d) {
-                  return d.value
-                })
-                .initialPosition(d3.voronoiMapInitialPositionPie().startAngle(-Math.PI * 3 / 5))
-                .on("tick", function() {
-                  PolygonsMeet = SimulationMeet.state().polygons;
-                  if (SimulationMeet.state().ended == true) {
-                    drawTreemap(svg4id, PolygonsMeet)
-                  }
-                })
-
-
-                SimulationUni = d3.voronoiMapSimulation(selectionDataStateUni.filter(function(d, i) {
-                    return d.show == true
-                  }))
-                  .clip(CirclingPolygonUni)
-                  .weight(function(d) {
-                    return d.value
-                  })
-                  .initialPosition(d3.voronoiMapInitialPositionPie().startAngle(-Math.PI * 3 / 5))
-                  .on("tick", function() {
-                    PolygonsUni = SimulationUni.state().polygons;
-                    if (SimulationUni.state().ended == true) {
-                      drawTreemap(svg5id, PolygonsUni)
-                    }
-                  })
+        SimulationMeet = d3.voronoiMapSimulation(selectionDataStateMeet.filter(function(d, i) {
+            return d.show == true
+          }))
+          .clip(CirclingPolygonMeet)
+          .weight(function(d) {
+            return d.value
+          })
+          .initialPosition(d3.voronoiMapInitialPositionPie().startAngle(-Math.PI * 3 / 5))
+          .on("tick", function() {
+            PolygonsMeet = SimulationMeet.state().polygons;
+            if (SimulationMeet.state().ended == true) {
+              drawTreemap(svg4id, PolygonsMeet)
+            }
+          })
 
 
-                  SimulationCorp = d3.voronoiMapSimulation(selectionDataStateCorp.filter(function(d, i) {
-                      return d.show == true
-                    }))
-                    .clip(CirclingPolygonCorp)
-                    .weight(function(d) {
-                      return d.value
-                    })
-                    .initialPosition(d3.voronoiMapInitialPositionPie().startAngle(-Math.PI * 3 / 5))
-                    .on("tick", function() {
-                      PolygonsCorp = SimulationCorp.state().polygons;
-                      if (SimulationCorp.state().ended == true) {
-                        drawTreemap(svg6id, PolygonsCorp)
-                      }
-                    })
-  //simulation1 end
+        SimulationUni = d3.voronoiMapSimulation(selectionDataStateUni.filter(function(d, i) {
+            return d.show == true
+          }))
+          .clip(CirclingPolygonUni)
+          .weight(function(d) {
+            return d.value
+          })
+          .initialPosition(d3.voronoiMapInitialPositionPie().startAngle(-Math.PI * 3 / 5))
+          .on("tick", function() {
+            PolygonsUni = SimulationUni.state().polygons;
+            if (SimulationUni.state().ended == true) {
+              drawTreemap(svg5id, PolygonsUni)
+            }
+          })
+
+
+        SimulationCorp = d3.voronoiMapSimulation(selectionDataStateCorp.filter(function(d, i) {
+            return d.show == true
+          }))
+          .clip(CirclingPolygonCorp)
+          .weight(function(d) {
+            return d.value
+          })
+          .initialPosition(d3.voronoiMapInitialPositionPie().startAngle(-Math.PI * 3 / 5))
+          .on("tick", function() {
+            PolygonsCorp = SimulationCorp.state().polygons;
+            if (SimulationCorp.state().ended == true) {
+              drawTreemap(svg6id, PolygonsCorp)
+            }
+          })
+        //simulation1 end
 
 
 
@@ -1574,276 +4275,263 @@ if(totalValueCorp > 0){
 
 
 
-      function initData(data, geodata, resdata, meetdata, unidata, corpdata) {
-        Radius = radiusScale(totalValue)
-        CirclingPolygon = computeCirclingPolygon(Radius);
+    function initData(data, geodata, resdata, meetdata, unidata, corpdata) {
+      Radius = radiusScale(totalValue)
+      CirclingPolygon = computeCirclingPolygon(Radius);
 
-        RadiusGeo = radiusScale(totalValueGeo)
-        CirclingPolygonGeo = computeCirclingPolygon(RadiusGeo);
+      RadiusGeo = radiusScale(totalValueGeo)
+      CirclingPolygonGeo = computeCirclingPolygon(RadiusGeo);
 
-        RadiusRes = radiusScale(totalValueRes)
-        CirclingPolygonRes = computeCirclingPolygon(RadiusRes);
+      RadiusRes = radiusScale(totalValueRes)
+      CirclingPolygonRes = computeCirclingPolygon(RadiusRes);
 
-        RadiusMeet = radiusScale(totalValueMeet)
-        CirclingPolygonMeet = computeCirclingPolygon(RadiusMeet);
+      RadiusMeet = radiusScale(totalValueMeet)
+      CirclingPolygonMeet = computeCirclingPolygon(RadiusMeet);
 
-        RadiusUni = radiusScale(totalValueUni)
-        CirclingPolygonUni = computeCirclingPolygon(RadiusUni);
+      RadiusUni = radiusScale(totalValueUni)
+      CirclingPolygonUni = computeCirclingPolygon(RadiusUni);
 
-        RadiusCorp = radiusScale(totalValueCorp)
-        CirclingPolygonCorp = computeCirclingPolygon(RadiusCorp);
+      RadiusCorp = radiusScale(totalValueCorp)
+      CirclingPolygonCorp = computeCirclingPolygon(RadiusCorp);
 
 
+    }
+
+    function computeCirclingPolygon(radius) {
+      var points = 60,
+        increment = _2PI / points,
+        circlingPolygon = [];
+
+      for (var a = 0, i = 0; i < points; i++, a += increment) {
+        circlingPolygon.push(
+          [radius * Math.cos(a), radius * Math.sin(a)]
+        )
       }
 
-      function computeCirclingPolygon(radius) {
-        var points = 60,
-          increment = _2PI / points,
-          circlingPolygon = [];
+      return circlingPolygon;
+    };
 
-        for (var a = 0, i = 0; i < points; i++, a += increment) {
-          circlingPolygon.push(
-            [radius * Math.cos(a), radius * Math.sin(a)]
-          )
-        }
-
-        return circlingPolygon;
-      };
-
-      function initLayout(svgid, TreemapCenter, totalValue, Radius, title, type) {
+    function initLayout(svgid, TreemapCenter, totalValue, Radius, title, type) {
 
       let svgG = d3.select(svgid)
 
       let drawingArea = svgG.append("g")
-          .classed("drawingArea", true)
-          .attr("transform", "translate(" + [margin.left, margin.top] + ")");
+        .classed("drawingArea", true)
+        .attr("transform", "translate(" + [marginOverview.left, marginOverview.top] + ")");
 
       let categoryContainer = drawingArea.append("g")
-          .classed("container", true)
-          .attr("transform", "translate(" + TreemapCenter + ")");
+        .classed("container", true)
+        .attr("transform", "translate(" + TreemapCenter + ")");
 
-          categoryContainer.append("text")
-            .classed("labelbg", true)
-            .attr("transform", "translate(0," + (-Radius - 6) + ")")
-            .text(title + Number(totalValue).toLocaleString()  + ")")
-            .append("tspan")
-            .text(" ▼")
-            .style("font-size", 7);
-
-
-        categoryContainer.append("text")
-          .classed("label", true)
-          .style("cursor", "pointer")
-          .on("click", function(){
-            createTopList(type)
-          })
-          .attr("transform", "translate(0," + (-Radius - 6) + ")")
-          .text(title + Number(totalValue).toLocaleString()  + ")")
-          .append("tspan")
-          .text(" ▼")
-          .style("font-size", 7)
-
-        //    .text(title + Number(totalValue).toLocaleString()  + ")");
+      categoryContainer.append("text")
+        .classed("labelbg", true)
+        .attr("transform", "translate(0," + (-Radius - 6) + ")")
+        .text(title + Number(totalValue).toLocaleString() + ")")
+        .append("tspan")
+        .text(" ▼")
+        .style("font-size", 7);
 
 
-        categoryContainer.append("g")
-          .classed('whitetreebg', true)
-          .append("circle")
-          .attr("cx", 0)
-          .attr("cy", 0)
-          .attr("r", Radius+3)
-          .attr("fill", "#fafafa");
+      categoryContainer.append("text")
+        .classed("label", true)
+        .style("cursor", "pointer")
+        .on("click", function() {
+          createTopList(type)
+        })
+        .attr("transform", "translate(0," + (-Radius - 6) + ")")
+        .text(title + Number(totalValue).toLocaleString() + ")")
+        .append("tspan")
+        .text(" ▼")
+        .style("font-size", 7)
 
-        categoryContainer.append("g")
-          .classed('cells', true);
+      //    .text(title + Number(totalValue).toLocaleString()  + ")");
 
 
+      categoryContainer.append("g")
+        .classed('whitetreebg', true)
+        .append("circle")
+        .attr("cx", 0)
+        .attr("cy", 0)
+        .attr("r", Radius + 3)
+        .attr("fill", "#fafafa");
 
-      }
+      categoryContainer.append("g")
+        .classed('cells', true);
 
 
 
-      function updateTreemap(svgid, TreemapCenter, polygons, totalValue, Radius, title) {
-        let container
-      //  let polygons
-
-
-        //container = categoryContainer;
-      //  polygons = Polygons;
-      //  costAccessor = valueAccessor;
+    }
 
 
 
-        d3.select(svgid).select(".drawingArea")
-          .transition()
-          .attr("transform", "translate(" + [margin.left, margin.top] + ")");
+    function updateTreemap(svgid, TreemapCenter, polygons, totalValue, Radius, title) {
+      let container
 
-        d3.select(svgid).select(".container")
-          .transition()
-          .attr("transform", "translate(" + TreemapCenter + ")");
+      d3.select(svgid).select(".drawingArea")
+        .transition()
+        .attr("transform", "translate(" + [marginOverview.left, marginOverview.top] + ")");
 
-          d3.select(svgid).select(".labelbg")
-            .transition()
-            .attr("transform", "translate(0," + (-Radius - 6) + ")")
+      d3.select(svgid).select(".container")
+        .transition()
+        .attr("transform", "translate(" + TreemapCenter + ")");
 
-
-            d3.select(svgid).select(".labelbg")
-            .text(title + Number(totalValue).toLocaleString()  + ")")
-            .append("tspan")
-            .text(" ▼")
-            .style("font-size", 7);
+      d3.select(svgid).select(".labelbg")
+        .transition()
+        .attr("transform", "translate(0," + (-Radius - 6) + ")")
 
 
-        d3.select(svgid).select(".label")
-          .transition()
-          .attr("transform", "translate(0," + (-Radius - 6) + ")")
+      d3.select(svgid).select(".labelbg")
+        .text(title + Number(totalValue).toLocaleString() + ")")
+        .append("tspan")
+        .text(" ▼")
+        .style("font-size", 7);
 
 
-          d3.select(svgid).select(".label")
-          .text(title + Number(totalValue).toLocaleString()  + ")")
-          .append("tspan")
-          .text(" ▼")
-          .style("font-size", 7);
-
-        d3.select(svgid).select(".whitetreebg").select("circle")
-            .transition()
-            .attr("r", Radius+3)
+      d3.select(svgid).select(".label")
+        .transition()
+        .attr("transform", "translate(0," + (-Radius - 6) + ")")
 
 
-        var cells = d3.select(svgid).select(".cells")
-          .selectAll(".cell")
-          .data(polygons);
+      d3.select(svgid).select(".label")
+        .text(title + Number(totalValue).toLocaleString() + ")")
+        .append("tspan")
+        .text(" ▼")
+        .style("font-size", 7);
 
-        cells.join("path")
-          .classed("cell", true)
-          .merge(cells)
-          //.transition()
-          //.attr("filter", "url(#inset-shadow)")
-          .transition()
-          .attr("d", function(d) {
-            return "M" + d.join(",") + "z";
-          })
-          .style("fill", function(d) {
-            if (d.site.originalObject.data.originalData.entityName == "Sonstige") {
-              return "white"
-            }else{
-              return colorScale(d.site.originalObject.data.originalData.entityName)
-            }
-            //		return d.site.originalObject.data.originalData.color;
-          })
-
-        d3.select(svgid).selectAll(".cell").on("mouseover", function(d, i) {
-            div.select("p")
-              .text(d.site.originalObject.data.originalData.entityName + ": " + d.site.originalObject.data.originalData.value)
-              .style("font-weight", "bold")
-
-            div.style("opacity", .9)
-
-          })
-          .on("mousemove", function(d, i) {
-
-            div
-              .style("left", (d3.event.pageX + 5) + "px")
-              .style("top", (d3.event.pageY - 5) + "px");
-          })
-          .on("mouseout", function(d) {
-            d3.selectAll(".link").style("opacity", 0.2)
-
-            div.style("opacity", 0);
-          });
+      d3.select(svgid).select(".whitetreebg").select("circle")
+        .transition()
+        .attr("r", Radius + 3)
 
 
+      var cells = d3.select(svgid).select(".cells")
+        .selectAll(".cell")
+        .data(polygons);
 
-      }
+      cells.join("path")
+        .classed("cell", true)
+        .merge(cells)
+        .transition()
+        .attr("d", function(d) {
+          return "M" + d.join(",") + "z";
+        })
+        .style("fill", function(d) {
+          if (d.site.originalObject.data.originalData.entityName == "Sonstige") {
+            return "white"
+          } else {
+            return colorScale(d.site.originalObject.data.originalData.entityName)
+          }
+        })
+
+      d3.select(svgid).selectAll(".cell").on("mouseover", function(d, i) {
+          div.select("p")
+            .text(d.site.originalObject.data.originalData.entityName + ": " + d.site.originalObject.data.originalData.value)
+            .style("font-weight", "bold")
+
+          div.style("opacity", .9)
+
+        })
+        .on("mousemove", function(d, i) {
+
+          div
+            .style("left", (d3.event.pageX + 5) + "px")
+            .style("top", (d3.event.pageY - 5) + "px");
+        })
+        .on("mouseout", function(d) {
+          d3.selectAll(".link").style("opacity", 0.2)
+
+          div.style("opacity", 0);
+        });
+
+
+
+    }
 
 
 
 
 
-      function drawTreemap(svgid, polygons) {
-        let container
-      //  let polygons
+    function drawTreemap(svgid, polygons) {
+      let container
 
-        // container = categoryContainer;
-    //    polygons = Polygons;
+      var cells = d3.select(svgid).select(".cells")
+        .selectAll(".cell")
+        .data(polygons);
 
-        var cells = d3.select(svgid).select(".cells")
-          .selectAll(".cell")
-          .data(polygons);
+      cells.enter()
+        .append("path")
+        .classed("cell", true)
+        .merge(cells)
+        .attr("d", function(d) {
+          return "M" + d.join(",") + "z";
+        })
+        .style("fill", function(d) {
+          if (d.site.originalObject.data.originalData.entityName == "Sonstige") {
+            return "white"
+          } else {
+            return colorScale(d.site.originalObject.data.originalData.entityName)
+          }
+        })
+        .on("mouseover", function(d, i) {
+          div.select("p")
+            .text(d.site.originalObject.data.originalData.entityName + ": " + d.site.originalObject.data.originalData.value)
+            .style("font-weight", "bold")
 
-        cells.enter()
-          .append("path")
-          .classed("cell", true)
-          .merge(cells)
-          //  .attr("filter", "url(#inset-shadow)")
-          .attr("d", function(d) {
-            return "M" + d.join(",") + "z";
-          })
-          .style("fill", function(d) {
-            if (d.site.originalObject.data.originalData.entityName == "Sonstige") {
-              return "white"
-            }else{
-              return colorScale(d.site.originalObject.data.originalData.entityName)
-            }
-            //		return d.site.originalObject.data.originalData.color;
-          })
-          .on("mouseover", function(d, i) {
-            div.select("p")
-              .text(d.site.originalObject.data.originalData.entityName + ": " + d.site.originalObject.data.originalData.value)
-              .style("font-weight", "bold")
+          div.style("opacity", .9)
 
-            div.style("opacity", .9)
+        })
+        .on("mousemove", function(d, i) {
 
-          })
-          .on("mousemove", function(d, i) {
+          div
+            .style("left", (d3.event.pageX + 5) + "px")
+            .style("top", (d3.event.pageY - 5) + "px");
+        })
+        .on("mouseout", function(d) {
+          d3.selectAll(".link").style("opacity", 0.2)
 
-            div
-              .style("left", (d3.event.pageX + 5) + "px")
-              .style("top", (d3.event.pageY - 5) + "px");
-          })
-          .on("mouseout", function(d) {
-            d3.selectAll(".link").style("opacity", 0.2)
-
-            div.style("opacity", 0);
-          });
+          div.style("opacity", 0);
+        });
 
 
 
-      }
+    }
 
 
-      function createTopList(type){
-        d3.selectAll(".toplistDiv").remove()
-        d3.select("body").append("div").classed("toplistDiv", true)
-        d3.select(".toplistDiv").append("input").classed("toplistsearch", true).attr("type", "text").attr("placeholder", "Liste durchsuchen")
-        .on("input", function(){
+    function createTopList(type) {
+      d3.selectAll(".toplistDiv").remove()
+      d3.select("body").append("div").classed("toplistDiv", true)
+      d3.select(".toplistDiv").append("input").classed("toplistsearch", true).attr("type", "text").attr("placeholder", "Liste durchsuchen")
+        .on("input", function() {
           let inputThis = this.value.toLowerCase()
 
-            d3.selectAll(".toplistentries").style("display", function(d){
-              if(d.entityName.toLowerCase().includes(inputThis)){
-                return "block"
-              }else{return "none"}
-            })
+          d3.selectAll(".toplistentries").style("display", function(d) {
+            if (d.entityName.toLowerCase().includes(inputThis)) {
+              return "block"
+            } else {
+              return "none"
+            }
+          })
 
         })
 
-        d3.select(".toplistDiv").append("p").attr("class", "toplistCross").text("✕").on("click", function(){d3.selectAll(".toplistDiv").remove()})
+      d3.select(".toplistDiv").append("p").attr("class", "toplistCross").text("✕").on("click", function() {
+        d3.selectAll(".toplistDiv").remove()
+      })
 
-        d3.select(".toplistDiv").append("div").classed("toplisttext", true)
+      d3.select(".toplistDiv").append("div").classed("toplisttext", true)
 
-        d3.select(".toplisttext").selectAll(".toplistentries")
-        .data(function(){
-          if(type == "PerName"){
+      d3.select(".toplisttext").selectAll(".toplistentries")
+        .data(function() {
+          if (type == "PerName") {
             return selectionData
-          }else if(type == "GeoName"){
+          } else if (type == "GeoName") {
             return selectionDataGeo
-          }else if(type == "Resources"){
+          } else if (type == "Resources") {
             return selectionDataRes
-          }else if(type == "MeetName"){
+          } else if (type == "MeetName") {
             return selectionDataMeet
-          }else if(type == "UniTitle"){
+          } else if (type == "UniTitle") {
             return selectionDataStateUni
-          }else if(type == "CorpName"){
+          } else if (type == "CorpName") {
             return selectionDataCorp
           }
 
@@ -1851,14 +4539,17 @@ if(totalValueCorp > 0){
         })
         .join("p")
         .classed("toplistentries", true)
-        .text(function(d){return d.entityName + " (" + d.value + ")"})
+        .text(function(d) {
+          return d.entityName + " (" + d.value + ")"
+        })
 
-        }
-// }
-//
-// voronoiAll()
+    }
 
+    d3.select(window).on('resize', resizeTimeline)
 
+    function resizeTimeline() {
+
+    }
   </script>
 </body>
 

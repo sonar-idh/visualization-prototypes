@@ -607,6 +607,7 @@ font-weight: bold;
     }
 
     #metrics-table td{
+    padding:0;
     font-weight: bold;
     border: none;
     }
@@ -615,6 +616,20 @@ font-weight: bold;
       vertical-align: top;
 height: 30px;
     }
+
+
+  #backToOverview{
+    padding:1;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      border: solid #bdbdbd;
+      border-width: 1px;
+    }
+
+    .info h1{
+      margin-bottom: 5px;
+    }
+
   </style>
 </head>
 
@@ -678,7 +693,7 @@ height: 30px;
   </section>
 
 <section id="graph-info">
-  <p id="backToOverview">Zurück zur Gesamtübersicht</p>
+  <button id="backToOverview" onclick="backToOverview();"><i class="material-icons" style="font-size: 11px">arrow_back</i>Zurück zur Übersicht</button>
 </section>
   <section id="graph-metrics">
     <table id="metrics-table">
@@ -861,6 +876,19 @@ height: 30px;
     const neo4jLogin = 'sonar';
     const neo4jPassword = 'sonar2021';
 
+    function backToOverview(){
+      mode = "overview"
+      d3.select("#svg").style("display", "block")
+      d3.select("#add_search").style("opacity", 1)
+      d3.select("#intro-text").style("display", "block")
+      d3.select("#graph-info").style("display", "none")
+      d3.select("#filterLists").style("display", "none")
+      d3.select("#graph-metrics").style("display", "none")
+      d3.select("#graph").style("display", "none")
+      d3.select("#overlay").style("display", "none")
+      d3.select(".timelinebrush").style("display", function(){if (mode == "overview"){return "none"}else{return "block"}})
+    }
+
     function setupNeo4jLoginForAjax(login, passwd) {
       $.ajaxSetup({
         contentType: 'application/json',
@@ -897,6 +925,7 @@ height: 30px;
       d3.select(".cypher-in").attr("value", hashId)
       post_cypherquery('execute')
     }
+
 
 
     function post_cypherquery(type, id) {

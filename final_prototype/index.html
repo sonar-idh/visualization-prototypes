@@ -451,6 +451,36 @@ font-weight: bold;
        box-shadow: 3px 3px 5px rgba(0,0,0,0.26);
      }
 
+     #filterLists {
+       background-color: white;
+       margin: 0px;
+       font-size: 0.8em;
+       position: fixed;
+       border-width: 1px;
+       border-color: black;
+       border-radius: 8px;
+       margin: 10px;
+       top: 0;
+       right: 0;
+       width: 200px;
+       height: calc(75% - 40px);
+       text-align: left;
+       padding: 10px;
+       box-shadow: 3px 3px 5px rgba(0,0,0,0.26);
+     }
+
+  #filterlistentries{
+    overflow-y: auto;
+    height: calc(100% - 65px);
+  }
+
+     .filterlistsearch {
+       background-color: none;
+       width: 190px;
+       margin-top: 5px;
+     }
+
+
      #graph {
        position: fixed;
        left: 0;
@@ -534,6 +564,43 @@ font-weight: bold;
        display:none;
      }
 
+     #filterLists h1{
+       margin:0;
+       margin-left:3px;
+       font-size: 14px;
+     }
+
+     .filterlisttr td{
+       vertical-align: top;
+     }
+
+
+     #filter-select-dropdown{
+       display: inline-block;
+       position: relative;
+       padding:0;
+       margin:0;
+       background-color: white;
+       width: 100%;
+       border-width: 0px;
+       font-size: 12px;
+       font-weight: bold;
+       vertical-align: middle;
+       text-align: center;
+     }
+
+     .filtertableCount{
+       text-align: right;
+     }
+
+     .filterlisttr{
+       width: 100%;
+     }
+
+     /* .timelinebrush{
+       display:none;
+     } */
+
   </style>
 </head>
 
@@ -541,6 +608,24 @@ font-weight: bold;
   <svg id="overlay"></svg>
   <svg id="graph"></svg>
   <div id="statsDiv" style="display:none"></div>
+  <div id="filterLists" style="display:none;">
+<h1>FILTER</h1>
+<select name="search_category" id="filter-select-dropdown" onchange="listDropdownChange()">
+  <option value="PerName">Personen</option>
+  <option value="CorpName">Körperschaften</option>
+  <option value="TopicTerm">Sachbegriffe</option>
+  <option value="MeetName">Konferenzen</option>
+  <option value="Resource">Ressourcen</option>
+  <option value="UniTitle">Werke</option>
+  <option value="GeoName">Geografika</option>
+  <option value="SourceType">Beziehungstypen</option>
+  <option value="TypeAddInfo">Beziehungs-Zusatzangaben</option>
+</select>
+<input type="text" placeholder="Liste durchsuchen" class="filterlistsearch"></input>
+<div id="filterlistentries">
+<table id="filterlisttable"></table>
+</div>
+  </div>
 
   <svg id="svg">
     <g id="allvisg">
@@ -598,22 +683,6 @@ arrow_back_ios
 
 
 
-  <div id="perNameListDiv" style="display:none">
-    <form>
-      <select name="listDropdown" id="listDropdown" onchange="listDropdownChange()">
-        <option value="PerName">Personen</option>
-        <option value="CorpName">Körperschaften</option>
-        <option value="TopicTerm">Sachbegriffe</option>
-        <option value="MeetName">Konferenzen</option>
-        <option value="Resource">Ressourcen</option>
-        <option value="UniTitle">Werke</option>
-        <option value="GeoName">Geografika</option>
-        <option value="SourceType">Beziehungstypen</option>
-        <option value="TypeAddInfo">Beziehungs-Zusatzangaben</option>
-        <!-- <option value="TempValidity">Beziehungs-Zeitangaben</option> -->
-      </select>
-    </form>
-  </div>
 
 
 
@@ -664,10 +733,113 @@ arrow_back_ios
     let windowWidth = window.innerWidth - 2 * margin
     let windowHeight = window.innerHeight - 2 * margin
     let timelineHeight = 0.25 * windowHeight
+    let mode = "overview"
+
 
     let timelineInterval = [1300, 2000]
-    console.log(timelineInterval)
+    let timelineMaxCount
+    let timelineMaxResourceCount
+    let timelineMaxEdgesCount
 
+    let timelineScale = d3.scaleLinear()
+      .domain(timelineInterval)
+      .range([0, windowWidth]);
+
+    let timelineYScale = d3.scaleLinear()
+      .domain([0, 13000000])
+      .range([timelineHeight, 0])
+
+      let areaGraphRelationAll = d3.area()
+        .x(function(d, i) {
+          return timelineScale(d.date);
+        })
+        .y0(function(d) {
+          return timelineYScale(0)
+        })
+        .y1(function(d) {
+          return timelineYScale(d.countPerson)
+        })
+        .curve(d3.curveBasis);
+
+
+        let areaGND = d3.area()
+          .x(function(d, i) {
+            return timelineScale(d.year);
+          })
+          .y0(function(d) {
+            return timelineYScale(0)
+          })
+          .y1(function(d) {
+            return timelineYScale(d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+          })
+          .curve(d3.curveBasis);
+
+        let areaKPE = d3.area()
+          .x(function(d, i) {
+            return timelineScale(d.year);
+          })
+          .y0(function(d) {
+            return timelineYScale(d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+          })
+          .y1(function(d) {
+            return timelineYScale(d.ResPer_KPE + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+          })
+          .curve(d3.curveBasis);
+
+        let areaDNB = d3.area()
+          .x(function(d, i) {
+            return timelineScale(d.year);
+          })
+          .y0(function(d) {
+            return timelineYScale(d.ResPer_KPE + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+          })
+          .y1(function(d) {
+            return timelineYScale(d.ResPer_DNB + d.ResPer_KPE + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+          })
+          .curve(d3.curveBasis);
+
+        let areaSBB = d3.area()
+          .x(function(d, i) {
+            return timelineScale(d.year);
+          })
+          .y0(function(d) {
+            return timelineYScale(d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+          })
+          .y1(function(d) {
+            return timelineYScale(d.ResPer_SBB + d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+          })
+          .curve(d3.curveBasis);
+
+
+        let areaZDB = d3.area()
+          .x(function(d, i) {
+            return timelineScale(d.year);
+          })
+          .y0(function(d) {
+            return timelineYScale(d.ResPer_SBB + d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+          })
+          .y1(function(d) {
+            return timelineYScale(d.ResPer_ZDB + d.ResPer_SBB + d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+          })
+          .curve(d3.curveBasis);
+
+        let areaComp = d3.area()
+          .x(function(d, i) {
+            return timelineScale(d.year);
+          })
+          .y0(function(d) {
+            return timelineYScale(d.ResPer_ZDB + d.ResPer_SBB + d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+          })
+          .y1(function(d) {
+            return timelineYScale(d.PerPer_Comp + d.CorpPer_Comp + d.ResPer_ZDB + d.ResPer_SBB + d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+          })
+          .curve(d3.curveBasis);
+
+          let brushTimelineX = d3.brushX()
+              .extent([
+                [0, 0],
+                [windowWidth,timelineHeight]
+              ])
 
     const neo4jLogin = 'sonar';
     const neo4jPassword = 'sonar2021';
@@ -711,10 +883,12 @@ arrow_back_ios
 
 
     function post_cypherquery(type, id) {
+      mode = "graph"
       d3.select("#svg").style("display", "none")
       d3.select("#add_search").style("opacity", 1)
       d3.select("#intro-text").style("display", "none")
       d3.select("#graph-info").style("display", "block")
+      d3.select("#filterLists").style("display", "block")
       d3.select("#graph-metrics").style("display", "block")
       d3.select("#graph").style("display", "block")
       d3.select("#overlay").style("display", "block")
@@ -1644,12 +1818,71 @@ arrow_back_ios
 
 
     function listDropdownChange() {
-      let type = $('#listDropdown').val()
+      let type = $('#filter-select-dropdown').val()
+
+      d3.select(".filterlistsearch").on("input", function() {
+        let filterListinput = this.value.toLowerCase()
+
+        d3.selectAll(".filterlisttr").style("display", function(d) {
+          if (d.Name.toLowerCase().includes(filterListinput)) {
+            return "table-row"
+          } else {
+            return "none"
+          }
+        })
+
+      })
 
       if (type != "SourceType" && type != "TypeAddInfo" && type != "TempValidity") {
 
+     let filtertablerow = d3.select("#filterlisttable")
+        .selectAll("tr")
+        .data(graph.nodes.filter(function(d, i) {
+          return d.Label == type
+        }).sort(function(a, b) {
+          return d3.descending(a.connectivityClean ? a.connectivityClean : a.connectivity, b.connectivityClean ? b.connectivityClean : b.connectivity)
+        }))
+        .join("tr")
+        .attr("class", "filterlisttr")
+        .on("click", function(d, i) {
+          d3.select("#details").style("display", "none").selectAll("p").remove()
+          d3.selectAll(".filterCross").remove()
 
-        d3.select("#perNameListDiv")
+          detailview = true;
+          d3.selectAll(".filterlisttr").selectAll("td").style("font-weight", "normal")
+          d3.selectAll(".filtertableicon").text("+")
+
+          d3.select(this).selectAll("td").style("font-weight", "bold")
+          .on("click", function(d, i) {
+            d3.event.stopPropagation()
+            d3.selectAll(".filtertableicon").text("+");
+            d3.select("#details").style("display", "none").selectAll("p").remove()
+            detailview = false;
+            mouseOut(d, i)
+          })
+
+          d3.select(this).selectAll(".filtertableicon").text("✕")
+
+          mouseClick(d, i)
+        })
+
+      filtertablerow.selectAll("td").remove()
+      let filtertableicons = filtertablerow.append("td").classed("filtertableicon", true).text("+")
+
+      let filtertablename = filtertablerow.append("td").classed("filtertablename", true).text(function(d, i) {return d.Name})
+
+
+      let filtertableCount = filtertablerow.append("td").classed("filtertableCount", true).text("10").text(function(d, i) {
+                  if (d.Label == "PerName" || d.Label == "CorpName") {
+                    return  d.connectivityClean
+                  } else {
+                    return d.connectivity
+                  }
+                })
+
+
+
+        d3.select("#filterListsxyc")
           .selectAll("p")
           .data(graph.nodes.filter(function(d, i) {
             return d.Label == type
@@ -1697,7 +1930,7 @@ arrow_back_ios
           }));
 
 
-        d3.select("#perNameListDiv")
+        d3.select("#filterLists")
           .selectAll("p")
           .data(linkSourceTypeCount.sort((a, b) => d3.descending(a.value, b.value)).filter(function(d) {
             return d.key != "undefined"
@@ -1783,7 +2016,7 @@ arrow_back_ios
           }));
 
 
-        d3.select("#perNameListDiv")
+        d3.select("#filterLists")
           .selectAll("p")
           .data(linkTypeAddInfoCount.sort((a, b) => d3.descending(a.value, b.value)).filter(function(d) {
             return d.key != "undefined"
@@ -1866,7 +2099,7 @@ arrow_back_ios
           .entries(links);
 
 
-        d3.select("#perNameListDiv")
+        d3.select("#filterLists")
           .selectAll("p")
           .data(linkTempValidityCount.sort((a, b) => d3.descending(a.value, b.value)))
           .join("p")
@@ -2215,7 +2448,6 @@ arrow_back_ios
       // d3.select("#keywordListDiv").selectAll("p").remove()
       // d3.select("#geoListDiv").selectAll("p").remove()
       // d3.select("#perNameListDiv").selectAll("p").remove()
-      d3.select("#timelineSVGNeu").selectAll("g").remove()
 
 
       listDropdownChange()
@@ -2635,9 +2867,9 @@ console.log(maxValueinNodes)
         timelineCountEdgeseArray.push(d.countEdge)
       })
 
-      let timelineMaxCount = d3.max(timelineCountArray)
-      let timelineMaxResourceCount = d3.max(timelineCountResourceArray)
-        let timelineMaxEdgesCount = d3.max(timelineCountEdgeseArray)
+      timelineMaxCount = d3.max(timelineCountArray)
+      timelineMaxResourceCount = d3.max(timelineCountResourceArray)
+      timelineMaxEdgesCount = d3.max(timelineCountEdgeseArray)
 
 
 
@@ -2656,7 +2888,6 @@ console.log(maxValueinNodes)
       let timelineXScale = d3.scaleLinear()
         .domain([0, timelineMaxCount])
         .range([0, 75])
-
 
 
 
@@ -2680,7 +2911,7 @@ console.log(maxValueinNodes)
             .domain([0, timelineMaxCount+20])
             .range([timelineHeight, 0])
 
-          let areaGraphRelationAll = d3.area()
+          areaGraphRelationAll = d3.area()
             .x(function(d, i) {
               return timelineScale(d.date);
             })
@@ -2701,6 +2932,7 @@ console.log(maxValueinNodes)
               .style("opacity", 1)
               .style("stroke", "white")
               .style("stroke-width", 1)
+              .attr("class", "timelineareaAllRelations")
 
           ////////////
           //////new timeline update Ende
@@ -2966,6 +3198,7 @@ console.log(maxValueinNodes)
          d3.select("#graph").transition().duration(750).call(zoom.transform, d3.zoomIdentity)
         // d3.selectAll(".topicterm,.geoname").classed("topicGeoNotDisplayed", false)
         d3.select("#closedetails").style("display", "none")
+
         d3.selectAll(".filterCross").remove()
         d3.selectAll(".nodes").classed("filteredIn", true).classed("filteredOut", false).classed("notedgerelevant", false)
         //  d3.selectAll(".label").style("font-size", "4px").style("display", function(d,i){if(d.connectivity <20 || d.Label != "PerName" && d.Label != "CorpName"){return "none"}})
@@ -3076,8 +3309,8 @@ console.log(maxValueinNodes)
 
 
     const timelineVis = d3.select("#timelineSVG")
-      .attr("width", "100%")
-      .attr("height", "100%")
+       .attr("width", "100%")
+       .attr("height", "100%")
 
 
 
@@ -3293,20 +3526,16 @@ console.log(maxValueinNodes)
 
 
         /////timelineStart
-        let timelineScale = d3.scaleLinear()
+        timelineScale = d3.scaleLinear()
           .domain(timelineInterval)
           .range([0, windowWidth]);
 
-        let timelineYScale = d3.scaleLinear()
+        timelineYScale = d3.scaleLinear()
           .domain([0, 13000000])
           .range([timelineHeight, 0])
 
-        let timelineYScaledown = d3.scaleLinear()
-          .domain([0, 10000000])
-          .range([timelineHeight / 2, timelineHeight])
 
-
-        let areaGND = d3.area()
+        areaGND = d3.area()
           .x(function(d, i) {
             return timelineScale(d.year);
           })
@@ -3318,7 +3547,7 @@ console.log(maxValueinNodes)
           })
           .curve(d3.curveBasis);
 
-        let areaKPE = d3.area()
+        areaKPE = d3.area()
           .x(function(d, i) {
             return timelineScale(d.year);
           })
@@ -3330,7 +3559,7 @@ console.log(maxValueinNodes)
           })
           .curve(d3.curveBasis);
 
-        let areaDNB = d3.area()
+        areaDNB = d3.area()
           .x(function(d, i) {
             return timelineScale(d.year);
           })
@@ -3342,7 +3571,7 @@ console.log(maxValueinNodes)
           })
           .curve(d3.curveBasis);
 
-        let areaSBB = d3.area()
+        areaSBB = d3.area()
           .x(function(d, i) {
             return timelineScale(d.year);
           })
@@ -3355,7 +3584,7 @@ console.log(maxValueinNodes)
           .curve(d3.curveBasis);
 
 
-        let areaZDB = d3.area()
+        areaZDB = d3.area()
           .x(function(d, i) {
             return timelineScale(d.year);
           })
@@ -3367,7 +3596,7 @@ console.log(maxValueinNodes)
           })
           .curve(d3.curveBasis);
 
-        let areaComp = d3.area()
+        areaComp = d3.area()
           .x(function(d, i) {
             return timelineScale(d.year);
           })
@@ -3388,7 +3617,15 @@ console.log(maxValueinNodes)
 
         let areachartRectangles = areachart.append("g").attr("class", "axisRectangles")
 
+        let timelinebrush = areachart.append("g").attr("class", "timelinebrush").style("display", function(){if (mode == "overview"){return "none"}else{return "block"}})
 
+        brushTimelineX = d3.brushX()
+            .extent([
+                [0, 0],
+                [windowWidth,timelineHeight]
+              ])
+
+        timelinebrush.call(brushTimelineX)
 
         let rectI = -2000
         while (rectI <= 2100) {
@@ -3476,6 +3713,7 @@ console.log(maxValueinNodes)
           .style("opacity", 1)
           .style("stroke", "white")
           .style("stroke-width", 1)
+          .attr("class", "overviewareaGND")
 
         areachart.append("path")
           .datum(timelinerelations)
@@ -3484,6 +3722,7 @@ console.log(maxValueinNodes)
           .style("opacity", 1)
           .style("stroke", "white")
           .style("stroke-width", 1)
+          .attr("class", "overviewareaKPE")
 
         areachart.append("path")
           .datum(timelinerelations)
@@ -3492,6 +3731,7 @@ console.log(maxValueinNodes)
           .style("opacity", 1)
           .style("stroke", "white")
           .style("stroke-width", 1)
+          .attr("class", "overviewareaDNB")
 
         //
         areachart.append("path")
@@ -3501,6 +3741,7 @@ console.log(maxValueinNodes)
           .style("opacity", 1)
           .style("stroke", "white")
           .style("stroke-width", 1)
+          .attr("class", "overviewareaSBB")
 
         areachart.append("path")
           .datum(timelinerelations)
@@ -3509,6 +3750,7 @@ console.log(maxValueinNodes)
           .style("opacity", 1)
           .style("stroke", "white")
           .style("stroke-width", 1)
+          .attr("class", "overviewareaZDB")
 
         areachart.append("path")
           .datum(timelinerelations)
@@ -3517,6 +3759,7 @@ console.log(maxValueinNodes)
           .style("opacity", 1)
           .style("stroke", "white")
           .style("stroke-width", 1)
+          .attr("class", "overviewareaComp")
         //timelineEnd
 
 
@@ -4548,6 +4791,151 @@ console.log(maxValueinNodes)
     d3.select(window).on('resize', resizeTimeline)
 
     function resizeTimeline() {
+      windowWidth = window.innerWidth - 2 * margin
+      windowHeight = window.innerHeight - 2 * margin
+      timelineHeight = 0.25 * windowHeight
+
+
+      timelineScale = d3.scaleLinear()
+        .domain(timelineInterval)
+        .range([0, windowWidth]);
+
+
+      d3.selectAll(".timelineRect")
+      .attr("height", timelineHeight)
+      .attr("width", timelineScale(timelineInterval[0]+50) - timelineScale(timelineInterval[0])) //breite für 50 Jahre
+      .attr("x", function(d){return timelineScale(d)})
+
+      d3.selectAll(".axisRectangles").selectAll("text")
+      .attr("x", function(d){return timelineScale(d)})
+      //timelineYScale
+
+      if (mode == "overview"){
+
+      timelineYScale = d3.scaleLinear()
+          .domain([0, 13000000])
+          .range([timelineHeight, 0])
+
+
+          areaGND = d3.area()
+            .x(function(d, i) {
+              return timelineScale(d.year);
+            })
+            .y0(function(d) {
+              return timelineYScale(0)
+            })
+            .y1(function(d) {
+              return timelineYScale(d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+            })
+            .curve(d3.curveBasis);
+
+          areaKPE = d3.area()
+            .x(function(d, i) {
+              return timelineScale(d.year);
+            })
+            .y0(function(d) {
+              return timelineYScale(d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+            })
+            .y1(function(d) {
+              return timelineYScale(d.ResPer_KPE + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+            })
+            .curve(d3.curveBasis);
+
+          areaDNB = d3.area()
+            .x(function(d, i) {
+              return timelineScale(d.year);
+            })
+            .y0(function(d) {
+              return timelineYScale(d.ResPer_KPE + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+            })
+            .y1(function(d) {
+              return timelineYScale(d.ResPer_DNB + d.ResPer_KPE + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+            })
+            .curve(d3.curveBasis);
+
+          areaSBB = d3.area()
+            .x(function(d, i) {
+              return timelineScale(d.year);
+            })
+            .y0(function(d) {
+              return timelineYScale(d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+            })
+            .y1(function(d) {
+              return timelineYScale(d.ResPer_SBB + d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+            })
+            .curve(d3.curveBasis);
+
+
+          areaZDB = d3.area()
+            .x(function(d, i) {
+              return timelineScale(d.year);
+            })
+            .y0(function(d) {
+              return timelineYScale(d.ResPer_SBB + d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+            })
+            .y1(function(d) {
+              return timelineYScale(d.ResPer_ZDB + d.ResPer_SBB + d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+            })
+            .curve(d3.curveBasis);
+
+          areaComp = d3.area()
+            .x(function(d, i) {
+              return timelineScale(d.year);
+            })
+            .y0(function(d) {
+              return timelineYScale(d.ResPer_ZDB + d.ResPer_SBB + d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+            })
+            .y1(function(d) {
+              return timelineYScale(d.PerPer_Comp + d.CorpPer_Comp + d.ResPer_ZDB + d.ResPer_SBB + d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+            })
+            .curve(d3.curveBasis);
+
+            d3.select(".overviewareaGND")
+            .attr("d", areaGND)
+
+            d3.select(".overviewareaKPE")
+            .attr("d", areaKPE)
+
+            d3.select(".overviewareaSBB")
+            .attr("d", areaSBB)
+
+            d3.select(".overviewareaDNB")
+            .attr("d", areaDNB)
+
+            d3.select(".overviewareaZDB")
+            .attr("d", areaZDB)
+
+            d3.select(".overviewareaComp")
+            .attr("d", areaComp)
+
+      }else if (mode == "graph"){
+        brushTimelineX = d3.brushX()
+            .extent([
+              [0, 0],
+              [windowWidth,timelineHeight]
+            ])
+
+
+        timelineYScale = d3.scaleLinear()
+          .domain([0, timelineMaxCount+20])
+          .range([timelineHeight, 0])
+
+        areaGraphRelationAll = d3.area()
+          .x(function(d, i) {
+            return timelineScale(d.date);
+          })
+          .y0(function(d) {
+            return timelineYScale(0)
+          })
+          .y1(function(d) {
+            return timelineYScale(d.countPerson)
+          })
+          .curve(d3.curveBasis);
+
+          d3.selectAll(".areachartGroup").selectAll(".timelineareaAllRelations")
+            .attr("d", areaGraphRelationAll)
+      }
+
 
     }
   </script>

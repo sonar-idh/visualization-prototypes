@@ -2,6 +2,13 @@
 ## About
 This repository is a collection of experimental prototypes and the final project results developed in the DFG-funded project [SoNAR(IDH)](http://sonar.fh-potsdam.de/).
 
+- the visualizations are based on HTML, CSS and JavaScript using the visualization library D3.js
+- while the overview view uses pre-processed data (see Data Analysis), the data for the search-based exploration is retrieved live (see below)
+- currently, the prototype visualizations do not use frameworks for more modular DOM management. For a follow-up project we recommend the use of frameworks like Vue.js or Svelte to reduce maintenance effort
+- currently the visualizations are mostly based on SVGs, in the future a switch to Canvas or WebGL would be advisable for performance reasons
+- currently several queries are sent one after the other and then combined in the browser for the visualization. This leads to duplicates and multiple queried nodes, which slow down the processing and increase the amount of data. With more know-how regarding the production of specific complex queries, the performance could probably be improved significantly, at least in part
+
+
 <p float="left">
 <img src="/img/01.jpg" width="150" heigth="150">
 <img src="/img/02.jpg" width="150" heigth="150">
@@ -108,13 +115,14 @@ The visualization concepts in SoNAR(IDH) were developed iteratively and included
 
 ## Final project prototype
 The finalized prototype is a first attempt to combine the SoNAR (IDH) project results inside one functional prototype.
-### Data analysis
-work in progress: here the repo for the data analysis used in the overview/entrance of the prototype will be linked and described
+Building on the preceding prototyping process, different views were developed that allow exploration of the data from different perspectives and with a focus on a variety of data dimensions. The web-based visualization is thereby divided into two main components:
 
-### The web-based interactive visualization interface
-work in progress: here the repo for the final interactive visualization will be linked and described.
+- A data overview entry, which allows researchers to get a sense of whether SoNAR might be relevant to their specific research field.
+- Search-based views, which are based on targeted queries for an entity, provide different perspectives on the data and offer detailed filtering options.
 
-[Demo][Code]
+Views have thus emerged that contrast a whole-data, accumulated overview view as an entry point with individual search-based views. Here, one starts from something small (a search query), and can expand it exploratively as needed.
+
+[Demo](https://sonar.fh-potsdam.de/prototype/)[Code](https://github.com/sonar-idh/visualization-prototypes/tree/main/final_prototype)
 
 
 

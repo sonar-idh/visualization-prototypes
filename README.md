@@ -60,11 +60,11 @@ d3.v5.min.js → [D3.js](https://d3js.org/): data-driven visualization library b
 
 jquery.min.js → [jQuery](https://jquery.com/): JavaScript library
 
-netClustering.js --> [netClustering](https://github.com/john-guerra/netClusteringJs): detects clusters in networks using the Clauset, Newman and Moore community detection algorithm
+netClustering.js → [netClustering](https://github.com/john-guerra/netClusteringJs): detects clusters in networks using the Clauset, Newman and Moore community detection algorithm
 
-d3-weighted-voronoi.js and d3-voronoi-map.js --> [d3-weighted-voronoi](https://github.com/Kcnarf/d3-weighted-voronoi) and [d3-voronoi-map](https://github.com/Kcnarf/d3-voronoi-map)
+d3-weighted-voronoi.js and d3-voronoi-map.js → [d3-weighted-voronoi](https://github.com/Kcnarf/d3-weighted-voronoi) and [d3-voronoi-map](https://github.com/Kcnarf/d3-voronoi-map)
 
-Google Fonts: Open Sans & Material Icons --> [Open  Sans](https://fonts.google.com/) [Material Icons](https://fonts.googleapis.com/icon?family=Material+Icons)
+Google Fonts: Open Sans & Material Icons → [Open  Sans](https://fonts.google.com/), [Material Icons](https://fonts.googleapis.com/icon?family=Material+Icons)
 
 
 ## Experimental prototypes
@@ -113,6 +113,13 @@ The visualization concepts in SoNAR(IDH) were developed iteratively and included
 ### 10: Data exploration tool v.2
 <img src="/img/17.jpg" width="150" heigth="150">
 <a href="https://sonar.fh-potsdam.de/demos/userstudy/index_edges.html">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/demo10">[Code]</a>
+
+
+## Data Queries
+<img src="/img/query_PerName.jpg" >
+
+
+<img src="/img/query_TopicTerm.jpg">
 
 
 ## Final project prototype

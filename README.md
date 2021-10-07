@@ -64,6 +64,8 @@ netClustering.js --> [netClustering](https://github.com/john-guerra/netClusterin
 
 d3-weighted-voronoi.js and d3-voronoi-map.js --> [d3-weighted-voronoi](https://github.com/Kcnarf/d3-weighted-voronoi) and [d3-voronoi-map](https://github.com/Kcnarf/d3-voronoi-map)
 
+Google Fonts: Open Sans & Material Icons --> [Open  Sans](https://fonts.google.com/) [Material Icons](https://fonts.googleapis.com/icon?family=Material+Icons)
+
 
 ## Experimental prototypes
 The visualization concepts in SoNAR(IDH) were developed iteratively and included many small and experimental prototypes that were not created with the approach the data, open up new pathways, to find problems or challenges with the data, or to communicate with our project partners and domain experts for historical network analysis. The following list displays and links to code of selected results (note: the code is not yet fully cleaned/commented):

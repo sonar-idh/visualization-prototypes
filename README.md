@@ -125,7 +125,7 @@ Building on the preceding prototyping process, different views were developed th
 
 Views have thus emerged that contrast a whole-data, accumulated overview view as an entry point with individual search-based views. Here, one starts from something small (a search query), and can expand it exploratively as needed.
 
-[Demo](https://sonar.fh-potsdam.de/prototype/)[Code](https://github.com/sonar-idh/visualization-prototypes/tree/main/final_prototype)
+<a href="https://sonar.fh-potsdam.de/prototype/">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/final_prototype">[Code]</a>
 
   ### Data Queries
   #### Search for Persons

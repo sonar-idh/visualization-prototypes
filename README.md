@@ -94,16 +94,16 @@ The following list displays and links to code of selected results (note: the cod
 <a href="https://sonar.fh-potsdam.de/demos/demo05/">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/demo05">[Code]</a>
 
 #### Racing Topic Term Bar Charts with Observable
-<img src="/img/14.jpg" width="150" heigth="150">
+<img src="/img/07_2.jpg" width="150" heigth="150">
 <a href="https://observablehq.com/d/bddabca34f6d2e8b">[Demo/Code]</a>
 
 #### Topic term by year using a voronoi diagram
 <img src="/img/13.jpg" width="150" heigth="150">
-<a href="https://sonar.fh-potsdam.de/demos/jul2020/jobs_by-year_voronoi.html">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/demo06">[Code]</a><a href="https://bl.ocks.org/markiaaan/285e5940a3ab07a8baf306cc562bba40">[Simplified Version with CSV Data (Code & Demo)]</a>
+<a href="https://sonar.fh-potsdam.de/demos/jul2020/jobs_by-year_voronoi.html">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/demo06">[Code]</a>
 
 #### Morph between a graph and a timeline
 <img src="/img/15.jpg" width="150" heigth="150">
-<a href="https://sonar.fh-potsdam.de/demos/userstudy/timeline-morph.html">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/demo08">[Code]</a>
+<a href="https://sonar.fh-potsdam.de/demos/userstudy/timeline-morph.html">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/demo08">[Code]</a><a href="https://bl.ocks.org/markiaaan/285e5940a3ab07a8baf306cc562bba40">[Simplified Version with CSV Data (Code & Demo)]</a>
 
 
 ### Visualization + Interfacedesign

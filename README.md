@@ -75,23 +75,23 @@ The following list displays and links to code of selected results (note: the cod
 
 #### Basic Unfolding Edges
 <img src="/img/03.jpg" width="150" heigth="150">
-<a href="https://sonar.fh-potsdam.de/demos/03_unfoldingLinks.html">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/demo01">[Code]</a>
+<a href="https://sonar.fh-potsdam.de/demos/03_unfoldingLinks.html">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/experimental_prototypes/1_Visualization01_Basic-Unfolding-Edges">[Code]</a>
 
 #### Uncertainty in links as oscillated lines
 <img src="/img/04.jpg" width="150" heigth="150">
-<a href="https://sonar.fh-potsdam.de/demos/04_uncertainty.html">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/demo02">[Code]</a>
+<a href="https://sonar.fh-potsdam.de/demos/04_uncertainty.html">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/experimental_prototypes/1_Visualization02_Uncertainty">[Code]</a>
 
 #### Simple use of a community cluster algorithm
 <img src="/img/05.jpg" width="150" heigth="150">
-<a href="https://sonar.fh-potsdam.de/demos/05_clusterAlgorithm.html">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/demo03">[Code]</a>
+<a href="https://sonar.fh-potsdam.de/demos/05_clusterAlgorithm.html">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/experimental_prototypes/1_Visualization03_Community-Algorithm">[Code]</a>
 
 #### Scrolling through time
 <img src="/img/09.jpg" width="150" heigth="150">
-<a href="https://sonar.fh-potsdam.de/demos/demo04/">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/demo04">[Code]</a>
+<a href="https://sonar.fh-potsdam.de/demos/demo04/">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/experimental_prototypes/1_Visualization04_Scrolling-through-time">[Code]</a>
 
 #### Temporal network cascade by communities
 <img src="/img/11.jpg" width="150" heigth="150">
-<a href="https://sonar.fh-potsdam.de/demos/demo05/">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/demo05">[Code]</a>
+<a href="https://sonar.fh-potsdam.de/demos/demo05/">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/experimental_prototypes/1_Visualization05_Temporal-network-cascade">[Code]</a>
 
 #### Racing Topic Term Bar Charts with Observable
 <img src="/img/07_2.jpg" width="150" heigth="150">
@@ -99,22 +99,22 @@ The following list displays and links to code of selected results (note: the cod
 
 #### Topic term by year using a voronoi diagram
 <img src="/img/13.jpg" width="150" heigth="150">
-<a href="https://sonar.fh-potsdam.de/demos/jul2020/jobs_by-year_voronoi.html">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/demo06">[Code]</a>
+<a href="https://sonar.fh-potsdam.de/demos/jul2020/jobs_by-year_voronoi.html">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/experimental_prototypes/1_Visualization07_Topic-Term-Voronoi">[Code]</a>
 
 #### Morph between a graph and a timeline
 <img src="/img/15.jpg" width="150" heigth="150">
-<a href="https://sonar.fh-potsdam.de/demos/userstudy/timeline-morph.html">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/demo08">[Code]</a><a href="https://bl.ocks.org/markiaaan/285e5940a3ab07a8baf306cc562bba40">[Simplified Version with CSV Data (Code & Demo)]</a>
+<a href="https://sonar.fh-potsdam.de/demos/userstudy/timeline-morph.html">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/experimental_prototypes/1_Visualization08_Morph-from-Graph-to-Timeline">[Code]</a><a href="https://bl.ocks.org/markiaaan/285e5940a3ab07a8baf306cc562bba40">[Simplified Version with CSV Data (Code & Demo)]</a>
 
 
 ### Visualization + Interface
 
 #### Radial graph layout to visualize shared resources
 <img src="/img/16.jpg" width="150" heigth="150">
-<a href="https://sonar.fh-potsdam.de/demos/userstudy/ressource_focus.html">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/demo09">[Code]</a>
+<a href="https://sonar.fh-potsdam.de/demos/userstudy/ressource_focus.html">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/experimental_prototypes/2_Interface01_Radial-Graph-for-Ressources">[Code]</a>
 
 #### Data exploration tool
 <img src="/img/17.jpg" width="150" heigth="150">
-<a href="https://sonar.fh-potsdam.de/demos/userstudy/index_edges.html">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/demo10">[Code]</a>
+<a href="https://sonar.fh-potsdam.de/demos/userstudy/index_edges.html">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/experimental_prototypes/2_Interface02_Data-Exploration-Interface">[Code]</a>
 
 
 

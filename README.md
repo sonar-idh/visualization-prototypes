@@ -33,7 +33,7 @@ This repository is a collection of experimental prototypes and the final project
 
 
 ## Data connection with database
-The prototypes use a jquery AJAX request to connect with the neo4J database:
+The prototypes use a jquery AJAX request to connect with the neo4J database. The code relies on many hard-coded label names, therefor a use with other data will in most cases need significant editing. The neo4J database can be used local or online, thogh credentials are not hidden and our SoNAR database is set up in read-only mode. To use another database change the "url-link", "neo4jLogin" and "neo4jPassword":
 
 ```javascript
 $.ajax({

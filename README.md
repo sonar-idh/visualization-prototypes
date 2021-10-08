@@ -106,7 +106,7 @@ The following list displays and links to code of selected results (note: the cod
 <a href="https://sonar.fh-potsdam.de/demos/userstudy/timeline-morph.html">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/demo08">[Code]</a><a href="https://bl.ocks.org/markiaaan/285e5940a3ab07a8baf306cc562bba40">[Simplified Version with CSV Data (Code & Demo)]</a>
 
 
-### Visualization + Interfacedesign
+### Visualization + Interface
 
 #### Radial graph layout to visualize shared resources
 <img src="/img/16.jpg" width="150" heigth="150">

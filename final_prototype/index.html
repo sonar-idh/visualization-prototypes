@@ -46,6 +46,16 @@
       /* Optional: just make scrollbar invisible */
     }
 
+
+    a:link {
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+
     .cell {
       stroke: white;
       stroke-width: 1px;
@@ -459,6 +469,44 @@
       margin-top:0;
     }
 
+    .detailEdgeList{
+      list-style: none;
+    }
+
+
+    .detailEdgeList li::before {
+      content: "\25FC";
+      font-weight: bold;
+      display: inline-block;
+      width: 1em;
+      margin-left: -1em;
+    }
+
+    .detailEdgeList li.KPE::before {
+      color: var(--KPE);
+    }
+
+    .detailEdgeList li {
+    margin-bottom: 5px;
+    }
+
+    .detailEdgeList li.GND::before {
+      color: var(--GND);
+    }
+
+    .detailEdgeList li.SBB::before {
+      color: var(--SBB);
+    }
+
+    .detailEdgeList li.ZDB::before {
+      color: var(--ZDB);
+    }
+
+    .detailEdgeList li.DNB::before {
+      color: var(--DNB);
+    }
+
+
     #filterLists {
       background-color: white;
       margin: 0px;
@@ -572,7 +620,9 @@
     .filterlisttr td {
       vertical-align: top;
     }
-
+.filterlisttr{
+  cursor: pointer;
+}
 
     #filter-select-dropdown {
       display: inline-block;
@@ -630,6 +680,10 @@
       cursor: not-allowed;
     }
 
+    #speichern{
+      cursor: not-allowed;
+    }
+
     .info h1 {
       margin-bottom: 5px;
     }
@@ -646,6 +700,10 @@
 
     #morphToGraph {
       display: none;
+    }
+
+    .filteractive{
+      font-weight: bold;
     }
   </style>
 </head>
@@ -714,7 +772,8 @@
       <button class="navigationButtons" id="backToOverview" onclick="backToOverview();"><i class="material-icons" style="font-size: 11px">arrow_back</i> Zurück zur Übersicht</button>
       <button class="navigationButtons" id="morphToTimeline" onclick="morphToTimeline();"><i class="material-icons" style="font-size: 11px">calendar_view_week</i> Zur Zeitleisten-Ansicht</button>
       <button class="navigationButtons" id="morphToGraph" onclick="morphToGraph();"><i class="material-icons" style="font-size: 11px">share</i> Zur Graphen-Ansicht</button>
-      <button class="navigationButtons" id="download"><i class="material-icons" style="font-size: 11px">file_download</i> Daten downloaden</button>
+      <button class="navigationButtons" id="download"><i class="material-icons" style="font-size: 11px">file_download</i> Daten & Grafik downloaden</button>
+
 
 
     </section>
@@ -1056,7 +1115,7 @@
 
       let areachart = d3.selectAll(".areachartGroup")
 
-      console.log(timelinerelationsData)
+
       areachart.append("path")
         .datum(timelinerelationsData)
         .attr("d", areaGND)
@@ -1424,7 +1483,6 @@
                     let dateStartYear
                     let dateEndYear
 
-                    //console.log(n.properties.Uri)
 
                     if (dateStart !== undefined) {
                       if (dateStart.length == 4) {
@@ -1512,7 +1570,6 @@
                         }
                       }
                     }
-                    //  console.log(timeline)
 
                     ////////////////////////
 
@@ -1526,9 +1583,7 @@
               (row.graph.relationships.map(function(r) {
                 //wenn der Link noch nicht vorkommt, füge ihn hinzu
                 if ((links.filter(links => links.id === r.id)).length == 0) {
-                  //console.log(r.startNode)
-                  //console.log(r.properties.TempValidity)
-                  // console.log(idIndex(nodes, r.startNode))
+
                   links.push({
                     id: r.id,
                     source: idIndex(nodes, r.startNode),
@@ -2080,7 +2135,6 @@
 
 
     function listDropdownChange() {
-      console.log("listDropdownChange")
       let type = $('#filter-select-dropdown').val()
 
       d3.select(".filterlistsearch").on("input", function() {
@@ -2108,25 +2162,28 @@
           .join("tr")
           .attr("class", "filterlisttr")
           .on("click", function(d, i) {
+            d3.event.stopPropagation()
             d3.select("#details").style("display", "none").selectAll("p").remove()
             d3.selectAll(".filterCross").remove()
 
-            detailview = true;
-            d3.selectAll(".filterlisttr").selectAll("td").style("font-weight", "normal")
-            d3.selectAll(".filtertableicon").text("+")
+            if(d3.select(this).classed("filteractive") == false){
 
-            d3.select(this).selectAll("td").style("font-weight", "bold")
-              .on("click", function(d, i) {
+              d3.event.stopPropagation()
+              detailview = true;
+              d3.selectAll(".filtertableicon").text("+")
+              d3.selectAll(".filterlisttr").classed("filteractive", false)
+              d3.select(this).selectAll(".filtertableicon").text("✕")
+              d3.select(this).classed("filteractive", true)
+
+              mouseClick(d, i)
+            }else{
                 d3.event.stopPropagation()
-                d3.selectAll(".filtertableicon").text("+");
+                d3.selectAll(".filtertableicon").text("+")
+                d3.selectAll(".filterlisttr").classed("filteractive", false)
                 d3.select("#details").style("display", "none").selectAll("p").remove()
                 detailview = false;
                 mouseOut(d, i)
-              })
-
-            d3.select(this).selectAll(".filtertableicon").text("✕")
-
-            mouseClick(d, i)
+            }
           })
 
         filtertablerow.selectAll("td").remove()
@@ -2170,60 +2227,72 @@
             .join("tr")
             .attr("class", "filterlisttr")
             .on("click", function(d, i) {
+              d3.event.stopPropagation()
               d3.select("#details").style("display", "none").selectAll("p").remove()
               d3.selectAll(".filterCross").remove()
-              detailview = false;
 
-              mouseOut()
 
-              d3.selectAll(".link").filter(function(D, I) {
-                  return D.children.filter(function(x) {
-                    return x.SourceType === d.key
-                  }).length < 1
-                })
-                .style("opacity", 0)
+              if(d3.select(this).classed("filteractive") == false){
 
-              d3.select(this).append("span").text("✕").attr("class", "filterCross").on("click", function(d, i) {
                 d3.event.stopPropagation()
-                d3.select("#details").style("display", "none").selectAll("p").remove()
+                d3.selectAll(".filtertableicon").text("+")
+                d3.selectAll(".filterlisttr").classed("filteractive", false)
+                d3.select(this).selectAll(".filtertableicon").text("✕")
+                d3.select(this).classed("filteractive", true)
+
                 detailview = false;
-                mouseOut(d, i)
-              })
 
-              let connectedNodes = []
+                mouseOut()
 
-              d3.selectAll(".link").filter(function(D, I) {
-                  return D.children.filter(function(x) {
-                    return x.SourceType === d.key
-                  }).length > 0
-                })
-                .style("opacity", 1)
-                .each(function(D, I) {
-                  if (connectedNodes.filter(function(x) {
-                      return x == D._source.id
-                    }).length == 0) {
-                    connectedNodes.push(
-                      D._source.id
-                    )
-                  }
-                  if (connectedNodes.filter(function(x) {
-                      return x == D._target.id
-                    }).length == 0) {
-                    connectedNodes.push(
-                      D._target.id
-                    )
-                  }
-                })
+                d3.selectAll(".link").filter(function(D, I) {
+                    return D.children.filter(function(x) {
+                      return x.SourceType === d.key
+                    }).length < 1
+                  })
+                  .style("opacity", 0)
 
-              d3.selectAll(".nodes").classed("filteredIn", false).classed("filteredOut", true)
 
-              d3.selectAll(".nodes")
-                .filter(function(E, G) {
-                  return connectedNodes.filter(function(d) {
-                    return d == E.id
-                  }).length > 0
-                }).classed("filteredIn", true).classed("filteredOut", false)
+                let connectedNodes = []
 
+                d3.selectAll(".link").filter(function(D, I) {
+                    return D.children.filter(function(x) {
+                      return x.SourceType === d.key
+                    }).length > 0
+                  })
+                  .style("opacity", 1)
+                  .each(function(D, I) {
+                    if (connectedNodes.filter(function(x) {
+                        return x == D._source.id
+                      }).length == 0) {
+                      connectedNodes.push(
+                        D._source.id
+                      )
+                    }
+                    if (connectedNodes.filter(function(x) {
+                        return x == D._target.id
+                      }).length == 0) {
+                      connectedNodes.push(
+                        D._target.id
+                      )
+                    }
+                  })
+
+                d3.selectAll(".nodes").classed("filteredIn", false).classed("filteredOut", true)
+
+                d3.selectAll(".nodes")
+                  .filter(function(E, G) {
+                    return connectedNodes.filter(function(d) {
+                      return d == E.id
+                    }).length > 0
+                  }).classed("filteredIn", true).classed("filteredOut", false)
+              }else{
+                  d3.event.stopPropagation()
+                  d3.selectAll(".filtertableicon").text("+")
+                  d3.selectAll(".filterlisttr").classed("filteractive", false)
+                  d3.select("#details").style("display", "none").selectAll("p").remove()
+                  detailview = false;
+                  mouseOut(d, i)
+              }
             })
 
 
@@ -2264,11 +2333,18 @@
           .join("tr")
           .attr("class", "filterlisttr")
           .on("click", function(d, i) {
-            d3.select("#details").style("display", "none").selectAll("p").remove()
-            d3.selectAll(".filterCross").remove()
-            detailview = false;
 
-            mouseOut()
+            if(d3.select(this).classed("filteractive") == false){
+
+              d3.event.stopPropagation()
+              d3.selectAll(".filtertableicon").text("+")
+              d3.selectAll(".filterlisttr").classed("filteractive", false)
+              d3.select(this).selectAll(".filtertableicon").text("✕")
+              d3.select(this).classed("filteractive", true)
+
+              detailview = false;
+
+              mouseOut()
 
 
             d3.selectAll(".link").filter(function(D, I) {
@@ -2278,12 +2354,6 @@
               })
               .style("opacity", 0)
 
-            d3.select(this).append("span").text("✕").attr("class", "filterCross").on("click", function(d, i) {
-              d3.event.stopPropagation()
-              d3.select("#details").style("display", "none").selectAll("p").remove()
-              detailview = false;
-              mouseOut(d, i)
-            })
 
             let connectedNodes = []
 
@@ -2318,7 +2388,14 @@
                   return d == E.id
                 }).length > 0
               }).classed("filteredIn", true).classed("filteredOut", false)
-
+}else{
+    d3.event.stopPropagation()
+    d3.selectAll(".filtertableicon").text("+")
+    d3.selectAll(".filterlisttr").classed("filteractive", false)
+    d3.select("#details").style("display", "none").selectAll("p").remove()
+    detailview = false;
+    mouseOut(d, i)
+}
           })
 
           filtertablerow.selectAll("td").remove()
@@ -2469,7 +2546,7 @@
           return nodeSize(d.connectivityClean) + 2
         }
       }))
-      .force("center", d3.forceCenter(windowWidth / 2, -150 + windowHeight / 2));
+      .force("center", d3.forceCenter(windowWidth / 2, -100 + windowHeight / 2));
 
 
     let link = svgG.append("g").attr("class", "linkG")
@@ -2545,12 +2622,12 @@
 
 
       maxValueinLinks = Math.max(...linksClean.map(o => o.value), 0)
-      //console.log(maxValueinLinks)
+
 
       let edgeNoScale = d3.scaleLinear()
         .domain([1, maxValueinLinks])
         .range(["rgb(199, 197, 197)", "rgb(199, 197, 197)"])
-      //  .range(["rgb(199, 197, 197)", "rgb(135, 135, 135)"])
+
 
 
       let edgeNoScaleWidth = d3.scaleLinear()
@@ -2564,7 +2641,7 @@
         .join("path")
         .style("fill", "none")
         .attr("class", "link")
-        .style("display", "block")
+        .style("display", null)
         .style("stroke", function(d, i) {
           return edgeNoScale(d.value)
         })
@@ -2699,7 +2776,6 @@
 
               })
               .attr("d", function(D, I) {
-                //  console.log(I)
                 let x1 = d.source.x //x Punkt A
                 let y1 = d.source.y //y Punkt A
                 let A = [x1, y1]
@@ -2718,7 +2794,6 @@
               .transition()
               .duration(800)
               .attr("d", function(D, I) {
-                //  console.log(I)
 
                 let x1 = d.source.x //x Punkt A
                 let y1 = d.source.y //y Punkt A
@@ -2858,7 +2933,7 @@
             return 0.5
           }
         })
-        .style("display", "block")
+        .style("display", null)
         .on("click", function(d, i) {
 
           detailview = true;
@@ -2889,6 +2964,7 @@
           return d.Label == "PerName"
         })
         .on("dblclick", function(d, i) {
+          if(mode == "graph"){
           d3.select("#load").style("display", "block");
           d3.select("#loadbg").style("display", "block");
           d3.select("#details").style("display", "none").selectAll("p").remove()
@@ -2896,6 +2972,7 @@
           mouseOut(d, i)
 
           post_cypherquery("addByNode", d.Id)
+        }
         })
 
 
@@ -2915,7 +2992,6 @@
       ////////////timeline start
 
       //get all keys (years) of timeline array and transform the strings to numbers. use that for a flexible scale
-      //  console.log(timeline.filter(function(d){return d.countPerson != 0 || d.countEdge != 0})[0].date)
       let timelinelengthHelper = timeline.filter(function(d) {
         return d.countPerson != 0 || d.countEdge != 0
       }).length
@@ -2924,7 +3000,6 @@
       })[0].date, timeline.filter(function(d) {
         return d.countPerson != 0 || d.countEdge != 0
       })[timelinelengthHelper - 1].date]
-      //console.log(timelineStartEndWithoutRessources)
 
 
       let timelineYears = Object.keys(timeline).map(Number)
@@ -2932,12 +3007,6 @@
       let timelineCountResourceArray = []
       let timelineCountEdgeseArray = []
       timelineInterval = d3.extent(timelineStartEndWithoutRessources)
-      console.log(timelineInterval)
-
-
-
-
-
 
 
 
@@ -3100,7 +3169,6 @@
         netClustering.cluster(graph.nodes, linksClean);
 
         graph.nodes.sort(function(a, b) {
-          //  console.log(a.DateApproxBegin2)
           return a.cluster - b.cluster || a.DateApproxBegin2 - b.DateApproxBegin2
         });
 
@@ -3226,7 +3294,6 @@
         })
       ////adding labels to the timeline nodes (for now taken out)
       // .each(function(d){
-      //   console.log(d.Name)
       //   d3.select(".nodeG")
       //   .append("text")
       //   .text(d.Name)
@@ -3322,7 +3389,7 @@
         .call(zoom.transform, d3.zoomIdentity);
 
 
-      d3.selectAll(".link").style("display", "block").transition().duration(2000).attr("d", function(d) {
+      d3.selectAll(".link").style("display", null).transition().duration(2000).attr("d", function(d) {
         let dr = 10000
 
         return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y
@@ -3360,6 +3427,10 @@
     function edgeClick(D, I) {
       d3.select("#details").style("display", "none").selectAll("p").remove()
       d3.select("#details").style("display", "none").selectAll("a").remove()
+      d3.select("#details").style("display", "none").selectAll("ul").remove()
+      d3.select("#details").style("display", "none").selectAll("li").remove()
+
+
       d3.select("#closedetails").style("display", "block")
       d3.select("#details").style("display", "block")
 
@@ -3376,15 +3447,15 @@
       })
 
       d3.select("#details").append("p").attr("class", "relationsheadline, detail_key").text("Beziehungsquellen" + " (" + D.children.length + ")")
+      d3.select("#details").append("ul").attr("class", "detailEdgeList")
 
       D.children.sort(function(a, b) {
           return d3.ascending(a.linkDateDateApproxBegin, b.linkDateDateApproxBegin || d3.ascending(a.originType, b.originType))
         })
         .forEach(function(connection, i) {
-          d3.select("#details").append("a").attr("href", connection.originUri).attr("target", "_blank").attr("class", "detail_value, relations_value").append("p")
-            .style("color", edgeColors(connection.originType))
+          d3.select(".detailEdgeList").append("a").attr("href", connection.originUri).attr("target", "_blank").attr("class", "detail_value, relations_value").append("li")
+            .classed(connection.originType, true)
             .text(function() {
-              console.log(connection)
               return nodes.filter(function(n) {
                 return n.Id == connection.originId
               })[0] ? nodes.filter(function(n) {
@@ -4104,7 +4175,7 @@
           .attr("y", 0)
           .attr("height", 1)
           .attr("width", "100%")
-          .style("fill", "black")
+          .style("fill", "#737373")
 
 
         areachart.append("g").attr("class", "axisTime")
@@ -4563,7 +4634,6 @@
             return d.year == yearSelected && d.value != ""
           })
 
-          console.log(selectionDataCorp)
 
           selectionDataState = selectionData.sort((a, b) => d3.descending(a.value, b.value)).slice(0)
           selectionDataStateGeo = selectionDataGeo.sort((a, b) => d3.descending(a.value, b.value)).slice(0)
@@ -4572,7 +4642,6 @@
           selectionDataStateUni = selectionDataUni.sort((a, b) => d3.descending(a.value, b.value)).slice(0)
           selectionDataStateCorp = selectionDataCorp.sort((a, b) => d3.descending(a.value, b.value)).slice(0)
 
-          //    console.log(selectionData)
 
           selectionDataState.forEach(function(d, i) {
             totalValue += d.value

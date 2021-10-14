@@ -454,6 +454,11 @@
       box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.26);
     }
 
+    #details ul{
+      padding-left: 1px;
+      margin-top:0;
+    }
+
     #filterLists {
       background-color: white;
       margin: 0px;
@@ -3502,10 +3507,12 @@
       if (D.Label != "GeoName" && allConnections.filter(function(x, y) {return x.type == "RelationToGeoName"}).length >0){
         d3.select("#details").append("p").attr("class", "relationsheadline, detail_key").text("Verbundene Orte")
 
+        d3.select("#details").append("ul").attr("class", "detailGeoList")
+
         allConnections.filter(function(x, y) {
           return x.type == "RelationToGeoName"
         }).forEach(function(connection, i) {
-          d3.select("#details").append("li").attr("class", "detail_value, relations_value").style("color", "black")
+          d3.select(".detailGeoList").append("li").attr("class", "detail_value, relations_value").style("color", "black")
             .text(function() {
               return connection._target.Name + " (" + connection.SourceType + ")"
             })
@@ -3515,10 +3522,12 @@
 
       if (D.Label != "TopicTerm" && allConnections.filter(function(x, y) {return x.type == "RelationToTopicTerm"}).length >0){
       d3.select("#details").append("p").attr("class", "relationsheadline, detail_key").text("Verbundene Sachbegriffe")
+      d3.select("#details").append("ul").attr("class", "detailTopicList")
+
       allConnections.filter(function(x, y) {
         return x.type == "RelationToTopicTerm"
       }).forEach(function(connection, i) {
-        d3.select("#details").append("li").attr("class", "detail_value, relations_value").style("color", "black")
+        d3.select(".detailTopicList").append("li").attr("class", "detail_value, relations_value").style("color", "black")
           .text(function() {
             return connection._target.Name + " (" + connection.SourceType + ")"
           })
@@ -3527,10 +3536,13 @@
 
       if (D.Label != "Resource" && allConnections.filter(function(x, y) {return x._source.Label == "Resource" || x._target.Label == "Resource"}).length >0){
       d3.select("#details").append("p").attr("class", "relationsheadline, detail_key").text("Verbundene Ressourcen")
+      d3.select("#details").append("ul").attr("class", "detailResourceList")
+
+
       allConnections.filter(function(x, y) {
         return x._source.Label == "Resource" || x._target.Label == "Resource"
       }).forEach(function(connection, i) {
-        d3.select("#details").append("li").attr("class", "detail_value, relations_value").style("color", "black")
+        d3.select(".detailResourceList").append("li").attr("class", "detail_value, relations_value").style("color", "black")
           .text(function() {
             return connection._source.Name + " (" + connection.SourceType + ", " + connection.Source +
               ", " + connection.TypeAddInfo + ", " + connection.TempValidity + ")"
@@ -3539,30 +3551,69 @@
     }
 
       d3.select("#details").append("p").attr("class", "relationsheadline, detail_key").text("Verbundene Personen")
+      d3.select("#details").append("ul").attr("class", "detailPerList")
 
-      connections.filter(function(x, y) {
-          return x._source.Label == "PerName" && x._target.Label == "PerName"
-        })
-        .sort((a, b) => d3.descending(a.children.length, b.children.length))
-        .forEach(function(connection, i) {
-          d3.select("#details").append("li").attr("class", "detail_value, relations_value")
-            .text(function() {
-              if (D.Id == connection._source.Id) {
-                return connection._target.Name + " (" + connection.children.length + ")"
-              } else {
-                return connection._source.Name + " (" + connection.children.length + ")"
-              }
+      if (D.Label == "PerName"){
+        connections.filter(function(x, y) {
+            return x._source.Label == "PerName"
+          })
+          .sort((a, b) => d3.descending(a.children.length, b.children.length))
+          .forEach(function(connection, i) {
+            d3.select(".detailPerList").append("li").attr("class", "detail_value, relations_value")
+              .text(function() {
+                  return connection._target.Name + " (" + connection.children.length + ")"
+              })
+          })
+      }
+      if (D.Label == "CorpName"){
+        connections.filter(function(x, y) {
+            return x._source.Label == "PerName" && x._target.Label == "CorpName"
+          })
+          .sort((a, b) => d3.descending(a.children.length, b.children.length))
+          .forEach(function(connection, i) {
+            d3.select(".detailPerList").append("li").attr("class", "detail_value, relations_value")
+              .text(function() {
+                if (D.Id == connection._source.Id) {
+                  return connection._source.Name + " (" + connection.children.length + ")"
+                } else {
+                  return connection._source.Name + " (" + connection.children.length + ")"
+                }
 
-            })
+              })
+          })
+      }
+      if (D.Label != "PerName" && D.Label != "CorpName" && D.Label != "Resource"){
+        allConnections.filter(function(x, y) {
+            return x._source.Label == "PerName"
+          })
+          .forEach(function(connection, i) {
+            d3.select(".detailPerList").append("li").attr("class", "detail_value, relations_value")
+              .text(function() {
+                  return connection._source.Name + " (" + connection.SourceType + ")"
+              })
+          })
+      }
+      if (D.Label == "Resource"){
+        allConnections.filter(function(x, y) {
+            return x._target.Label == "PerName"
+          })
+          .forEach(function(connection, i) {
+            d3.select(".detailPerList").append("li").attr("class", "detail_value, relations_value")
+              .text(function() {
+                  return connection._target.Name
+              })
+          })
+      }
 
-        })
 
+      if (D.Label == "PerName"){
       d3.select("#details").append("p").attr("class", "relationsheadline, detail_key").text("Verbundene Körperschaften")
+      d3.select("#details").append("ul").attr("class", "detailCorpList")
 
       connections.filter(function(x, y) {
         return x._source.Label == "CorpName" || x._target.Label == "CorpName"
       }).forEach(function(connection, i) {
-        d3.select("#details").append("li").attr("class", "detail_value, relations_value").style("color", function() {
+        d3.select(".detailCorpList").append("li").attr("class", "detail_value, relations_value").style("color", function() {
           if (connection.type == "SocialRelation") {
             return "black"
           } else {
@@ -3577,7 +3628,7 @@
 
         })
       })
-
+}
 
     }
 

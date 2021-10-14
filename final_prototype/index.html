@@ -397,10 +397,10 @@
     #loadbg {
       z-index: 700;
       position: absolute;
-      background-color: var(--main-bg-color);
+      background: linear-gradient(45deg, var(--GND), var(--KPE), var(--ZDB), var(--DNB), var(--SBB));
       width: 100%;
       height: 100%;
-      opacity: 0.6;
+      opacity: 0.3;
       top: 0;
       display: none;
     }
@@ -408,14 +408,14 @@
     #load {
       position: absolute;
       z-index: 700;
-      left: calc(50% - 30px);
-      top: calc(50% - 50px);
+      left: calc(50% - 50px);
+      top: calc(50% - 150px);
       display: none;
     }
 
     .loader {
-      border: 20px solid var(--sec-color);
-      border-top: 20px solid black;
+      border: 20px solid white;
+      border-top: 20px solid var(--GND);
       border-radius: 50%;
       width: 60px;
       height: 60px;
@@ -451,7 +451,7 @@
       display: none;
       text-align: left;
       padding: 20px;
-      box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.26);
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.26);
     }
 
     #filterLists {
@@ -460,7 +460,6 @@
       font-size: 0.8em;
       position: fixed;
       border-width: 1px;
-      border-color: black;
       border-radius: 8px;
       margin: 10px;
       top: 0;
@@ -469,7 +468,7 @@
       height: calc(75% - 40px);
       text-align: left;
       padding: 10px;
-      box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.26);
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.26);
     }
 
     #filterlistentries {
@@ -494,14 +493,6 @@
       display: none;
     }
 
-    #overlay {
-      position: fixed;
-      left: 0;
-      top: 0;
-      height: 100%;
-      width: 100%;
-      display: none;
-    }
 
     #closedetails {
       position: fixed;
@@ -600,9 +591,7 @@
       width: 100%;
     }
 
-    /* .timelinebrush{
-       display:none;
-     } */
+
     #metrics-table {
       margin: 0;
       padding: 0;
@@ -624,15 +613,15 @@
     .navigationButtons {
       padding: 1;
       margin-bottom: 5px;
-      border-radius: 0px 8px 8px 0 ;
+      border-radius: 0px 8px 8px 0;
       border: solid #bdbdbd;
       border-width: 1px;
-      width:200px;
+      width: 200px;
       text-align: left;
       cursor: pointer;
     }
 
-    #download{
+    #download {
       cursor: not-allowed;
     }
 
@@ -640,25 +629,24 @@
       margin-bottom: 5px;
     }
 
-.axistime .domain{
-  display:none;
-}
+    .axistime .domain {
+      display: none;
+    }
 
-.tick line{
-  stroke: rgba(171, 171, 171, 1);
-  opacity: 1;
-  stroke-dasharray:2,2;
-}
+    .tick line {
+      stroke: rgba(171, 171, 171, 1);
+      opacity: 1;
+      stroke-dasharray: 2, 2;
+    }
 
-#morphToGraph{
-  display:none;
-}
-
+    #morphToGraph {
+      display: none;
+    }
   </style>
 </head>
 
 <body>
-  <svg id="overlay"></svg>
+
   <svg id="graph"></svg>
   <div id="statsDiv" style="display:none"></div>
   <div id="filterLists" style="display:none;">
@@ -721,7 +709,7 @@
       <button class="navigationButtons" id="backToOverview" onclick="backToOverview();"><i class="material-icons" style="font-size: 11px">arrow_back</i> Zurück zur Übersicht</button>
       <button class="navigationButtons" id="morphToTimeline" onclick="morphToTimeline();"><i class="material-icons" style="font-size: 11px">calendar_view_week</i> Zur Zeitleisten-Ansicht</button>
       <button class="navigationButtons" id="morphToGraph" onclick="morphToGraph();"><i class="material-icons" style="font-size: 11px">share</i> Zur Graphen-Ansicht</button>
-      <button class="navigationButtons" id="download" ><i class="material-icons" style="font-size: 11px">file_download</i> Daten downloaden</button>
+      <button class="navigationButtons" id="download"><i class="material-icons" style="font-size: 11px">file_download</i> Daten downloaden</button>
 
 
     </section>
@@ -908,7 +896,7 @@
     let brushStart = null
     let brushEnd = null
 
-    const neo4jLogin = "neo4j"//'sonar';
+    const neo4jLogin = "neo4j" //'sonar';
     const neo4jPassword = 'sonar2021';
 
     function backToOverview() {
@@ -924,16 +912,16 @@
       d3.select("#morphToGraph").style("display", "none")
       d3.selectAll(".timelineRect").style("pointer-events", "auto")
       d3.selectAll(".timelineRect").classed("timelineRectSelected", function(d) {
-                    if (d == yearSelected) {
-                      return true
-                    } else {
-                      return false
-                    }
-                  })
+        if (d == yearSelected) {
+          return true
+        } else {
+          return false
+        }
+      })
 
       svgG.transition()
-          .duration(750)
-          .call(zoom.transform, d3.zoomIdentity);
+        .duration(750)
+        .call(zoom.transform, d3.zoomIdentity);
 
 
       d3.select(".searchbar").style("display", "flex")
@@ -944,7 +932,6 @@
       d3.select("#filterLists").style("display", "none")
       d3.select("#graph-metrics").style("display", "none")
       d3.select("#graph").style("display", "none")
-      d3.select("#overlay").style("display", "none")
       d3.select(".timelinebrush").style("display", function() {
         if (mode == "overview") {
           return "none"
@@ -967,78 +954,78 @@
         .domain([0, 13000000])
         .range([timelineHeight, 0])
 
-        areaGND = d3.area()
-          .x(function(d, i) {
-            return timelineScale(d.year);
-          })
-          .y0(function(d) {
-            return timelineYScale(0)
-          })
-          .y1(function(d) {
-            return timelineYScale(d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
-          })
-          .curve(d3.curveBasis);
+      areaGND = d3.area()
+        .x(function(d, i) {
+          return timelineScale(d.year);
+        })
+        .y0(function(d) {
+          return timelineYScale(0)
+        })
+        .y1(function(d) {
+          return timelineYScale(d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+        })
+        .curve(d3.curveBasis);
 
-        areaKPE = d3.area()
-          .x(function(d, i) {
-            return timelineScale(d.year);
-          })
-          .y0(function(d) {
-            return timelineYScale(d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
-          })
-          .y1(function(d) {
-            return timelineYScale(d.ResPer_KPE + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
-          })
-          .curve(d3.curveBasis);
+      areaKPE = d3.area()
+        .x(function(d, i) {
+          return timelineScale(d.year);
+        })
+        .y0(function(d) {
+          return timelineYScale(d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+        })
+        .y1(function(d) {
+          return timelineYScale(d.ResPer_KPE + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+        })
+        .curve(d3.curveBasis);
 
-        areaDNB = d3.area()
-          .x(function(d, i) {
-            return timelineScale(d.year);
-          })
-          .y0(function(d) {
-            return timelineYScale(d.ResPer_KPE + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
-          })
-          .y1(function(d) {
-            return timelineYScale(d.ResPer_DNB + d.ResPer_KPE + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
-          })
-          .curve(d3.curveBasis);
+      areaDNB = d3.area()
+        .x(function(d, i) {
+          return timelineScale(d.year);
+        })
+        .y0(function(d) {
+          return timelineYScale(d.ResPer_KPE + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+        })
+        .y1(function(d) {
+          return timelineYScale(d.ResPer_DNB + d.ResPer_KPE + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+        })
+        .curve(d3.curveBasis);
 
-        areaSBB = d3.area()
-          .x(function(d, i) {
-            return timelineScale(d.year);
-          })
-          .y0(function(d) {
-            return timelineYScale(d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
-          })
-          .y1(function(d) {
-            return timelineYScale(d.ResPer_SBB + d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
-          })
-          .curve(d3.curveBasis);
+      areaSBB = d3.area()
+        .x(function(d, i) {
+          return timelineScale(d.year);
+        })
+        .y0(function(d) {
+          return timelineYScale(d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+        })
+        .y1(function(d) {
+          return timelineYScale(d.ResPer_SBB + d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+        })
+        .curve(d3.curveBasis);
 
 
-        areaZDB = d3.area()
-          .x(function(d, i) {
-            return timelineScale(d.year);
-          })
-          .y0(function(d) {
-            return timelineYScale(d.ResPer_SBB + d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
-          })
-          .y1(function(d) {
-            return timelineYScale(d.ResPer_ZDB + d.ResPer_SBB + d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
-          })
-          .curve(d3.curveBasis);
+      areaZDB = d3.area()
+        .x(function(d, i) {
+          return timelineScale(d.year);
+        })
+        .y0(function(d) {
+          return timelineYScale(d.ResPer_SBB + d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+        })
+        .y1(function(d) {
+          return timelineYScale(d.ResPer_ZDB + d.ResPer_SBB + d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+        })
+        .curve(d3.curveBasis);
 
-        areaComp = d3.area()
-          .x(function(d, i) {
-            return timelineScale(d.year);
-          })
-          .y0(function(d) {
-            return timelineYScale(d.ResPer_ZDB + d.ResPer_SBB + d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
-          })
-          .y1(function(d) {
-            return timelineYScale(d.PerPer_Comp + d.CorpPer_Comp + d.ResPer_ZDB + d.ResPer_SBB + d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
-          })
-          .curve(d3.curveBasis);
+      areaComp = d3.area()
+        .x(function(d, i) {
+          return timelineScale(d.year);
+        })
+        .y0(function(d) {
+          return timelineYScale(d.ResPer_ZDB + d.ResPer_SBB + d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+        })
+        .y1(function(d) {
+          return timelineYScale(d.PerPer_Comp + d.CorpPer_Comp + d.ResPer_ZDB + d.ResPer_SBB + d.ResPer_KPE + d.ResPer_DNB + d.PerPer_GND + d.CorpPer_GND + d.GeoPer_GND + d.MeetPer_GND + d.UniPer_GND)
+        })
+        .curve(d3.curveBasis);
 
 
 
@@ -1062,63 +1049,63 @@
       d3.selectAll(".areachartGroup").selectAll("path").remove()
 
 
-        let areachart = d3.selectAll(".areachartGroup")
+      let areachart = d3.selectAll(".areachartGroup")
 
-        console.log(timelinerelationsData)
-        areachart.append("path")
-          .datum(timelinerelationsData)
-          .attr("d", areaGND)
-          .style("fill", colorScaleEdges("GND"))
-          .style("opacity", 1)
-          .style("stroke", "white")
-          .style("stroke-width", 1)
-          .attr("class", "overviewareaGND")
+      console.log(timelinerelationsData)
+      areachart.append("path")
+        .datum(timelinerelationsData)
+        .attr("d", areaGND)
+        .style("fill", colorScaleEdges("GND"))
+        .style("opacity", 1)
+        .style("stroke", "white")
+        .style("stroke-width", 1)
+        .attr("class", "overviewareaGND")
 
-        areachart.append("path")
-          .datum(timelinerelationsData)
-          .attr("d", areaKPE)
-          .style("fill", colorScaleEdges("KPE"))
-          .style("opacity", 1)
-          .style("stroke", "white")
-          .style("stroke-width", 1)
-          .attr("class", "overviewareaKPE")
+      areachart.append("path")
+        .datum(timelinerelationsData)
+        .attr("d", areaKPE)
+        .style("fill", colorScaleEdges("KPE"))
+        .style("opacity", 1)
+        .style("stroke", "white")
+        .style("stroke-width", 1)
+        .attr("class", "overviewareaKPE")
 
-        areachart.append("path")
-          .datum(timelinerelationsData)
-          .attr("d", areaDNB)
-          .style("fill", colorScaleEdges("DNB"))
-          .style("opacity", 1)
-          .style("stroke", "white")
-          .style("stroke-width", 1)
-          .attr("class", "overviewareaDNB")
+      areachart.append("path")
+        .datum(timelinerelationsData)
+        .attr("d", areaDNB)
+        .style("fill", colorScaleEdges("DNB"))
+        .style("opacity", 1)
+        .style("stroke", "white")
+        .style("stroke-width", 1)
+        .attr("class", "overviewareaDNB")
 
-        //
-        areachart.append("path")
-          .datum(timelinerelationsData)
-          .attr("d", areaSBB)
-          .style("fill", colorScaleEdges("SBB"))
-          .style("opacity", 1)
-          .style("stroke", "white")
-          .style("stroke-width", 1)
-          .attr("class", "overviewareaSBB")
+      //
+      areachart.append("path")
+        .datum(timelinerelationsData)
+        .attr("d", areaSBB)
+        .style("fill", colorScaleEdges("SBB"))
+        .style("opacity", 1)
+        .style("stroke", "white")
+        .style("stroke-width", 1)
+        .attr("class", "overviewareaSBB")
 
-        areachart.append("path")
-          .datum(timelinerelationsData)
-          .attr("d", areaZDB)
-          .style("fill", colorScaleEdges("ZDB"))
-          .style("opacity", 1)
-          .style("stroke", "white")
-          .style("stroke-width", 1)
-          .attr("class", "overviewareaZDB")
+      areachart.append("path")
+        .datum(timelinerelationsData)
+        .attr("d", areaZDB)
+        .style("fill", colorScaleEdges("ZDB"))
+        .style("opacity", 1)
+        .style("stroke", "white")
+        .style("stroke-width", 1)
+        .attr("class", "overviewareaZDB")
 
-        areachart.append("path")
-          .datum(timelinerelationsData)
-          .attr("d", areaComp)
-          .style("fill", colorScaleEdges("Comp")) //"url(#diagonalHatch)")
-          .style("opacity", 1)
-          .style("stroke", "white")
-          .style("stroke-width", 1)
-          .attr("class", "overviewareaComp")
+      areachart.append("path")
+        .datum(timelinerelationsData)
+        .attr("d", areaComp)
+        .style("fill", colorScaleEdges("Comp")) //"url(#diagonalHatch)")
+        .style("opacity", 1)
+        .style("stroke", "white")
+        .style("stroke-width", 1)
+        .attr("class", "overviewareaComp")
 
       ////////////
       //////backtooverview timeline update Ende
@@ -1176,7 +1163,6 @@
       d3.select("#filterLists").style("display", "block")
       d3.select("#graph-metrics").style("display", "block")
       d3.select("#graph").style("display", "block")
-      d3.select("#overlay").style("display", "block")
       d3.select(".timelinebrush").style("display", function() {
         if (mode == "overview") {
           return "none"
@@ -1299,7 +1285,7 @@
 
 
       $.ajax({
-          url: "http://localhost:7474/db/data/transaction/commit",//"https://h2918680.stratoserver.net:7473/db/data/transaction/commit",
+          url: "http://localhost:7474/db/data/transaction/commit", //"https://h2918680.stratoserver.net:7473/db/data/transaction/commit",
           type: 'POST',
           data: JSON.stringify({
             "statements": [{
@@ -1394,7 +1380,7 @@
                       DateApproxOriginal: n.properties.DateApproxOriginal,
                       DateApproxBegin: n.properties.DateApproxBegin,
                       DateApproxEnd: n.properties.DateApproxEnd,
-                      DateApproxBegin2: (n.properties.DateApproxBegin!=undefined && isNaN(n.properties.DateApproxBegin)!= true)?n.properties.DateApproxBegin:0,
+                      DateApproxBegin2: (n.properties.DateApproxBegin != undefined && isNaN(n.properties.DateApproxBegin) != true) ? n.properties.DateApproxBegin : 0,
                       DateApproxEnd2: n.properties.DateApproxEnd,
                       DateStrictBegin: n.properties.DateStrictBegin,
                       DateStrictEnd: n.properties.DateStrictEnd,
@@ -1492,7 +1478,7 @@
                       DateApproxEnd: n.properties.DateApproxEnd,
                       DateStrictBegin: n.properties.DateStrictBegin,
                       DateStrictEnd: n.properties.DateStrictEnd,
-                      DateApproxBegin2: (dateStartYear!=undefined)?dateStartYear:0,
+                      DateApproxBegin2: (dateStartYear != undefined) ? dateStartYear : 0,
                       DateApproxEnd2: dateEndYear,
                       ResourcePublPlace: n.properties.ResourcePublPlace,
                       Uri: n.properties.Uri,
@@ -1570,10 +1556,6 @@
 
           ///connectivity for Person/Corp only
           graph.links.forEach(function(d, i) {
-            //console.log(nodes.filter(function(q, p) {return p == d._source.id}))
-
-            //  console.log(graph.nodes)
-            //  console.log(nodes.filter(function(q, p) {return p == d.source})[0].Label)
             if (nodes.filter(function(q, p) {
                 return p == d.source_copy
               })[0].Label != "GeoName" && nodes.filter(function(q, p) {
@@ -1615,9 +1597,6 @@
           //start linksclean
           ///connectivity for Person/Corp only
           graph.links.forEach(function(d, i) {
-
-            //  console.log(graph.nodes)
-            //  console.log(nodes.filter(function(q, p) {return p == d.source})[0].Label)
             if (nodes.filter(function(q, p) {
                 return p == d.source
               })[0].Label != "GeoName" && nodes.filter(function(q, p) {
@@ -1664,13 +1643,8 @@
             }
           })
 
-          //console.log(graph.nodes)
-
-          let personNodes = []
-
           graph.links.forEach(function(d, i) {
-            if (d._source.Label == "PerName" && d._target.Label == "PerName"
-            ||
+            if (d._source.Label == "PerName" && d._target.Label == "PerName" ||
               d._source.Label == "PerName" && d._target.Label == "CorpName" ||
               d._source.Label == "CoprName" && d._target.Label == "PerName" ||
               d._source.Label == "CoprName" && d._target.Label == "CorpName"
@@ -1686,10 +1660,6 @@
                   _target: d._target,
                   source_copy: d.source_copy,
                   target_copy: d.target_copy,
-                  // Source:  d.Source,
-                  //  SourceType: d.SourceType,
-                  // TempValidity: d.TempValidity,
-                  // TypeAddInfo: d.TypeAddInfo,
                   value: 1
                 })
 
@@ -1789,12 +1759,8 @@
                     })[0] != undefined) ? graph.nodes.filter(function(x) {
                       return x.n4jID == d.Source
                     })[0].Id : undefined),
-                  //        originDateApproxBegin: (graph.nodes.filter(function(x){return x.n4jID == d.Source})[0] != undefined) ? graph.nodes.filter(function(x){return x.n4jID == d.Source})[0].DateApproxBegin2 : undefined,
-                  //          originDateApproxEnd: (graph.nodes.filter(function(x){return x.n4jID == d.Source})[0] != undefined) ? graph.nodes.filter(function(x){return x.n4jID == d.Source})[0].DateApproxEnd2 : undefined,
                   linkDateDateApproxBegin: linkDateDateApproxBegin,
                   linkDateDateApproxEnd: linkDateDateApproxEnd,
-
-                  //      origin_DateApprox
                   value: 1
                 })
 
@@ -1817,14 +1783,6 @@
                     return "GND"
                   }
                 }
-
-
-
-
-
-
-
-                //  console.log( (graph.nodes.filter(function(x){return x.n4jID == d.Source})[0] != undefined) ? graph.nodes.filter(function(x){return x.n4jID == d.Source})[0].Uri : undefined).includes()
 
 
                 nodes.filter(function(q, p) {
@@ -1936,8 +1894,6 @@
                       })[0] != undefined) ? graph.nodes.filter(function(x) {
                         return x.n4jID == d.Source
                       })[0].Id : undefined),
-                    //      originDateApproxBegin: (graph.nodes.filter(function(x){return x.n4jID == d.Source})[0] != undefined) ? graph.nodes.filter(function(x){return x.n4jID == d.Source})[0].DateApproxBegin2 : undefined,
-                    //        originDateApproxEnd: (graph.nodes.filter(function(x){return x.n4jID == d.Source})[0] != undefined) ? graph.nodes.filter(function(x){return x.n4jID == d.Source})[0].DateApproxEnd2 : undefined,
                     linkDateDateApproxBegin: linkDateDateApproxBegin,
                     linkDateDateApproxEnd: linkDateDateApproxEnd,
                     value: 1
@@ -1965,9 +1921,6 @@
                 }
 
               }
-
-
-
 
 
             }
@@ -2029,11 +1982,7 @@
       .domain(["Selection", "PerName", "CorpName", "MeetName", "UniTitle", "TopicTerm", "GeoName", "Resource", "ChronTerm"])
       .range(["black", "rgb(78, 78, 78)", "rgb(152, 152, 152)", "rgb(78, 78, 78)", "rgb(78, 78, 78)", "rgb(78, 78, 78)", "rgb(78, 78, 78)", "rgb(78, 78, 78)"]);
 
-    const temporalColor = d3.scaleLinear()
-      .domain([1780, 2000])
-      .range(["blue", "white"])
 
-    const overlay = d3.select("#overlay")
 
     let zoom = d3.zoom()
       .scaleExtent([1 / 3, 8])
@@ -2056,8 +2005,8 @@
 
       svgG.attr("transform", d3.event.transform);
 
-      // just apply transform for zoom in, not zoom out
-      if (mode == "graph"){
+      // only apply transform for zoom in, not zoom out
+      if (mode == "graph") {
 
         node.selectAll("rect")
           .filter(function(d, i) {
@@ -2069,11 +2018,11 @@
           .attr("height", function(d, i) {
             return (d3.event.transform.k > 1) ? (nodeSize(d.connectivityClean) / zoomlevel) : nodeSize(d.connectivityClean)
           })
-          .attr("x", function(d,i) {
-            return d.x -((zoomlevel >= 1) ? (nodeSize(d.connectivityClean) / zoomlevel) : nodeSize(d.connectivityClean))/2;
+          .attr("x", function(d, i) {
+            return d.x - ((zoomlevel >= 1) ? (nodeSize(d.connectivityClean) / zoomlevel) : nodeSize(d.connectivityClean)) / 2;
           })
-          .attr("y", function(d,i) {
-            return d.y -((zoomlevel >= 1) ? (nodeSize(d.connectivityClean) / zoomlevel) : nodeSize(d.connectivityClean))/2;
+          .attr("y", function(d, i) {
+            return d.y - ((zoomlevel >= 1) ? (nodeSize(d.connectivityClean) / zoomlevel) : nodeSize(d.connectivityClean)) / 2;
           })
           .style("stroke-width", function(d, i) {
             return (zoomlevel > 1) ? 0.5 / zoomlevel : 0.5
@@ -2087,11 +2036,11 @@
           .attr("height", function(d, i) {
             return 3 / zoomlevel
           })
-          .attr("x", function(d,i) {
-            return d.x-(3 / zoomlevel)/2
+          .attr("x", function(d, i) {
+            return d.x - (3 / zoomlevel) / 2
           })
-          .attr("y", function(d,i) {
-            return d.y-(3 / zoomlevel)/2
+          .attr("y", function(d, i) {
+            return d.y - (3 / zoomlevel) / 2
           })
           .style("stroke-width", function(d, i) {
             return (zoomlevel > 1) ? 0.5 / zoomlevel : 0.5
@@ -2121,17 +2070,12 @@
             return (d3.event.transform.k > 1) ? 1.5 / d3.event.transform.k : 1.5
           })
 
-
-
       }
-
-
-
-
     }
 
 
     function listDropdownChange() {
+      console.log("listDropdownChange")
       let type = $('#filter-select-dropdown').val()
 
       d3.select(".filterlistsearch").on("input", function() {
@@ -2196,39 +2140,6 @@
           }
         })
 
-
-
-        d3.select("#filterListsxyc")
-          .selectAll("p")
-          .data(graph.nodes.filter(function(d, i) {
-            return d.Label == type
-          }).sort(function(a, b) {
-            return d3.descending(a.connectivityClean ? a.connectivityClean : a.connectivity, b.connectivityClean ? b.connectivityClean : b.connectivity)
-          }))
-          .join("p")
-          .classed("filterListItem", true)
-          .text(function(d, i) {
-            if (d.Label == "PerName" || d.Label == "CorpName") {
-              return d.Name + " (" + d.connectivityClean + ")"
-            } else {
-              return d.Name + " (" + d.connectivity + ")"
-            }
-          })
-          .on("click", function(d, i) {
-            d3.select("#details").style("display", "none").selectAll("p").remove()
-            d3.selectAll(".filterCross").remove()
-
-            detailview = true;
-
-            d3.select(this).append("span").text("✕").attr("class", "filterCross").on("click", function(d, i) {
-              d3.event.stopPropagation()
-              d3.select("#details").style("display", "none").selectAll("p").remove()
-              detailview = false;
-              mouseOut(d, i)
-            })
-
-            mouseClick(d, i)
-          })
       } else if (type == "SourceType") {
 
         let linkSourceTypeCount = d3.nest()
@@ -2246,75 +2157,83 @@
           }));
 
 
-        d3.select("#filterLists")
-          .selectAll("p")
-          .data(linkSourceTypeCount.sort((a, b) => d3.descending(a.value, b.value)).filter(function(d) {
-            return d.key != "undefined"
-          }))
-          .join("p")
-          .classed("filterListItem", true)
-          .classed("linklistentry", true)
-          .text(function(d, i) {
-            return d.key + " (" + d.value + ")"
-          })
-          .on("click", function(d, i) {
-            d3.select("#details").style("display", "none").selectAll("p").remove()
-            d3.selectAll(".filterCross").remove()
-            detailview = false;
-
-            mouseOut()
-
-            d3.selectAll(".link").filter(function(D, I) {
-                return D.children.filter(function(x) {
-                  return x.SourceType === d.key
-                }).length < 1
-              })
-              .style("opacity", 0)
-
-            d3.select(this).append("span").text("✕").attr("class", "filterCross").on("click", function(d, i) {
-              d3.event.stopPropagation()
+          let filtertablerow = d3.select("#filterlisttable")
+            .selectAll("tr")
+            .data(linkSourceTypeCount.sort((a, b) => d3.descending(a.value, b.value)).filter(function(d) {
+              return d.key != "undefined"
+            }))
+            .join("tr")
+            .attr("class", "filterlisttr")
+            .on("click", function(d, i) {
               d3.select("#details").style("display", "none").selectAll("p").remove()
+              d3.selectAll(".filterCross").remove()
               detailview = false;
-              mouseOut(d, i)
+
+              mouseOut()
+
+              d3.selectAll(".link").filter(function(D, I) {
+                  return D.children.filter(function(x) {
+                    return x.SourceType === d.key
+                  }).length < 1
+                })
+                .style("opacity", 0)
+
+              d3.select(this).append("span").text("✕").attr("class", "filterCross").on("click", function(d, i) {
+                d3.event.stopPropagation()
+                d3.select("#details").style("display", "none").selectAll("p").remove()
+                detailview = false;
+                mouseOut(d, i)
+              })
+
+              let connectedNodes = []
+
+              d3.selectAll(".link").filter(function(D, I) {
+                  return D.children.filter(function(x) {
+                    return x.SourceType === d.key
+                  }).length > 0
+                })
+                .style("opacity", 1)
+                .each(function(D, I) {
+                  if (connectedNodes.filter(function(x) {
+                      return x == D._source.id
+                    }).length == 0) {
+                    connectedNodes.push(
+                      D._source.id
+                    )
+                  }
+                  if (connectedNodes.filter(function(x) {
+                      return x == D._target.id
+                    }).length == 0) {
+                    connectedNodes.push(
+                      D._target.id
+                    )
+                  }
+                })
+
+              d3.selectAll(".nodes").classed("filteredIn", false).classed("filteredOut", true)
+
+              d3.selectAll(".nodes")
+                .filter(function(E, G) {
+                  return connectedNodes.filter(function(d) {
+                    return d == E.id
+                  }).length > 0
+                }).classed("filteredIn", true).classed("filteredOut", false)
+
             })
 
-            let connectedNodes = []
 
-            d3.selectAll(".link").filter(function(D, I) {
-                return D.children.filter(function(x) {
-                  return x.SourceType === d.key
-                }).length > 0
-              })
-              .style("opacity", 1)
-              .each(function(D, I) {
-                if (connectedNodes.filter(function(x) {
-                    return x == D._source.id
-                  }).length == 0) {
-                  connectedNodes.push(
-                    D._source.id
-                  )
-                }
-                if (connectedNodes.filter(function(x) {
-                    return x == D._target.id
-                  }).length == 0) {
-                  connectedNodes.push(
-                    D._target.id
-                  )
-                }
-              })
+            filtertablerow.selectAll("td").remove()
+            let filtertableicons = filtertablerow.append("td").classed("filtertableicon", true).text("+")
 
-            d3.selectAll(".nodes").classed("filteredIn", false).classed("filteredOut", true)
+            let filtertablename = filtertablerow.append("td").classed("filtertablename", true).text(function(d, i) {
+              return d.key
+            })
 
-            d3.selectAll(".nodes")
-              .filter(function(E, G) {
-                return connectedNodes.filter(function(d) {
-                  return d == E.id
-                }).length > 0
-              }).classed("filteredIn", true).classed("filteredOut", false)
 
-          })
+            let filtertableCount = filtertablerow.append("td").classed("filtertableCount", true).text("10").text(function(d, i) {return d.value})
 
-        ///ende mausclick
+
+
 
       } else if (type == "TypeAddInfo") {
         let linkTypeAddInfoCount = d3.nest()
@@ -2332,17 +2251,13 @@
           }));
 
 
-        d3.select("#filterLists")
-          .selectAll("p")
+          let filtertablerow = d3.select("#filterlisttable")
+            .selectAll("tr")
           .data(linkTypeAddInfoCount.sort((a, b) => d3.descending(a.value, b.value)).filter(function(d) {
             return d.key != "undefined"
           }))
-          .join("p")
-          .classed("filterListItem", true)
-          .classed("linklistentry", true)
-          .text(function(d, i) {
-            return d.key + " (" + d.value + ")"
-          })
+          .join("tr")
+          .attr("class", "filterlisttr")
           .on("click", function(d, i) {
             d3.select("#details").style("display", "none").selectAll("p").remove()
             d3.selectAll(".filterCross").remove()
@@ -2401,97 +2316,23 @@
 
           })
 
-        ///ende mausclick
+          filtertablerow.selectAll("td").remove()
+          let filtertableicons = filtertablerow.append("td").classed("filtertableicon", true).text("+")
 
-      } else {
-
-        let linkTempValidityCount = d3.nest()
-          .key(function(d) {
-            return d.TempValidity;
-          })
-          .rollup(function(v) {
-            return v.length;
-          })
-          .entries(links);
-
-
-        d3.select("#filterLists")
-          .selectAll("p")
-          .data(linkTempValidityCount.sort((a, b) => d3.descending(a.value, b.value)))
-          .join("p")
-          .classed("filterListItem", true)
-          .classed("linklistentry", true)
-          .text(function(d, i) {
-            return d.key + " (" + d.value + ")"
-          })
-          .on("click", function(d, i) {
-            d3.select("#details").style("display", "none").selectAll("p").remove()
-            d3.selectAll(".filterCross").remove()
-            detailview = false;
-
-            mouseOut()
-
-
-            d3.selectAll(".link").filter(function(D, I) {
-                return D.children.filter(function(x) {
-                  return x.TempValidity === d.key
-                }).length < 1
-              })
-              .style("opacity", 0)
-
-            d3.select(this).append("span").text("✕").attr("class", "filterCross").on("click", function(d, i) {
-              d3.event.stopPropagation()
-              d3.select("#details").style("display", "none").selectAll("p").remove()
-              detailview = false;
-              mouseOut(d, i)
-            })
-
-            let connectedNodes = []
-
-            d3.selectAll(".link").filter(function(D, I) {
-                return D.children.filter(function(x) {
-                  return x.TempValidity === d.key
-                }).length > 0
-              })
-              .style("opacity", 1)
-              .each(function(D, I) {
-                if (connectedNodes.filter(function(x) {
-                    return x == D._source.id
-                  }).length == 0) {
-                  connectedNodes.push(
-                    D._source.id
-                  )
-                }
-                if (connectedNodes.filter(function(x) {
-                    return x == D._target.id
-                  }).length == 0) {
-                  connectedNodes.push(
-                    D._target.id
-                  )
-                }
-              })
-
-            d3.selectAll(".nodes").classed("filteredIn", false).classed("filteredOut", true)
-
-            d3.selectAll(".nodes")
-              .filter(function(E, G) {
-                return connectedNodes.filter(function(d) {
-                  return d == E.id
-                }).length > 0
-              }).classed("filteredIn", true).classed("filteredOut", false)
-
+          let filtertablename = filtertablerow.append("td").classed("filtertablename", true).text(function(d, i) {
+            return d.key
           })
 
-        ///ende mausclick
+
+          let filtertableCount = filtertablerow.append("td").classed("filtertableCount", true).text("10").text(function(d, i) {return d.value})
 
 
 
       }
-
-
-
     }
 
+////statistic update function (left side) start
+////////////////////////////////////////////////
     function statsUpdate() {
       ///statistics start
 
@@ -2597,24 +2438,17 @@
           return d.Source == "ZDB"
         }).length)
         .style("color", edgeColors("ZDB"))
-
-
     }
 
+    ////statistic update function (left side) end
+    ////////////////////////////////////////////////
+
+///////force simulation
 
     let simulation = d3.forceSimulation()
       .force("link", d3.forceLink().id(function(d, i) {
           return i;
         })
-        //    .strength(function(d,i){return 1/ Math.min(d.source.connectivityPerCorp,d.target.connectivityPerCorp)})
-        // .strength(function(d, i) {
-        //   if (d.source.connectivityPerCorp && d.target.connectivityPerCorp) {
-        //     return 1/ Math.min(d.source.connectivityPerCorp,d.target.connectivityPerCorp)
-        //   } else {
-        //     return 0
-        //   }
-        // })
-        //  .strength(function(d,i){return d.value})
       )
       .force("charge", d3.forceManyBody().strength(function(d, i) {
         if (d.Label == "GeoName" || d.Label == "TopicTerm" || d.Label == "IsilTerm" || d.Label == "Resource") {
@@ -2637,7 +2471,7 @@
     let node = svgG.append("g").attr("class", "nodeG")
     let linkChildren = svgG.append("g").attr("class", "linkChildrenG")
     let nodesOnTop = svgG.append("g").attr("class", "nodesOnTopG")
-    // let labels = svgG.append("g").attr("class", "labelG")
+
 
 
     function renderNetwork() {
@@ -2661,7 +2495,6 @@
         .entries(links);
 
 
-
       let linkTypeAddInfoCount = d3.nest()
         .key(function(d) {
           return d.TypeAddInfo;
@@ -2672,29 +2505,18 @@
         .entries(links);
 
 
-      // console.log(nodeLabelCount)
-      // console.log(linkSourceCount)
-      // console.log(linkSourceTypeCount)
-      // console.log(linkTypeAddInfoCount)
-
-
       detailview = false;
 
 
       maxValueinNodes = Math.max(...graph.nodes.filter(function(d) {
         return d.Label == "PerName" || d.Label == "CorpName"
-      }).map(o => o.connectivityClean), 0) //Math.max
+      }).map(o => o.connectivityClean), 0)
 
 
       nodeSize = d3.scaleLinear()
         .domain([0, maxValueinNodes])
         .range([6, 30]);
 
-      //  d3.selectAll("svg").selectAll("g").remove()
-
-      // d3.select("#keywordListDiv").selectAll("p").remove()
-      // d3.select("#geoListDiv").selectAll("p").remove()
-      // d3.select("#perNameListDiv").selectAll("p").remove()
 
 
       listDropdownChange()
@@ -2775,178 +2597,175 @@
         })
         .on("click", function(d, i) {
           edgeClick(d, i)
-          if(mode == "graph"){
-///////edgeunfolding
-d3.selectAll(".link").transition().style("stroke", "#E3E3E2").style("opacity", 1)
-d3.select(this).transition().style("opacity", 0)
+          if (mode == "graph") {
+            ///////edge unfolding start
+            ////////////////////////////////////////////////
+
+            d3.selectAll(".link").transition().style("stroke", "#E3E3E2").style("opacity", 1)
+            d3.select(this).transition().style("opacity", 0)
 
 
-let x1 = d.source.x //x Punkt A
-let y1 = d.source.y //y Punkt A
-let x2 = d.target.x //x Punkt B
-let y2 = d.target.y //y Punkt B
-let mx = (x1 + x2) / 2 // Mittelpunkt x zwischen x1 und x2
-let my = (y1 + y2) / 2 // Mittelpunkt y zwischen y1 und y2
+            let x1 = d.source.x //x Punkt A
+            let y1 = d.source.y //y Punkt A
+            let x2 = d.target.x //x Punkt B
+            let y2 = d.target.y //y Punkt B
+            let mx = (x1 + x2) / 2 // Mittelpunkt x zwischen x1 und x2
+            let my = (y1 + y2) / 2 // Mittelpunkt y zwischen y1 und y2
 
-//zoom.scaleBy(svg, 20)
-zoom.translateTo(svg.transition().duration(500), mx, my)
-setTimeout(function() {
-  zoom.scaleTo(svg.transition().duration(500), 3)
-}, 750);
-
-
-
-d3.selectAll(".nodes")
-  .classed("notedgerelevant", false)
-  .filter(function(D) {
-    return D.id != d._source.id || D.id != d._target.id
-  })
-  .classed("notedgerelevant", true)
-  .transition().style("fill", "#D3D3D3")
-  .attr("width", function(d, i) {
-    return 3 / zoomlevel
-  })
-  .attr("height", function(d, i) {
-    return 3 / zoomlevel
-  })
-
-
-d3.selectAll(".nodesOnTop").remove()
-
-d3.selectAll(".nodes").filter(function(D) {
-    return D.id == d._source.id || D.id == d._target.id
-  }).classed("notedgerelevant", false)
-  .each(function(T) {
-
-      nodesOnTop.append("rect")
-        .classed("nodesOnTop", true)
-        .style("fill", function() {
-          return color("Selection")
-        })
-        .attr("width", function() {
-          return (zoomlevel >= 1) ? (nodeSize(T.connectivityClean) / zoomlevel) : nodeSize(T.connectivityClean)
-        })
-        .attr("height", function() {
-          return (zoomlevel >= 1) ? (nodeSize(T.connectivityClean) / zoomlevel) : nodeSize(T.connectivityClean)
-        })
-        .attr("x", function() {
-          return T.x -(zoomlevel >= 1) ? (nodeSize(T.connectivityClean) / zoomlevel) : nodeSize(T.connectivityClean)/2;
-        })
-        .attr("y", function() {
-          return T.y -(zoomlevel >= 1) ? (nodeSize(T.connectivityClean) / zoomlevel) : nodeSize(T.connectivityClean)/2;
-        })
-        .attr("rx", function() {
-          if(T.Label == "PerName"){
-            return 1000 //height number because"If rx is greater than half of the width of the rectangle, then the browser will consider the value for rx as half of the width of the rectangle."
-          }else{return 2}
-        })
-        .attr("connectivity", T.connectivityClean)
+            //zoom.scaleBy(svg, 20)
+            zoom.translateTo(svg.transition().duration(500), mx, my)
+            setTimeout(function() {
+              zoom.scaleTo(svg.transition().duration(500), 3)
+            }, 750);
 
 
 
-    }
-
-  )
-
-
-
-
-d3.selectAll(".nodes").filter(function(D) {
-  return D.id == d._source.id || D.id == d._target.id
-}).transition().style("fill", "black").style("opacity", 1)
-
-d3.select(".linkChildrenG").selectAll(".linkChild")
-  .data(d.children)
-  .join("path")
-  .style("fill", "none")
-  .attr("stroke-width", function() {
-    return (zoomlevel > 1) ? 1.5 / zoomlevel : 1.5
-  })
-  .attr("class", "linkChild")
-  .style("stroke-dasharray", function(D, I) {
-    if (D.originType == "GND") {
-      return null
-    } else {
-      return null //"4 1"
-    }
-  })
-  .style("stroke", function(D, I) {
-    return edgeColors(D.originType)
-
-  })
-  .attr("d", function(D, I) {
-    //  console.log(I)
-    let x1 = d.source.x //x Punkt A
-    let y1 = d.source.y //y Punkt A
-    let A = [x1, y1]
-    let x2 = d.target.x //x Punkt B
-    let y2 = d.target.y //y Punkt B
-    let B = [x2, y2]
-    let mx = (x1 + x2) / 2 // Mittelpunkt x zwischen x1 und x2
-    let my = (y1 + y2) / 2 // Mittelpunkt y zwischen y1 und y2
-    let M = [mx, my] // Mittelpunkt zwischen A und B (hier verläuft das Lot hoehe)
-
-    return "M" + d.source.x + " " + d.source.y +
-      " C " + mx + " " + my + " " +
-      mx + " " + my + " " +
-      d.target.x + " " + d.target.y
-  })
-  .transition()
-  .duration(800)
-  .attr("d", function(D, I) {
-    //  console.log(I)
-
-    let x1 = d.source.x //x Punkt A
-    let y1 = d.source.y //y Punkt A
-    let A = [x1, y1]
-    let x2 = d.target.x //x Punkt B
-    let y2 = d.target.y //y Punkt B
-    let B = [x2, y2]
-    let mx = (x1 + x2) / 2 // Mittelpunkt x zwischen x1 und x2
-    let my = (y1 + y2) / 2 // Mittelpunkt y zwischen y1 und y2
-    let M = [mx, my] // Mittelpunkt zwischen A und B (hier verläuft das Lot hoehe)
-
-    let hoehe // höhe des Ausschlags basierend auf I
-    if (I % 2) { //gerade Zahl oder ungerade Zahl damit abwechselnd oben und unten die Kante ausschlägt
-      hoehe = (I) * 3
-    } else {
-      hoehe = 3 + (I * 3)
-    }
+            d3.selectAll(".nodes")
+              .classed("notedgerelevant", false)
+              .filter(function(D) {
+                return D.id != d._source.id || D.id != d._target.id
+              })
+              .classed("notedgerelevant", true)
+              .transition().style("fill", "#D3D3D3")
+              .attr("width", function(d, i) {
+                return 3 / zoomlevel
+              })
+              .attr("height", function(d, i) {
+                return 3 / zoomlevel
+              })
 
 
+            d3.selectAll(".nodesOnTop").remove()
 
-    let AM = Math.hypot(mx - x1, my -
-      y1) //Funktion gibt die Quadratwurzel von der Summe der quadrierten Argumente zurück. Hier Berechnung der Kante von PunktA(x1y1) zu Mittelpunkt zwischen A und B (x2y2), weil dort die Höhe rechtwinklig zur Kante läuft
-    let AP = Math.hypot(AM, hoehe) //Funktion gibt die Quadratwurzel von der Summe der quadrierten Argumente zurück: Kante A zu gesuchten Punkt
-    let P = Intersect2Circles(A, AP, M, hoehe) //gesuchter Punkt
+            d3.selectAll(".nodes").filter(function(D) {
+                return D.id == d._source.id || D.id == d._target.id
+              }).classed("notedgerelevant", false)
+              .each(function(T) {
 
-    let x3 //P[1][0] //x von P
-    let y3 //= P[1][1] //y von OP
+                  nodesOnTop.append("rect")
+                    .classed("nodesOnTop", true)
+                    .style("fill", function() {
+                      return color("Selection")
+                    })
+                    .attr("width", function() {
+                      return (zoomlevel >= 1) ? (nodeSize(T.connectivityClean) / zoomlevel) : nodeSize(T.connectivityClean)
+                    })
+                    .attr("height", function() {
+                      return (zoomlevel >= 1) ? (nodeSize(T.connectivityClean) / zoomlevel) : nodeSize(T.connectivityClean)
+                    })
+                    .attr("x", function() {
+                      return T.x - (zoomlevel >= 1) ? (nodeSize(T.connectivityClean) / zoomlevel) : nodeSize(T.connectivityClean) / 2;
+                    })
+                    .attr("y", function() {
+                      return T.y - (zoomlevel >= 1) ? (nodeSize(T.connectivityClean) / zoomlevel) : nodeSize(T.connectivityClean) / 2;
+                    })
+                    .attr("rx", function() {
+                      if (T.Label == "PerName") {
+                        return 1000 //height number because"If rx is greater than half of the width of the rectangle, then the browser will consider the value for rx as half of the width of the rectangle."
+                      } else {
+                        return 2
+                      }
+                    })
+                    .attr("connectivity", T.connectivityClean)
+                }
+              )
 
-    if (I % 2) {
-      x3 = P[0][0]
-      y3 = P[0][1]
-    } else {
-      x3 = P[1][0]
-      y3 = P[1][1]
-    }
+            d3.selectAll(".nodes").filter(function(D) {
+              return D.id == d._source.id || D.id == d._target.id
+            }).transition().style("fill", "black").style("opacity", 1)
 
-    //Pfad unter Nutzung von allen drei Punkten
-    return "M" + d.source.x + " " + d.source.y +
-      " C " + x3 + " " + y3 + " " +
-      x3 + " " + y3 + " " +
-      d.target.x + " " + d.target.y
-  })
+            d3.select(".linkChildrenG").selectAll(".linkChild")
+              .data(d.children)
+              .join("path")
+              .style("fill", "none")
+              .attr("stroke-width", function() {
+                return (zoomlevel > 1) ? 1.5 / zoomlevel : 1.5
+              })
+              .attr("class", "linkChild")
+              .style("stroke-dasharray", function(D, I) {
+                if (D.originType == "GND") {
+                  return null
+                } else {
+                  return null
+                }
+              })
+              .style("stroke", function(D, I) {
+                return edgeColors(D.originType)
+
+              })
+              .attr("d", function(D, I) {
+                //  console.log(I)
+                let x1 = d.source.x //x Punkt A
+                let y1 = d.source.y //y Punkt A
+                let A = [x1, y1]
+                let x2 = d.target.x //x Punkt B
+                let y2 = d.target.y //y Punkt B
+                let B = [x2, y2]
+                let mx = (x1 + x2) / 2 // Mittelpunkt x zwischen x1 und x2
+                let my = (y1 + y2) / 2 // Mittelpunkt y zwischen y1 und y2
+                let M = [mx, my] // Mittelpunkt zwischen A und B (hier verläuft das Lot hoehe)
+
+                return "M" + d.source.x + " " + d.source.y +
+                  " C " + mx + " " + my + " " +
+                  mx + " " + my + " " +
+                  d.target.x + " " + d.target.y
+              })
+              .transition()
+              .duration(800)
+              .attr("d", function(D, I) {
+                //  console.log(I)
+
+                let x1 = d.source.x //x Punkt A
+                let y1 = d.source.y //y Punkt A
+                let A = [x1, y1]
+                let x2 = d.target.x //x Punkt B
+                let y2 = d.target.y //y Punkt B
+                let B = [x2, y2]
+                let mx = (x1 + x2) / 2 // Mittelpunkt x zwischen x1 und x2
+                let my = (y1 + y2) / 2 // Mittelpunkt y zwischen y1 und y2
+                let M = [mx, my] // Mittelpunkt zwischen A und B (hier verläuft das Lot hoehe)
+
+                let hoehe // höhe des Ausschlags basierend auf I
+                if (I % 2) { //gerade Zahl oder ungerade Zahl damit abwechselnd oben und unten die Kante ausschlägt
+                  hoehe = (I) * 3
+                } else {
+                  hoehe = 3 + (I * 3)
+                }
 
 
-////edgeunfoldingende
+
+                let AM = Math.hypot(mx - x1, my -
+                  y1) //Funktion gibt die Quadratwurzel von der Summe der quadrierten Argumente zurück. Hier Berechnung der Kante von PunktA(x1y1) zu Mittelpunkt zwischen A und B (x2y2), weil dort die Höhe rechtwinklig zur Kante läuft
+                let AP = Math.hypot(AM, hoehe) //Funktion gibt die Quadratwurzel von der Summe der quadrierten Argumente zurück: Kante A zu gesuchten Punkt
+                let P = Intersect2Circles(A, AP, M, hoehe) //gesuchter Punkt
+
+                let x3 //P[1][0] //x von P
+                let y3 //= P[1][1] //y von OP
+
+                if (I % 2) {
+                  x3 = P[0][0]
+                  y3 = P[0][1]
+                } else {
+                  x3 = P[1][0]
+                  y3 = P[1][1]
+                }
+
+                //Pfad unter Nutzung von allen drei Punkten
+                return "M" + d.source.x + " " + d.source.y +
+                  " C " + x3 + " " + y3 + " " +
+                  x3 + " " + y3 + " " +
+                  d.target.x + " " + d.target.y
+              })
+
+
+
           }
-
-
+          ///////edge unfolding end
+          ////////////////////////////////////////////////
         })
 
       //http://walter.bislins.ch/blog/index.asp?page=Schnittpunkte+zweier+Kreise+berechnen+%28JavaScript%29
-      //finde den gesuchten Punkt mit Hilfe von 2 Punkten und 2 Seitenlängen
+      //Intersect2Circles function start: find point using 2 points and 2 edge lengths
       function Intersect2Circles(A, a, B, b) {
         // A, B = [ x, y ]
         // return = [ Q1, Q2 ] or [ Q ] or [] where Q = [ x, y ]
@@ -2987,13 +2806,14 @@ d3.select(".linkChildrenG").selectAll(".linkChild")
           [Q2x, Q2y]
         ];
       }
+      //Intersect2Circles function end
+      ////////////////////////////////
 
       node.selectAll("rect")
         .data(graph.nodes.filter(function(d) {
           return d.Label != "GeoName" && d.Label != "TopicTerm" &&
             d.Label != "IsilTerm" && d.Label != "Resource" && d.Label != "ChronTerm" &&
             d.Label != "UniTitle" && d.Label != "MeetName"
-          //& d.connectivity > 1
         }))
         .join("rect")
         .attr("class", "nodes")
@@ -3004,9 +2824,11 @@ d3.select(".linkChildrenG").selectAll(".linkChild")
           return nodeSize(d.connectivityClean)
         })
         .attr("rx", function(d, i) {
-          if(d.Label == "PerName"){
+          if (d.Label == "PerName") {
             return 1000 //height number because"If rx is greater than half of the width of the rectangle, then the browser will consider the value for rx as half of the width of the rectangle."
-          }else{return 0}
+          } else {
+            return 0
+          }
         })
         .style("fill", function(d, i) {
           if (($('#search_category_select').val() == "GND-ID") && d.Id == $('#suche').val()) {
@@ -3037,9 +2859,6 @@ d3.select(".linkChildrenG").selectAll(".linkChild")
           detailview = true;
           mouseClick(d, i)
         })
-        // .on("mouseout", function(d, i) {
-        //   mouseOut(d, i)
-        // })
         .on("mousemove", function(d, i) {
           d3.select(".tooltip").select("p")
             .text(function() {
@@ -3276,12 +3095,14 @@ d3.select(".linkChildrenG").selectAll(".linkChild")
         netClustering.cluster(graph.nodes, linksClean);
 
         graph.nodes.sort(function(a, b) {
-        //  console.log(a.DateApproxBegin2)
+          //  console.log(a.DateApproxBegin2)
           return a.cluster - b.cluster || a.DateApproxBegin2 - b.DateApproxBegin2
         });
 
         ///order nodes by time and assigne an index for that for later use
-        graph.nodes.filter(function(d){return d.Label =="PerName" && d.DateApproxBegin2 != 0}).forEach(function(d, i) {
+        graph.nodes.filter(function(d) {
+          return d.Label == "PerName" && d.DateApproxBegin2 != 0
+        }).forEach(function(d, i) {
           d.temporalIndex = i;
         })
 
@@ -3300,10 +3121,10 @@ d3.select(".linkChildrenG").selectAll(".linkChild")
 
         d3.selectAll(".nodes")
           .attr("x", function(d) {
-            return d.x -nodeSize(d.connectivityClean)/2;
+            return d.x - nodeSize(d.connectivityClean) / 2;
           })
           .attr("y", function(d) {
-            return d.y -nodeSize(d.connectivityClean)/2;
+            return d.y - nodeSize(d.connectivityClean) / 2;
           });
 
       }
@@ -3321,60 +3142,59 @@ d3.select(".linkChildrenG").selectAll(".linkChild")
       d3.select(".searchbar").style("display", "none")
 
       svgG.transition()
-          .duration(750)
-          .call(zoom.transform, d3.zoomIdentity);
-          
+        .duration(750)
+        .call(zoom.transform, d3.zoomIdentity);
+
       zoomlevel = 1
 
       let temporalScale = d3.scaleLinear()
-        .domain([timelineInterval[0]-50, timelineInterval[1]+50])
+        .domain([timelineInterval[0] - 50, timelineInterval[1] + 50])
         .range([0, window.innerWidth]);
 
-        let tickNo = timelineInterval[0]-200+timelineInterval[1]+100
+      let tickNo = timelineInterval[0] - 200 + timelineInterval[1] + 100
 
-        var x_axis = d3.axisBottom()
+      var x_axis = d3.axisBottom()
         .tickFormat(d3.format("d"))
         .ticks(20)
         .scale(temporalScale);
 
-             var x_axis2 = d3.axisBottom()
-               .tickFormat(d3.format("d"))
-                  .scale(temporalScale)
-                  .ticks(40)
-                  .tickSize(20000);
+      var x_axis2 = d3.axisBottom()
+        .tickFormat(d3.format("d"))
+        .scale(temporalScale)
+        .ticks(40)
+        .tickSize(20000);
 
-d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
-
-
-                  // svgG.transition()
-                  //     .duration(750)
-                  //     .call(zoom.transform, d3.zoomIdentity);
+      d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy", 0)
 
 
-                      d3.selectAll(".axistime").transition().duration(750)
-                      //  .call(zoom.transform, d3.zoomIdentity);
 
-             d3.select("#graph").select(".svgG").append("g").lower().classed("axistime", true)
-                 .call(x_axis);
+      d3.selectAll(".axistime").transition().duration(750)
 
-                 d3.select("#graph").select(".svgG").append("g").lower().classed("axistime", true)
-                     .call(x_axis2);
+      d3.select("#graph").select(".svgG").append("g").lower().classed("axistime", true)
+        .call(x_axis);
 
-     d3.selectAll(".nodes")
-     .filter(function(d){return d.Label !="PerName" || d.DateApproxBegin2 == 0})
-     .style("display","none")
+      d3.select("#graph").select(".svgG").append("g").lower().classed("axistime", true)
+        .call(x_axis2);
 
       d3.selectAll(".nodes")
-      .filter(function(d){return d.Label =="PerName" && d.DateApproxBegin2 != 0})
+        .filter(function(d) {
+          return d.Label != "PerName" || d.DateApproxBegin2 == 0
+        })
+        .style("display", "none")
+
+      d3.selectAll(".nodes")
+        .filter(function(d) {
+          return d.Label == "PerName" && d.DateApproxBegin2 != 0
+        })
         .style("display", function(d) {
-          if (d.DateApproxBegin2 == 0 || d.Label !="PerName") {
+          if (d.DateApproxBegin2 == 0 || d.Label != "PerName") {
             return "none"
           }
         })
         .transition()
         .duration(2000)
         .attr("rx", function(d, i) {
-          return 2//height number because"If rx is greater than half of the width of the rectangle, then the browser will consider the value for rx as half of the width of the rectangle."
+          return 2 //height number because"If rx is greater than half of the width of the rectangle, then the browser will consider the value for rx as half of the width of the rectangle."
         })
         .attr("x", function(d) {
           if (d.DateApproxBegin2) {
@@ -3384,87 +3204,90 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
           }
         })
         .attr("y", function(d, i) {
-          if (d.temporalIndex == 0){
-              return 40+(9 * d.temporalIndex)
-          }else{
-            return 40+(9 * d.temporalIndex)
+          if (d.temporalIndex == 0) {
+            return 40 + (9 * d.temporalIndex)
+          } else {
+            return 40 + (9 * d.temporalIndex)
           }
         })
         .attr("width", function(d) {
           if (d.DateApproxBegin2 && d.DateApproxEnd2) {
-            return (temporalScale(Number(d.DateApproxEnd2)) - temporalScale(Number(d.DateApproxBegin2)))>5?(temporalScale(Number(d.DateApproxEnd2)) - temporalScale(Number(d.DateApproxBegin2))):5
-          } else if(d.Label == "PerName" && d.DateApproxBegin2 > 1900){
-            return (temporalScale(2021) - temporalScale(Number(d.DateApproxBegin2)))>5?(temporalScale(Number(2021)) - temporalScale(Number(d.DateApproxBegin2))):5
-        } else {
+            return (temporalScale(Number(d.DateApproxEnd2)) - temporalScale(Number(d.DateApproxBegin2))) > 5 ? (temporalScale(Number(d.DateApproxEnd2)) - temporalScale(Number(d.DateApproxBegin2))) : 5
+          } else if (d.Label == "PerName" && d.DateApproxBegin2 > 1900) {
+            return (temporalScale(2021) - temporalScale(Number(d.DateApproxBegin2))) > 5 ? (temporalScale(Number(2021)) - temporalScale(Number(d.DateApproxBegin2))) : 5
+          } else {
             return 5
           }
         })
-        // .each(function(d){
-        //   console.log(d.Name)
-        //   d3.select(".nodeG")
-        //   .append("text")
-        //   .text(d.Name)
-        //   .style("font-size", 6)
-        //   .style("fill", "rgb(199, 197, 197)")
-        //   .style("text-transform", "uppercase")
-        //   .attr("dy", 5)
-        //   .attr("dx", 2)
-        //   .attr("y", function() {
-        //     if (d.temporalIndex == 0){
-        //         return 40+(9 * d.temporalIndex)
-        //     }else{
-        //       return 40+(9 * d.temporalIndex)
-        //     }
-        //   })
-        //   .attr("x", function(){
-        //     if (d.DateApproxBegin2 && d.DateApproxEnd2) {
-        //             return temporalScale(d.DateApproxEnd2)
-        //           } else if(d.Label == "PerName" && d.DateApproxBegin2 > 1900){
-        //             return temporalScale(d.DateApproxBegin2)+(temporalScale(2021) - temporalScale(Number(d.DateApproxBegin2)))>5?(temporalScale(Number(2021)) - temporalScale(Number(d.DateApproxBegin2))):5
-        //         } else {
-        //             return temporalScale(d.DateApproxBegin2)+5
-        //           }})
-        // })
+      ////adding labels to the timeline nodes (for now taken out)
+      // .each(function(d){
+      //   console.log(d.Name)
+      //   d3.select(".nodeG")
+      //   .append("text")
+      //   .text(d.Name)
+      //   .style("font-size", 6)
+      //   .style("fill", "rgb(199, 197, 197)")
+      //   .style("text-transform", "uppercase")
+      //   .attr("dy", 5)
+      //   .attr("dx", 2)
+      //   .attr("y", function() {
+      //     if (d.temporalIndex == 0){
+      //         return 40+(9 * d.temporalIndex)
+      //     }else{
+      //       return 40+(9 * d.temporalIndex)
+      //     }
+      //   })
+      //   .attr("x", function(){
+      //     if (d.DateApproxBegin2 && d.DateApproxEnd2) {
+      //             return temporalScale(d.DateApproxEnd2)
+      //           } else if(d.Label == "PerName" && d.DateApproxBegin2 > 1900){
+      //             return temporalScale(d.DateApproxBegin2)+(temporalScale(2021) - temporalScale(Number(d.DateApproxBegin2)))>5?(temporalScale(Number(2021)) - temporalScale(Number(d.DateApproxBegin2))):5
+      //         } else {
+      //             return temporalScale(d.DateApproxBegin2)+5
+      //           }})
+      // })
 
 
 
 
       d3.selectAll(".link").transition().duration(2000).style("opacity", 0.3).style("display", function(d) {
-        if (d.source.DateApproxBegin2 == 0|| d.target.DateApproxBegin2 == 0 || d.source.Label != "PerName" || d.target.Label != "PerName") {
-          return "none"
-        }
-      })
-      .filter(function(d){return d.source.Label=="PerName" && d.target.Label=="PerName" && d.source.DateApproxBegin2 != 0 && d.target.DateApproxBegin2 != 0})
-      .attr("d", function(d) {
+          if (d.source.DateApproxBegin2 == 0 || d.target.DateApproxBegin2 == 0 || d.source.Label != "PerName" || d.target.Label != "PerName") {
+            return "none"
+          }
+        })
+        .filter(function(d) {
+          return d.source.Label == "PerName" && d.target.Label == "PerName" && d.source.DateApproxBegin2 != 0 && d.target.DateApproxBegin2 != 0
+        })
+        .attr("d", function(d) {
 
-        let dr = 2
+          let dr = 2
 
-        let nodeAx = d.source.DateApproxBegin2 != 0 ? temporalScale(d.source.DateApproxBegin2) : -200
-
-
-        let nodeAI = graph.nodes.filter(function(D, I) {
-          return D.Id == d.source.Id
-        })[0].temporalIndex
+          let nodeAx = d.source.DateApproxBegin2 != 0 ? temporalScale(d.source.DateApproxBegin2) : -200
 
 
-
-        let nodeBx = d.target.DateApproxBegin2 != 0 ? temporalScale(d.target.DateApproxBegin2) : -200
-
-
-        let nodeBI = graph.nodes.filter(function(D, I) {
-          return D.Id == d.target.Id
-        })[0].temporalIndex
+          let nodeAI = graph.nodes.filter(function(D, I) {
+            return D.Id == d.source.Id
+          })[0].temporalIndex
 
 
-        if (nodeAI < nodeBI) {
-          return "M" + nodeBx + "," + (43+(9 * nodeBI)) + "A" + dr + "," + dr + " 0 0,1 " + nodeAx + "," + (43+(9 * nodeAI))
 
-        } else {
-          return "M" + nodeAx + "," + (43+(9 * nodeAI))+ "A" + dr + "," + dr + " 0 0,1 " + nodeBx + "," + (43+(9 * nodeBI))
+          let nodeBx = d.target.DateApproxBegin2 != 0 ? temporalScale(d.target.DateApproxBegin2) : -200
 
-        }
 
-      })
+          let nodeBI = graph.nodes.filter(function(D, I) {
+            return D.Id == d.target.Id
+          })[0].temporalIndex
+
+
+          if (nodeAI < nodeBI) {
+            return "M" + nodeBx + "," + (43 + (9 * nodeBI)) + "A" + dr + "," + dr + " 0 0,1 " + nodeAx + "," + (43 + (9 * nodeAI))
+
+          } else {
+            return "M" + nodeAx + "," + (43 + (9 * nodeAI)) + "A" + dr + "," + dr + " 0 0,1 " + nodeBx + "," + (43 + (9 * nodeBI))
+
+          }
+
+        })
 
 
 
@@ -3486,12 +3309,12 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
       d3.selectAll(".axistime").remove()
 
       svgG.transition()
-          .duration(750)
-          .call(zoom.transform, d3.zoomIdentity);
+        .duration(750)
+        .call(zoom.transform, d3.zoomIdentity);
 
 
-          d3.selectAll(".axistime").transition().duration(750)
-            .call(zoom.transform, d3.zoomIdentity);
+      d3.selectAll(".axistime").transition().duration(750)
+        .call(zoom.transform, d3.zoomIdentity);
 
 
       d3.selectAll(".link").style("display", "block").transition().duration(2000).attr("d", function(d) {
@@ -3502,23 +3325,25 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
 
 
       d3.selectAll(".nodes").transition().duration(2000)
-      .attr("width", function(d, i) {
-        return (zoomlevel > 1) ? (nodeSize(d.connectivityClean) / zoomlevel) : nodeSize(d.connectivityClean)
-      })
-      .attr("height", function(d, i) {
-        return (zoomlevel > 1) ? (nodeSize(d.connectivityClean) / zoomlevel) : nodeSize(d.connectivityClean)
-      })
-      .attr("x", function(d,i) {
-        return d.x -((zoomlevel >= 1) ? (nodeSize(d.connectivityClean) / zoomlevel) : nodeSize(d.connectivityClean))/2;
-      })
-      .attr("y", function(d,i) {
-        return d.y -((zoomlevel >= 1) ? (nodeSize(d.connectivityClean) / zoomlevel) : nodeSize(d.connectivityClean))/2;
-      })
-      .attr("rx", function(d, i) {
-        if(d.Label == "PerName"){
-          return 1000 //height number because"If rx is greater than half of the width of the rectangle, then the browser will consider the value for rx as half of the width of the rectangle."
-        }else{return 0}
-      })
+        .attr("width", function(d, i) {
+          return (zoomlevel > 1) ? (nodeSize(d.connectivityClean) / zoomlevel) : nodeSize(d.connectivityClean)
+        })
+        .attr("height", function(d, i) {
+          return (zoomlevel > 1) ? (nodeSize(d.connectivityClean) / zoomlevel) : nodeSize(d.connectivityClean)
+        })
+        .attr("x", function(d, i) {
+          return d.x - ((zoomlevel >= 1) ? (nodeSize(d.connectivityClean) / zoomlevel) : nodeSize(d.connectivityClean)) / 2;
+        })
+        .attr("y", function(d, i) {
+          return d.y - ((zoomlevel >= 1) ? (nodeSize(d.connectivityClean) / zoomlevel) : nodeSize(d.connectivityClean)) / 2;
+        })
+        .attr("rx", function(d, i) {
+          if (d.Label == "PerName") {
+            return 1000 //height number because"If rx is greater than half of the width of the rectangle, then the browser will consider the value for rx as half of the width of the rectangle."
+          } else {
+            return 0
+          }
+        })
         .style("display", null)
 
 
@@ -3584,6 +3409,10 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
     function mouseClick(D, I) {
       d3.select("#details").style("display", "none").selectAll("p").remove()
       d3.select("#details").style("display", "none").selectAll("a").remove()
+      d3.select("#details").style("display", "none").selectAll("li").remove()
+      d3.select("#details").style("display", "none").selectAll("ul").remove()
+
+
       d3.select("#closedetails").style("display", "block")
       d3.selectAll(".nodes").classed("filteredIn", false).classed("filteredOut", true)
       d3.selectAll(".linkChild").remove()
@@ -3650,15 +3479,19 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
         let key = entry[0];
         let value = entry[1];
 
-        if (value != "" && value != null && key != "x" && key != "y" && key != "vx" && key != "vy" && key != "index" && key != "connectivity" && key != "connectivityPerCorp") {
-          if (key != "Uri") {
+        if (value != "" && value != null && key != "x" && key != "y" && key != "vx" && key != "vy" && key != "index" && key != "connectivity" && key != "connectivityPerCorp"
+        && key!="GenType" && key!="SpecType" && key!="DateApproxBegin" && key!="DateApproxBegin2" && key!="DateApproxEnd" && key!="DateApproxEnd2" && key!="connectivityClean" && key !="temporalIndex" && key != "cluster" && key != "n4jID" && key != "id") {
+          if (key != "Uri" && key != "Gender") {
             d3.select("#details").append("p").attr("class", "detail_key").text(key)
-            d3.select("#details").append("p").attr("class", "detail_value").text(value)
+            d3.select("#details").append("p").attr("class", "detail_value").text(function(){if(typeof value === "string" && value.includes(";;;")){return value.replace(/;;;/g, "; ")}else{return value}})
 
-            //        d3.select("#details").append("p").attr("class", "detail_value").text(value.replace(/;;;/g, "; "))
+          } else if (key == "Gender") {
+            d3.select("#details").append("p").attr("class", "detail_key").text(key)
+            d3.select("#details").append("p").attr("class", "detail_value").text(function(){if(value == "1"){return "männlich"}else if(value == "2"){return "weiblich"}else{return "keine Angabe"}})
+
           } else {
             d3.select("#details").append("p").attr("class", "detail_key").text(key)
-            d3.select("#details").append("a").attr("href", value).attr("target", "_blank").attr("class", "detail_value").text(value.replace(/;;;/g, "; "))
+            d3.select("#details").append("a").attr("href", value).attr("target", "_blank").attr("class", "detail_value").text(function(){if(typeof value === "string" && value.includes(";;;")){return value.replace(/;;;/g, "; ")}else{return value}})
           }
 
         }
@@ -3666,38 +3499,44 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
 
       });
 
-      d3.select("#details").append("p").attr("class", "relationsheadline, detail_key").text("Verbundene Orte")
+      if (D.Label != "GeoName" && allConnections.filter(function(x, y) {return x.type == "RelationToGeoName"}).length >0){
+        d3.select("#details").append("p").attr("class", "relationsheadline, detail_key").text("Verbundene Orte")
 
-      allConnections.filter(function(x, y) {
-        return x.type == "RelationToGeoName"
-      }).forEach(function(connection, i) {
-        d3.select("#details").append("p").attr("class", "detail_value, relations_value").style("color", "black")
-          .text(function() {
-            return connection._target.Name + " (" + connection.SourceType + ")"
-          })
-      })
+        allConnections.filter(function(x, y) {
+          return x.type == "RelationToGeoName"
+        }).forEach(function(connection, i) {
+          d3.select("#details").append("li").attr("class", "detail_value, relations_value").style("color", "black")
+            .text(function() {
+              return connection._target.Name + " (" + connection.SourceType + ")"
+            })
+        })
+      }
 
 
+      if (D.Label != "TopicTerm" && allConnections.filter(function(x, y) {return x.type == "RelationToTopicTerm"}).length >0){
       d3.select("#details").append("p").attr("class", "relationsheadline, detail_key").text("Verbundene Sachbegriffe")
       allConnections.filter(function(x, y) {
         return x.type == "RelationToTopicTerm"
       }).forEach(function(connection, i) {
-        d3.select("#details").append("p").attr("class", "detail_value, relations_value").style("color", "black")
+        d3.select("#details").append("li").attr("class", "detail_value, relations_value").style("color", "black")
           .text(function() {
             return connection._target.Name + " (" + connection.SourceType + ")"
           })
       })
+    }
 
+      if (D.Label != "Resource" && allConnections.filter(function(x, y) {return x._source.Label == "Resource" || x._target.Label == "Resource"}).length >0){
       d3.select("#details").append("p").attr("class", "relationsheadline, detail_key").text("Verbundene Ressourcen")
       allConnections.filter(function(x, y) {
         return x._source.Label == "Resource" || x._target.Label == "Resource"
       }).forEach(function(connection, i) {
-        d3.select("#details").append("p").attr("class", "detail_value, relations_value").style("color", "black")
+        d3.select("#details").append("li").attr("class", "detail_value, relations_value").style("color", "black")
           .text(function() {
             return connection._source.Name + " (" + connection.SourceType + ", " + connection.Source +
               ", " + connection.TypeAddInfo + ", " + connection.TempValidity + ")"
           })
       })
+    }
 
       d3.select("#details").append("p").attr("class", "relationsheadline, detail_key").text("Verbundene Personen")
 
@@ -3706,16 +3545,15 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
         })
         .sort((a, b) => d3.descending(a.children.length, b.children.length))
         .forEach(function(connection, i) {
-          d3.select("#details").append("p").attr("class", "detail_value, relations_value")
+          d3.select("#details").append("li").attr("class", "detail_value, relations_value")
             .text(function() {
               if (D.Id == connection._source.Id) {
                 return connection._target.Name + " (" + connection.children.length + ")"
               } else {
-                return connection._source.Name
+                return connection._source.Name + " (" + connection.children.length + ")"
               }
 
             })
-          //  .on("click", edgeClick(connection))
 
         })
 
@@ -3724,17 +3562,17 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
       connections.filter(function(x, y) {
         return x._source.Label == "CorpName" || x._target.Label == "CorpName"
       }).forEach(function(connection, i) {
-        d3.select("#details").append("p").attr("class", "detail_value, relations_value").style("color", function() {
+        d3.select("#details").append("li").attr("class", "detail_value, relations_value").style("color", function() {
           if (connection.type == "SocialRelation") {
-            return "black" //edgeColors("computed")
+            return "black"
           } else {
-            return "black" //edgeColors(connection.Source)
+            return "black"
           }
         }).text(function() {
           if (D.Id == connection._source.Id) {
-            return connection._target.Name
+            return connection._target.Name + " (" + connection.children.length + ")"
           } else {
-            return connection._source.Name
+            return connection._source.Name + " (" + connection.children.length + ")"
           }
 
         })
@@ -3746,34 +3584,32 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
 
     function mouseOut(D, I) {
       if (detailview != true) {
-        if (mode == "graph"){
-        d3.select("#graph").transition().duration(750).call(zoom.transform, d3.zoomIdentity)
+        if (mode == "graph") {
+          d3.select("#graph").transition().duration(750).call(zoom.transform, d3.zoomIdentity)
         }
 
-        // d3.selectAll(".topicterm,.geoname").classed("topicGeoNotDisplayed", false)
         d3.select("#closedetails").style("display", "none")
 
         d3.selectAll(".filterCross").remove()
         d3.selectAll(".nodes").classed("filteredIn", true).classed("filteredOut", false).classed("notedgerelevant", false)
-        //  d3.selectAll(".label").style("font-size", "4px").style("display", function(d,i){if(d.connectivity <20 || d.Label != "PerName" && d.Label != "CorpName"){return "none"}})
 
         d3.selectAll(".link").style("opacity", 1)
         d3.selectAll(".nodesOnTop").remove()
         d3.selectAll(".linkChild").remove()
         d3.selectAll(".link").style("opacity", null)
 
-        if(mode =="graph"){
-        d3.selectAll(".nodes").style("opacity", null)
-          .attr("width", function(d, i) {
-            if(mode=="graph")
-            return (zoomlevel >= 1) ? (nodeSize(d.connectivityClean) / zoomlevel) : nodeSize(d.connectivityClean)
-          })
-          .attr("height", function(d, i) {
-            return (zoomlevel >= 1) ? (nodeSize(d.connectivityClean) / zoomlevel) : nodeSize(d.connectivityClean)
-          })
+        if (mode == "graph") {
+          d3.selectAll(".nodes").style("opacity", null)
+            .attr("width", function(d, i) {
+              if (mode == "graph")
+                return (zoomlevel >= 1) ? (nodeSize(d.connectivityClean) / zoomlevel) : nodeSize(d.connectivityClean)
+            })
+            .attr("height", function(d, i) {
+              return (zoomlevel >= 1) ? (nodeSize(d.connectivityClean) / zoomlevel) : nodeSize(d.connectivityClean)
+            })
         }
 
-          d3.selectAll(".nodes").style("opacity", null)
+        d3.selectAll(".nodes").style("opacity", null)
           .style("fill", function(d, i) {
             if (($('#search_category_select').val() == "GND-ID") && d.Id == $('#suche').val()) {
               return color("Selection")
@@ -3807,12 +3643,10 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
 
 
 
-    //begin: constants
+
     const _2PI = 2 * Math.PI;
-    //end: constants
 
 
-    //begin: layout conf.
     let svg1id = "#vis"
     let svg2id = "#visgeo"
     let svg3id = "#visres"
@@ -3841,9 +3675,6 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
     MeetNameCenter = [0.35 * width, 0.25 * height]
     UniTitleCenter = [halfWidth, 0.2 * height]
     CorpNameCenter = [0.65 * width, 0.25 * height]
-    //end: layout conf.
-
-
 
 
     let windowWidthOverview = window.innerWidth - 2 * marginOverview.left
@@ -3872,23 +3703,14 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
       .attr("height", "100%")
 
 
-
-
-    // function voronoiAll(dataset, svgselector){
-
-    //begin: raw data global def
     let totalCount = 0
     let totalCountGeo = 0
     let totalCountRes = 0
     let totalCountMeet = 0
     let totalCountUni = 0
     let totalCountCorp = 0
-    //end: raw data global def
 
 
-
-    //begin: treemap conf.
-    //let baseRadius = 100
     let Radius
     let RadiusGeo
     let RadiusRes
@@ -3907,7 +3729,7 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
     let PolygonsMeet
     let PolygonsUni
     let PolygonsCorp
-    //end: treemap conf.
+
 
     let top100Value = 0
     let top100ValueGeo = 0
@@ -3930,19 +3752,12 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
 
 
 
-    //
-    // const formatComma = d3.format(",")
-
     const radiusScale = d3.scaleSqrt()
       .domain([0, 8000000])
       .range([50, 250])
 
     const colorScale = d3.scaleOrdinal()
       .range(['#f0f0f0', '#d9d9d9', '#bdbdbd', '#969696', '#737373', '#525252', '#252525'])
-    //.range(["rgb(241, 250, 250)","rgb(208, 217, 217)","rgb(175, 184, 184)","rgb(156, 166, 166)","rgb(125, 134, 134)", "rgb(75, 82, 82)"])
-
-
-
 
     const colorScaleEdges = d3.scaleOrdinal()
       .domain(["GND", "KPE", "DNB", "SBB", "ZDB", "Comp"])
@@ -3971,12 +3786,7 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
     let selectionDataCorp
     let selectionDataStateCorp
 
-    // //begin: reusable d3Selection
-    // var drawingArea;
-    // var categoryContainer;
-
-    //end: reusable d3Selection
-
+///load data
     Promise.all([
         d3.csv("data/persontopicterms_50er_long-komp.csv"), //data
         d3.csv("data/persongeonames_50er_long_komp.csv"), //geodata
@@ -3985,17 +3795,11 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
         d3.csv("data/unititletopic_50er_long_komp.csv"), //unititle
         d3.csv("data/corpname_50er_long_komp.csv"), //corpname
         d3.csv("data/all-relations160821_final.csv"),
-        d3.csv("data/all-timeline-relations.csv"),
-        //timeline
+        d3.csv("data/all-timeline-relations.csv"),//timeline
       ])
       .then(([data, geodata, resdata, meetdata, unidata, corpdata, relationdata, timelinerelations]) => {
 
-        // d3.csv("persongeonames_50er_long.csv").then(function(data) {
-
-
-
-
-
+//parse data
         data.forEach(function(d) {
           d.entityName = d.entityName;
           d.value = +d.value;
@@ -4065,26 +3869,17 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
           d.PerPer_Comp = +d.PerPer_Comp;
           d.CorpPer_Comp = +d.CorpPer_Comp;
         })
-        console.log(timelinerelations)
+
+        //make timelinedata accesible outsite function
         timelinerelationsData = timelinerelations
 
-        // range.on('change', function() {
-        //   value.html(this.value);
-        //   updateData(data, geodata, resdata, meetdata, unidata, corpdata, yearSelected)
-        //   updateRelations(relationdata)
-        //
-        // });
-
+        //call data processing function
         updateData(data, geodata, resdata, meetdata, unidata, corpdata, yearSelected)
 
 
-
-
-
-
-
-
-        /////timelineStart
+        /////overview timeline Start
+        ///////////////////////////////////
+        ///set up scales
         timelineScale = d3.scaleLinear()
           .domain(timelineInterval)
           .range([0, windowWidth]);
@@ -4168,8 +3963,6 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
           .curve(d3.curveBasis);
 
 
-
-
         let areachartGroup = timelineVis.append("g").attr("class", "areachartGroup") //.attr("transform", "translate(" + 116 + "," + timelineMarginTop + ")")
 
         let areachart = d3.selectAll(".areachartGroup")
@@ -4184,11 +3977,10 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
           }
         })
 
+
         brushTimelineX = d3.brushX()
-          .extent([
-            [0, 0],
-            [windowWidth, timelineHeight]
-          ]).on("brush", timelinebrushed)
+          .extent([[0, 0],[windowWidth, timelineHeight]])
+          .on("brush", timelinebrushed)
           .on("end", timelinebrushed)
 
         timelinebrush.call(brushTimelineX)
@@ -4212,11 +4004,11 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
             })
             .attr("data-year", rectI)
             .on("mouseover", function(d) {
-              d3.select(this) //.attr("fill", "#d9d9d9")
+              d3.select(this)
                 .classed("timelineRecthover", true)
             })
             .on("mouseout", function(d) {
-              d3.select(this) //.attr("fill", "#fafafa")
+              d3.select(this)
                 .classed("timelineRecthover", false)
             })
             .on("click", function(d) {
@@ -4255,17 +4047,13 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
           rectI = rectI + 50
         }
 
+        ///small black line above timeline
         areachartRectangles.append("rect")
           .attr("x", 0)
           .attr("y", 0)
           .attr("height", 1)
           .attr("width", "100%")
           .style("fill", "black")
-
-
-
-
-
 
 
         areachart.append("g").attr("class", "axisTime")
@@ -4299,7 +4087,6 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
           .style("stroke-width", 1)
           .attr("class", "overviewareaDNB")
 
-        //
         areachart.append("path")
           .datum(timelinerelations)
           .attr("d", areaSBB)
@@ -4321,23 +4108,22 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
         areachart.append("path")
           .datum(timelinerelations)
           .attr("d", areaComp)
-          .style("fill", colorScaleEdges("Comp")) //"url(#diagonalHatch)")
+          .style("fill", colorScaleEdges("Comp"))
           .style("opacity", 1)
           .style("stroke", "white")
           .style("stroke-width", 1)
           .attr("class", "overviewareaComp")
-        //timelineEnd
 
 
+        //overview timelineEnd
+        //////////////////////////////
 
 
         ///relations edges Start
+        //////////////////////////////
         let relationsYearSelected = yearSelected
 
-
-        ///all edges except PerName -- PerName
-        // relationdata.filter(function(d){return d.year == relationsYearSelected && d.target != "PerName"}).forEach((d, i) => {
-
+        ///create lines between voronois
 
         let DNBResLineStrength = edgesSizeScale(relationdata.filter(function(d) {
           return d.year == relationsYearSelected && d.target == "Resource" && d.type == "DNB"
@@ -4500,7 +4286,10 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
 
 
         ///relations edges End
+        //////////////////////////////////////////////////
 
+        /////////////////////////////////////////////
+        ///Update Relations Function Start
         function updateRelations(relationdata) {
           relationsYearSelected = yearSelected
 
@@ -4652,7 +4441,11 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
 
         }
 
+        /////////////////////////////////////////////
+        ///Update Relations Function End
 
+        /////////////////////////////////////////////
+        ///Update Data Function Start
 
         function updateData(data, geodata, resdata, meetdata, unidata, corpdata, yearSelected) {
 
@@ -5081,8 +4874,11 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
 
       });
 
+      /////////////////////////////////////////////
+      ///Update Data Function End
 
-
+      /////////////////////////////////////////////
+      ///Init Data Function Start
 
     function initData(data, geodata, resdata, meetdata, unidata, corpdata) {
       Radius = radiusScale(totalValue)
@@ -5171,7 +4967,11 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
 
     }
 
+    /////////////////////////////////////////////
+    ///Init Data Function End
 
+    /////////////////////////////////////////////
+    ///Update Voronoi Start
 
     function updateTreemap(svgid, TreemapCenter, polygons, totalValue, Radius, title) {
       let container
@@ -5255,9 +5055,11 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
 
     }
 
+    /////////////////////////////////////////////
+    ///Update Voronoi End
 
-
-
+    /////////////////////////////////////////////
+    ///Draw Voronoi Start
 
     function drawTreemap(svgid, polygons) {
       let container
@@ -5299,11 +5101,13 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
 
           div.style("opacity", 0);
         });
-
-
-
     }
 
+    /////////////////////////////////////////////
+    ///Draw Voronoi End
+
+    /////////////////////////////////////////////
+    ///Create toplist on click on label function start
 
     function createTopList(type) {
       d3.selectAll(".toplistDiv").remove()
@@ -5353,6 +5157,13 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
         })
 
     }
+
+
+    /////////////////////////////////////////////
+    ///Create toplist on click on label function ende
+
+    /////////////////////////////////////////////
+    ///Make timeline responsive start
 
     d3.select(window).on('resize', resizeTimeline)
 
@@ -5516,6 +5327,8 @@ d3.selectAll("#graph").selectAll(".tick").selectAll("text").style("dy",0)
 
 
     }
+    /////////////////////////////////////////////
+    ///Make timeline responsive end
   </script>
 </body>
 

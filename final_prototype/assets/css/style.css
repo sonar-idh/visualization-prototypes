@@ -1,0 +1,816 @@
+:root {
+  --main-bg-color: rgb(250, 250, 250);
+  --sec-color: rgba(250, 250, 250, 0.95);
+  --KPE: #494b9a;
+  --GND: #ea635e;
+  --SBB: #e8ce4b;
+  --DNB: #44b78d;
+  --ZDB: #e5994c;
+  --Comp: rgb(56, 56, 56);
+}
+
+/* open-sans-300 - latin */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: url('../fonts/open-sans-v16-latin-300.eot'); /* IE9 Compat Modes */
+  src: local('Open Sans Light'), local('OpenSans-Light'),
+       url('../fonts/open-sans-v16-latin-300.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/open-sans-v16-latin-300.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/open-sans-v16-latin-300.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/open-sans-v16-latin-300.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/open-sans-v16-latin-300.svg#OpenSans') format('svg'); /* Legacy iOS */
+}
+/* open-sans-regular - latin */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/open-sans-v16-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local('Open Sans Regular'), local('OpenSans-Regular'),
+       url('../fonts/open-sans-v16-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/open-sans-v16-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/open-sans-v16-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/open-sans-v16-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/open-sans-v16-latin-regular.svg#OpenSans') format('svg'); /* Legacy iOS */
+}
+/* open-sans-300italic - latin */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 300;
+  src: url('../fonts/open-sans-v16-latin-300italic.eot'); /* IE9 Compat Modes */
+  src: local('Open Sans Light Italic'), local('OpenSans-LightItalic'),
+       url('../fonts/open-sans-v16-latin-300italic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/open-sans-v16-latin-300italic.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/open-sans-v16-latin-300italic.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/open-sans-v16-latin-300italic.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/open-sans-v16-latin-300italic.svg#OpenSans') format('svg'); /* Legacy iOS */
+}
+/* open-sans-italic - latin */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: url('../fonts/open-sans-v16-latin-italic.eot'); /* IE9 Compat Modes */
+  src: local('Open Sans Italic'), local('OpenSans-Italic'),
+       url('../fonts/open-sans-v16-latin-italic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/open-sans-v16-latin-italic.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/open-sans-v16-latin-italic.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/open-sans-v16-latin-italic.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/open-sans-v16-latin-italic.svg#OpenSans') format('svg'); /* Legacy iOS */
+}
+/* open-sans-600 - latin */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 600;
+  src: url('../fonts/open-sans-v16-latin-600.eot'); /* IE9 Compat Modes */
+  src: local('Open Sans SemiBold'), local('OpenSans-SemiBold'),
+       url('../fonts/open-sans-v16-latin-600.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/open-sans-v16-latin-600.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/open-sans-v16-latin-600.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/open-sans-v16-latin-600.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/open-sans-v16-latin-600.svg#OpenSans') format('svg'); /* Legacy iOS */
+}
+/* open-sans-600italic - latin */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 600;
+  src: url('../fonts/open-sans-v16-latin-600italic.eot'); /* IE9 Compat Modes */
+  src: local('Open Sans SemiBold Italic'), local('OpenSans-SemiBoldItalic'),
+       url('../fonts/open-sans-v16-latin-600italic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/open-sans-v16-latin-600italic.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/open-sans-v16-latin-600italic.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/open-sans-v16-latin-600italic.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/open-sans-v16-latin-600italic.svg#OpenSans') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+   font-family: 'Material Icons';
+   font-style: normal;
+   font-weight: 400;
+   src: local('Material Icons'),
+        local('MaterialIcons-Regular'),
+        url(../fonts/material-design-icons/font/MaterialIcons-Regular.ttf) format('truetype');
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  margin:0;
+  padding:0;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+
+body {
+  background-color: var(--main-bg-color);
+  font-family: 'Open Sans', sans-serif;
+  margin: 0;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  /* Remove scrollbar space */
+  background: transparent;
+  /* Optional: just make scrollbar invisible */
+}
+
+
+a:link {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+
+.cell {
+  stroke: white;
+  stroke-width: 1px;
+}
+
+.labelbg {
+  fill: #fafafa;
+  text-anchor: middle;
+  font-size: 12px;
+  font-weight: 600;
+  stroke-width: 6px;
+  stroke: #fafafa;
+  stroke-linecap: round;
+  text-transform: uppercase;
+}
+
+
+.label {
+  fill: #737373;
+  text-anchor: middle;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+
+div.tooltip {
+  position: absolute;
+  text-align: left;
+  width: auto;
+  height: auto;
+  margin: 2;
+  padding: 2px;
+  font-size: 11px;
+  background: white;
+  color: black;
+  border: solid #bdbdbd;
+  border-width: 1px;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+div.tooltip p {
+  margin: 5px;
+  padding: 0;
+}
+
+#vis {
+  position: fixed;
+}
+
+#visgeo {
+  position: fixed;
+}
+
+
+#timelineDiv {
+  width: 100%;
+  height: 25%;
+  position: fixed;
+  bottom: 0px;
+  left: 0;
+  text-align: right;
+}
+
+
+#timelinetitle {
+  padding-left: 12px;
+  padding-top: 0;
+  padding-bottom: 0;
+  vertical-align: middle;
+  font-size: 12px;
+  font-weight: normal;
+  width: 260px;
+  height: 25px;
+  bottom: 25%;
+  position: absolute;
+  background: #d9d9d9;
+}
+
+#timelinetitle:after {
+  content: "";
+  position: absolute;
+  right: -45px;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-left: 45px solid #d9d9d9;
+  border-top: 25px solid transparent;
+}
+
+#timelinetitle p {
+  margin: 0;
+  margin-top: 4px;
+}
+
+#timelineselectedyear {
+  font-weight: bold;
+}
+
+#yearSlider {
+  position: absolute;
+  bottom: 0px;
+  vertical-align: middle;
+  width: 100%;
+  height: 50px;
+  text-align: center;
+}
+
+input[type="range"] {
+  width: 100%;
+  direction: ltr;
+}
+
+.range-value {
+  margin: 0;
+}
+
+#svg {
+  margin: 0;
+}
+
+#timelineSVG .tick line {
+  display: none;
+}
+
+.timelineRect {
+  fill: var(--sec-color);
+  stroke: #d9d9d9;
+  stroke-width: 3;
+  cursor: pointer;
+}
+
+.timelineRect.timelineRecthover {
+  fill: #d9d9d9;
+}
+
+.timelineRect.timelineRectSelected {
+  fill: #d9d9d9;
+}
+
+
+.info {
+  font-size: 12px;
+  padding: 12px;
+  width: 250px;
+  height: 70%;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  color: black;
+  background-color: rgba(250, 250, 250, 0.75);
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 22px;
+}
+
+.info p {
+  font-size: 12px;
+}
+
+.infohighlight {}
+
+.gnd-highlight {
+  font-weight: bold;
+  color: var(--GND);
+  text-decoration: underline;
+}
+
+.kpe-highlight {
+  font-weight: bold;
+  color: var(--KPE);
+  text-decoration: underline;
+}
+
+.dnb-highlight {
+  font-weight: bold;
+  color: var(--DNB);
+  text-decoration: underline;
+}
+
+.sbb-highlight {
+  font-weight: bold;
+  color: var(--SBB);
+  text-decoration: underline;
+}
+
+.zdb-highlight {
+  font-weight: bold;
+  color: var(--ZDB);
+  text-decoration: underline;
+}
+
+.comp-highlight {
+  font-weight: bold;
+  color: var(--Comp);
+  text-decoration: underline;
+}
+
+/* unvisited link */
+a:link {
+  color: black;
+}
+
+/* visited link */
+a:visited {
+  color: black;
+}
+
+/* mouse over link */
+a:hover {
+  color: black;
+}
+
+/* selected link */
+a:active {
+  color: black;
+}
+
+.searchbar {
+  font-size: 12px;
+  font-weight: bold;
+  margin: 12px;
+  width: 100%;
+  height: 44px;
+  position: absolute;
+  top: 0px;
+  margin: auto;
+  color: black;
+  text-align: center;
+  vertical-align: middle;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+}
+
+#searchfield {
+  padding: 0;
+  margin: 0;
+  padding-top: 0px;
+  position: relative;
+  display: inline-block;
+  width: 280px;
+  height: 30px;
+  text-align: center;
+  vertical-align: middle;
+  background-color: white;
+  border: solid #bdbdbd;
+  border-width: 0px;
+  border-radius: 8px;
+}
+
+.searchbuttons {
+  padding: 0;
+  font-size: 18px;
+  height: 22px;
+  width: 22px;
+  text-align: center;
+  vertical-align: middle;
+  border: 0;
+  background-color: white;
+}
+
+#suche {
+  width: 160px;
+  border: 0;
+  font-weight: bold;
+  font-size: 12px;
+  text-align: center;
+}
+
+#search_category_select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: url(../fonts/material-design-icons/font/expand_more_black_24dp.svg) no-repeat;
+  background-size: 10px 10px;
+  background-position: right center;
+  display: inline-block;
+  position: relative;
+  height: 32px;
+  width: 28px;
+  padding: 0;
+  background-color: var(--main-color);
+  border-width: 0px;
+  border-color: #b3b3b3;
+  border-radius: 8px 0 0 8px;
+  font-size: 11px;
+  font-weight: bold;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.search-border-wrap {
+  padding: 1px;
+  margin-top: 12px;
+  position: relative;
+  width: 280px;
+  height: 30px;
+  text-align: center;
+  vertical-align: middle;
+  background-color: white;
+  border: solid #bdbdbd;
+  border-width: 0px;
+  border-radius: 8px;
+  position: relative;
+  background: linear-gradient(to right, var(--GND), var(--KPE), var(--ZDB), var(--DNB), var(--SBB));
+}
+
+
+.toplistDiv {
+  position: fixed;
+  height: 75%;
+  width: 300px;
+  background-color: rgba(255, 255, 255, 0.92);
+  color: black;
+  border: solid #bdbdbd;
+  border-width: 1px;
+  border-radius: 8px;
+  top: 12.5%;
+  left: calc((100% - 300px)/2);
+  padding: 10px;
+}
+
+.toplisttext {
+  position: relative;
+  width: 100%;
+  height: calc(100% - 1.5em);
+  overflow: auto;
+}
+
+.toplistentries {
+  font-size: 12px;
+  margin: 0;
+}
+
+.toplistCross {
+  font-size: 20px;
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.toplistsearch {
+  background-color: none;
+  width: 90%;
+  margin-bottom: 5px;
+}
+
+/*
+ * === LOADING ICON===
+ */
+#loadbg {
+  z-index: 700;
+  position: absolute;
+  background: linear-gradient(45deg, var(--GND), var(--KPE), var(--ZDB), var(--DNB), var(--SBB));
+  width: 100%;
+  height: 100%;
+  opacity: 0.3;
+  top: 0;
+  display: none;
+}
+
+#load {
+  position: absolute;
+  z-index: 700;
+  left: calc(50% - 50px);
+  top: calc(50% - 150px);
+  display: none;
+}
+
+.loader {
+  border: 20px solid white;
+  border-top: 20px solid var(--GND);
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear 15;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/*
+ * === LOADING ICON END===
+ */
+
+
+
+#details {
+  background-color: white;
+  margin: 0px;
+  font-size: 0.8em;
+  position: fixed;
+  overflow-y: auto;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100%;
+  display: none;
+  text-align: left;
+  padding: 20px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.26);
+}
+
+#details ul{
+  padding-left: 1px;
+  margin-top:0;
+}
+
+.detailEdgeList{
+  list-style: none;
+}
+
+
+.detailEdgeList li::before {
+  content: "\25FC";
+  font-weight: bold;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
+
+.detailEdgeList li.KPE::before {
+  color: var(--KPE);
+}
+
+.detailEdgeList li {
+margin-bottom: 5px;
+}
+
+.detailEdgeList li.GND::before {
+  color: var(--GND);
+}
+
+.detailEdgeList li.SBB::before {
+  color: var(--SBB);
+}
+
+.detailEdgeList li.ZDB::before {
+  color: var(--ZDB);
+}
+
+.detailEdgeList li.DNB::before {
+  color: var(--DNB);
+}
+
+
+#filterLists {
+  background-color: white;
+  margin: 0px;
+  font-size: 0.8em;
+  position: fixed;
+  border-width: 1px;
+  border-radius: 8px;
+  margin: 10px;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: calc(75% - 40px);
+  text-align: left;
+  padding: 10px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.26);
+}
+
+#filterlistentries {
+  overflow-y: auto;
+  height: calc(100% - 65px);
+}
+
+.filterlistsearch {
+  background-color: none;
+  width: 190px;
+  margin-top: 5px;
+}
+
+
+#graph {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  cursor: move;
+  display: none;
+}
+
+
+#closedetails {
+  position: fixed;
+  left: 250px;
+  top: 0;
+  font-size: 30;
+  color: black;
+  cursor: pointer;
+  display: none;
+}
+
+.nodes {
+  cursor: pointer;
+}
+
+.detail_key {
+  font-weight: normal;
+  color: grey;
+  margin-bottom: 0;
+}
+
+.detail_value {
+  margin-top: 0;
+  font-weight: bold;
+  color: black;
+}
+
+.relations_value {
+  margin-top: 0;
+  margin-bottom: 5;
+  font-weight: bold;
+  font-size: 1em;
+  color: black;
+}
+
+.domain {
+  visibility: visible;
+}
+
+.filteredOut {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.filteredIn {
+  opacity: 1;
+}
+
+.timefilteredOut {
+  display: none;
+  pointer-events: none;
+}
+
+#graph-metrics p {
+  margin: 0;
+}
+
+#graph-info {
+  display: none;
+}
+
+#graph-metrics {
+  display: none;
+}
+
+#filterLists h1 {
+  margin: 0;
+  margin-left: 3px;
+  font-size: 14px;
+}
+
+.filterlisttr td {
+  vertical-align: top;
+}
+.filterlisttr{
+cursor: pointer;
+}
+
+#filter-select-dropdown {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: url(../fonts/material-design-icons/font/expand_more_black_24dp.svg) no-repeat;
+  background-size: 10px 10px;
+  background-position: right center;
+  display: inline-block;
+  position: relative;
+  padding: 0;
+  margin: 0;
+  background-color: white;
+  width: 100%;
+  border-width: 0px;
+  font-size: 12px;
+  font-weight: bold;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.filtertableCount {
+  text-align: right;
+}
+
+.filterlisttr {
+  width: 100%;
+}
+
+
+#metrics-table {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+#metrics-table td {
+  padding: 0;
+  font-weight: bold;
+  border: none;
+}
+
+#metrics-table tr:nth-child(7n+0) {
+  vertical-align: top;
+  height: 30px;
+}
+
+
+.navigationButtons {
+  padding: 1;
+  margin-bottom: 5px;
+  border-radius: 0px 8px 8px 0;
+  border: solid #bdbdbd;
+  border-width: 1px;
+  width: 200px;
+  text-align: left;
+  cursor: pointer;
+  background-color: rgb(239, 239, 239);
+}
+
+#download {
+  cursor: not-allowed;
+}
+
+#speichern{
+  cursor: not-allowed;
+}
+
+.info h1 {
+  margin-bottom: 5px;
+}
+
+.axistime .domain {
+  display: none;
+}
+
+.tick line {
+  stroke: rgba(171, 171, 171, 1);
+  opacity: 1;
+  stroke-dasharray: 2, 2;
+}
+
+#morphToGraph {
+  display: none;
+}
+
+.filteractive{
+  font-weight: bold;
+}

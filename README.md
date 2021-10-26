@@ -127,13 +127,7 @@ Building on the preceding prototyping process, different views were developed th
 
 Views have thus emerged that contrast a whole-data, accumulated overview view as an entry point with individual search-based views. Here, one starts from something small (a search query), and can expand it exploratively as needed.
 
-<img src="/img/prototype01.jpg">
-<img src="/img/prototype02.jpg">
-<img src="/img/prototype03.jpg">
-<img src="/img/prototype04.jpg">
-<img src="/img/prototype05.jpg">
-<img src="/img/prototype06.jpg">
-<img src="/img/prototype07.jpg">
+<img src="/img/prototype-demo.gif">
 
 <a href="https://sonar.fh-potsdam.de/prototype/">[Demo]</a><a href="https://github.com/sonar-idh/visualization-prototypes/tree/main/final_prototype">[Code]</a>
 

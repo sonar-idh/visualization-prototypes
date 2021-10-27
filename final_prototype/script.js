@@ -1,9 +1,6 @@
-var div = d3.select("body").append("div")
-  .attr("class", "tooltip")
-  .style("opacity", 0);
-
-div.append("p")
-
+//credentials for the database
+const neo4jLogin = "neo4j" //'sonar';
+const neo4jPassword = 'sonar2021';
 
 ////////////////////////////////////
 ////////////////////////////////////setup Network vis
@@ -13,12 +10,59 @@ let windowHeight = window.innerHeight - 2 * margin
 let timelineHeight = 0.25 * windowHeight
 let mode = "overview"
 
+let maxValueinLinks = 1
+let maxValueinNodes = 1
+
+let nodes = [],
+  links = [];
+let graph = {
+  nodes: nodes,
+  links: links
+};
+
+let linksClean = []
+
+let timeline = []
+let newNode = false
+let queryCollection = []
+
+//load hash variables and execute search based on that
+if (window.location.hash) {
+  console.log(window.location.hash.split("#"))
+  let hashId = window.location.hash.split("#")[1]
+  d3.select(".cypher-in").attr("value", hashId)
+  post_cypherquery('execute')
+}
+
+
+
+//prepare tooltip for mouseovers
+var div = d3.select("body").append("div")
+  .attr("class", "tooltip")
+  .style("opacity", 0);
+
+div.append("p")
+
+
+//setting up the brush for the timeline in the search views
+let brushTimelineX = d3.brushX()
+  .extent([
+    [0, 0],
+    [windowWidth, timelineHeight]
+  ]).on("brush", timelinebrushed)
+  .on("end", timelinebrushed)
+
+let brushStart = null
+let brushEnd = null
+
+//some variable timeline variables
 let timelinerelationsData = []
 let timelineInterval = [1300, 2000]
 let timelineMaxCount
 let timelineMaxResourceCount
 let timelineMaxEdgesCount
 
+///scales for timeline in overview
 let timelineScale = d3.scaleLinear()
   .domain(timelineInterval)
   .range([0, windowWidth]);
@@ -27,9 +71,7 @@ let timelineYScale = d3.scaleLinear()
   .domain([0, 13000000])
   .range([timelineHeight, 0])
 
-
-
-
+///scales for the area chart in the timeline of the overview
 let areaGraphRelationAll = d3.area()
   .x(function(d, i) {
     return timelineScale(d.date);
@@ -41,7 +83,6 @@ let areaGraphRelationAll = d3.area()
     return timelineYScale(d.countPerson)
   })
   .curve(d3.curveBasis);
-
 
 let areaGND = d3.area()
   .x(function(d, i) {
@@ -116,19 +157,8 @@ let areaComp = d3.area()
   })
   .curve(d3.curveBasis);
 
-let brushTimelineX = d3.brushX()
-  .extent([
-    [0, 0],
-    [windowWidth, timelineHeight]
-  ]).on("brush", timelinebrushed)
-  .on("end", timelinebrushed)
-
-let brushStart = null
-let brushEnd = null
-
-const neo4jLogin = "neo4j" //'sonar';
-const neo4jPassword = 'sonar2021';
-
+/////////////////////////////////////////////
+///function to change back to overview start
 function backToOverview() {
   mode = "overview"
   yearSelected = 1850
@@ -258,8 +288,6 @@ function backToOverview() {
     .curve(d3.curveBasis);
 
 
-
-
   d3.select("#timelineselectedyear").text(timelineInterval[0] + "—" + timelineInterval[1])
   d3.select("#timelinetitlecategory").text("Personen")
 
@@ -309,7 +337,6 @@ function backToOverview() {
     .style("stroke-width", 1)
     .attr("class", "overviewareaDNB")
 
-  //
   areachart.append("path")
     .datum(timelinerelationsData)
     .attr("d", areaSBB)
@@ -337,14 +364,12 @@ function backToOverview() {
     .style("stroke-width", 1)
     .attr("class", "overviewareaComp")
 
-  ////////////
-  //////backtooverview timeline update Ende
-
-
-
-
 }
+/////////////////////////////////////////////
+///function to change back to overview start
 
+
+///neo4J login and setup functions
 function setupNeo4jLoginForAjax(login, passwd) {
   $.ajaxSetup({
     contentType: 'application/json',
@@ -359,31 +384,7 @@ $(function() {
 
 });
 
-let maxValueinLinks = 1
-let maxValueinNodes = 1
-
-let nodes = [],
-  links = [];
-let graph = {
-  nodes: nodes,
-  links: links
-};
-
-let linksClean = []
-
-let timeline = []
-let newNode = false
-let queryCollection = []
-
-if (window.location.hash) {
-  console.log(window.location.hash.split("#"))
-  let hashId = window.location.hash.split("#")[1]
-  d3.select(".cypher-in").attr("value", hashId)
-  post_cypherquery('execute')
-}
-
-
-
+///cypher query statement function
 function post_cypherquery(type, id) {
   mode = "graph"
   d3.select("#svg").style("display", "none")
@@ -414,21 +415,12 @@ function post_cypherquery(type, id) {
 
     queryCollection.push(searchquery)
 
-
+//based on execution type varying cypher Statements get combined. after that each statement result gets merged (this is not an ideal way to do that. it's very slow and uses too much ressources and creates duplicates that need to be removed again)
     if ($('#search_category_select').val() == "GND-ID") {
 
       if (type == "execute") {
         window.location.hash = "#" + searchquery
       }
-      // cypherStatement = `MATCH (p:PerName {Id:'${searchquery}'}) WITH p
-      //                   MATCH (p)--(friends:PerName)-[r2]-(n:PerName)--(p)
-      //                   WHERE (ID(friends) > ID(n))
-      //                   RETURN DISTINCT*`
-      // `MATCH (p:PerName {Id:'${searchquery}'}) WITH p
-      //                   MATCH (p)-[rel:RelationToPerName|SocialRelation]-(friends:PerName)-[rel2:RelationToPerName|SocialRelation]-(n:PerName)-[rel3:RelationToPerName|SocialRelation]-(p)
-      //                   WHERE (ID(friends) > ID(n))
-      //                   RETURN DISTINCT* LIMIT 150000`
-      //
 
       cypherStatement =
         `MATCH (p:PerName) - [rel:RelationToPerName | RelationToCorpName | SocialRelation] - (friends) - [rel2:RelationToTopicTerm | RelationToGeoName | RelationToMeetName | RelationToUniTitle | RelationToCorpName ] - (friendsfriends)
@@ -462,11 +454,7 @@ function post_cypherquery(type, id) {
       cypherStatement = `MATCH (t:TopicTerm) - [rel:RelationToPerName|RelationToResource|RelationToGeoName|RelationToTopicTerm|SocialRelation] - (friends) -  [rel2:RelationToTopicTerm | RelationToGeoName | RelationToCorpName | RelationToMeetName | RelationToUniTitle] - (friendsfriends)
 WHERE (t.Name CONTAINS "${searchquery}" AND friends:PerName )
 RETURN * `
-      //
-      // cypherStatement2 = `MATCH (t:TopicTerm) -- (r:Resource ) - [rel:RelationToPerName] - (p:PerName) - [rel2:RelationToPerName] - (p2:PerName) -- (t:TopicTerm)
-      //   WHERE (t.Name CONTAINS "${searchquery}")
-      //   RETURN * `
-      //
+
 
       cypherStatement2 = `MATCH (t:TopicTerm)-[rel1]-(p:PerName)-[rel2]-(p2:PerName)--(t:TopicTerm)
   WHERE (t.Name CONTAINS '${searchquery}') AND ID(p) > ID(p2)
@@ -513,7 +501,7 @@ RETURN * `
 
 
 
-
+///this sends the ajax request to the database (change url to change the database)
   $.ajax({
       url: "http://localhost:7474/db/data/transaction/commit", //"https://h2918680.stratoserver.net:7473/db/data/transaction/commit",
       type: 'POST',
@@ -2193,13 +2181,9 @@ function renderNetwork() {
 
   let timelineMarginTop = 145
 
-  // let timelineScale = d3.scaleLinear()
-  //   .domain(d3.extent(timelineStartEndWithoutRessources))
-  //   .range([0, windowHeight - timelineMarginTop]);
   timelineScale = d3.scaleLinear()
     .domain(timelineInterval)
     .range([0, windowWidth]);
-
 
 
   let timelineXScale = d3.scaleLinear()
@@ -2636,7 +2620,6 @@ function edgeClick(D, I) {
         .text(function() {
           return "(" + connection.originType + ", " + connection.SourceType +
             ", " + connection.TypeAddInfo
-            //+ ", " + connection.TempValidity
             +
             (connection.linkDateDateApproxBegin != undefined ? (", " + connection.linkDateDateApproxBegin) : "") +
             ((connection.linkDateDateApproxEnd != undefined) ? ("–" + connection.linkDateDateApproxEnd + ")") : ")")
@@ -3543,7 +3526,7 @@ Promise.all([
 
     //PerName -- PerName Arcs
 
-    let resPerPer = d3.select("#relationsvis").append("g").attr("class", "resPerPer") //.attr("transform", "translate(0,"+(-((lineGap*3)+DNBResLineStrength+KPEResLineStrength+SBBResLineStrength+ZDBResLineStrength)/2)+")")
+    let resPerPer = d3.select("#relationsvis").append("g").attr("class", "resPerPer") 
 
     resPerPer.selectAll(".relationLine")
       .data(relationdata.filter(function(d) {
